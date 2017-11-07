@@ -162,7 +162,7 @@ namespace Izhitsa {
 		 * </param>
 		 * <param name="worldPositionStays">If true, the parent-relative position, rotation,
 		 * and scale are modified such that the object keeps the same world space position,
-		 * rotation, and scale as before. (Default: true)
+		 * rotation, and scale as before.
 		 * </param>
 		 */
 		public static void SetParent(this GameObject go, GameObject parent, bool worldPositionStays = true)

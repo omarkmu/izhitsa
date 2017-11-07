@@ -3,19 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Izhitsa.EventManager;
 
-/// <TODO>
-/// * Make "unordered sequence" completely separate as `Keystroke` class.
-/// 	* Add some sort of "modifier" functionality to `Keystroke` (control, alt, shift, etc.)
-/// </TODO>
 namespace Izhitsa {
 	/**
-	 * <summary>Class to facilitate input.</summary>
+	 * <summary>Class which facilitates input handling.</summary>
 	 */
 	public static class InputManager {
-		/// A boolean representing whether or not either alt key is down.
+		/// <summary>A boolean representing whether or not either alt key is down.</summary>
 		public static bool Alt
 			=> Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
-		/// A boolean representing whether or not either control key is down.
+		/// <summary>A boolean representing whether or not either control key is down.</summary>
 		public static bool Control
 			=> Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
 		/**
@@ -71,76 +67,76 @@ namespace Izhitsa {
 			set {}
 		}
 		
-		/// A container which associates strings and KeyCodes.
+		/// <summary>A container which associates strings and KeyCodes.</summary>
 		private static Dictionary<string, KeyCode> boundKeys { get; }
 			= new Dictionary<string, KeyCode>();
-		/// A container which associates strings and Sequences.
+		/// <summary>A container which associates strings and Sequences.</summary>
 		private static Dictionary<string, Sequence> boundSeqs { get; }
 			= new Dictionary<string, Sequence>();
-		/// Contains held down keys, and the time which they were pressed.
+		/// <summary>Contains held down keys, and the time which they were pressed.</summary>
 		private static Dictionary<KeyCode, float> heldKeys { get; }
 			= new Dictionary<KeyCode, float>();
-		/// Primary KeyBound event.
+		/// <summary>Primary KeyBound event.</summary>
 		private static Broadcast keyBound = new Broadcast();
-		/// Contains KeyBound events.
+		/// <summary>Contains KeyBound events.</summary>
 		private static Dictionary<string, Broadcast> keyBoundEvents { get; }
 			= new Dictionary<string, Broadcast>();
-		/// Primary KeyUnbound event.
+		/// <summary>Primary KeyUnbound event.</summary>
 		private static Broadcast keyUnbound = new Broadcast();
-		/// Contains KeyUnbound events.
+		/// <summary>Contains KeyUnbound events.</summary>
 		private static Dictionary<string, Broadcast> keyUnboundEvents { get; }
 			= new Dictionary<string, Broadcast>();
-		/// Primary SequenceBound event.
+		/// <summary>Primary SequenceBound event.</summary>
 		private static Broadcast seqBound { get; } = new Broadcast();
-		/// Contains KeyBound events.
+		/// <summary>Contains KeyBound events.</summary>
 		private static Dictionary<string, Broadcast> seqBoundEvents { get; }
 			= new Dictionary<string, Broadcast>();
-		/// Contains sequence completion events.
+		/// <summary>Contains sequence completion events.</summary>
 		private static Dictionary<string, Broadcast> seqEvents { get; }
 			= new Dictionary<string, Broadcast>();
 
 
-		/// Primary SequenceUnbound event.
+		/// <summary>Primary SequenceUnbound event.</summary>
 		private static Broadcast seqUnbound { get; } = new Broadcast();
-		/// Contains SequenceUnbound events.
+		/// <summary>Contains SequenceUnbound events.</summary>
 		private static Dictionary<string, Broadcast> seqUnboundEvents { get; }
 			= new Dictionary<string, Broadcast>();
 		
-		/// Input event types for use in InputEvents.
+		/// <summary>Input event types for use in InputEvents.</summary>
 		public enum InputEventType {
-			/// Default value.
+			/// <summary>Default value.</summary>
 			None,
-			/// A key was pressed down.
+			/// <summary>A key was pressed down.</summary>
 			KeyDown,
-			/// A key was released.
+			/// <summary>A key was released.</summary>
 			KeyUp,
-			/// Key is being held down.
+			/// <summary>Key is being held down.</summary>
 			KeyHeld,
-			/// Any key event occurred.
+			/// <summary>Any key event occurred.</summary>
 			Any
 		}
-		/// Flags to represent when a sequence should be interrupted.
+		/// <summary>Flags to represent when a sequence should be interrupted.</summary>
 		[Flags]
 		public enum InterruptFlags {
-			/// Never interrupt.
+			/// <summary>Never interrupt.</summary>
 			None = 0,
-			/// When a different key is released.
+			/// <summary>When a different key is released.</summary>
 			DifferentKeyUp = 1,
-			/// When a different key is pressed.
+			/// <summary>When a different key is pressed.</summary>
 			DifferentKeyDown = 2,
-			/// When a different key is held down.
+			/// <summary>When a different key is held down.</summary>
 			DifferentKeyHeld = 4,
-			/// When the same key is released.
+			/// <summary>When the same key is released.</summary>
 			SameKeyUp = 8,
-			/// When the same key is pressed.
+			/// <summary>When the same key is pressed.</summary>
 			SameKeyDown = 16,
-			/// When the same key is held down.
+			/// <summary>When the same key is held down.</summary>
 			SameKeyHeld = 32,
-			/// When any event occurs on a different key.
+			/// <summary>When any event occurs on a different key.</summary>
 			DifferentKey = DifferentKeyUp | DifferentKeyDown | DifferentKeyHeld,
-			/// When any event occurs on the same key.
+			/// <summary>When any event occurs on the same key.</summary>
 			SameKey = SameKeyUp | SameKeyDown | SameKeyHeld,
-			/// When any event occurs.
+			/// <summary>When any event occurs.</summary>
 			Any = DifferentKey | SameKey
 		}
 
@@ -287,7 +283,7 @@ namespace Izhitsa {
 		 * bound to the name `seqName` is completed successfully, and returns
 		 * a `Signal`.
 		 * </summary>
-		 * <param name="keyName">The name of the sequence.
+		 * <param name="seqName">The name of the sequence.
 		 * </param>
 		 * <param name="func">
 		 * The function to connect.
@@ -336,7 +332,7 @@ namespace Izhitsa {
 		 * Handles events, converts them into `InputEvent`s,
 		 * and registers them for `Sequence` checking.
 		 * </summary>
-		 * <param name="ev">The `Event` to convert.</param>
+		 * <param name="ev">The `Event` to convert and handle.</param>
 		 */
 		internal static void handleEvent(Event ev){
 			bool valid = true;
@@ -428,41 +424,31 @@ namespace Izhitsa {
 				string name = pair.Key;
 				Sequence seq = pair.Value;
 				if (seq == null) continue;
-				if (seq.maxStep == -1) continue;
+				if (seq.MaxStep < 1) continue;
 
-				SequenceElement elem = seq.current;
+				SequenceElement elem = seq.Current;
 				InterruptFlags flags = getInterruptFlags(ev, elem);
 				if ((elem.InterruptFlags & flags) == flags){
-					seq.currentStep = 0;
+					seq.Reset();
 					continue;
 				}
 
 				if (ev.Key == elem.Key){
-					// Debug.Log(
-					// 	$"Name: {name}; " +
-					// 	$"Type: {elem.Type}; " +
-					// 	$"EventType: {ev.Type}; " +
-					// 	$"KeyCode: {ev.Key}; " +
-					// 	$"Step: {seq.currentStep}; " +
-					// 	$"MaxStep: {seq.maxStep}; " +
-					// 	$"Duration: {ev.HeldDuration}; " +
-					// 	$"Margin: {((seq.lastStepTime == 0.0f) ? 0 : Time.time - seq.lastStepTime)}; "+ 
-					// 	$"Flags: {flags};"
-					// );
+					float margin = ((seq.lastStepTime == 0.0f) ? 0 : Time.time - seq.lastStepTime);
 					float duration = ev.HeldDuration;
 					float last = Time.time - seq.lastStepTime;
-					bool inMargin = (seq.currentStep == 0 || (last >= elem.MinMargin && last <= elem.MaxMargin));
+					bool inMargin = (seq.CurrentStep == 0 || (last >= elem.MinMargin && last <= elem.MaxMargin));
 					bool inDuration = (duration >= elem.MinDuration && duration <= elem.MaxDuration);
 					if (inDuration && inMargin){
 						if (ev.Type == elem.Type){
 							seq.lastStepTime = Time.time;
-							if (seq.currentStep++ == seq.maxStep){
+							if (seq.CurrentStep++ == seq.MaxStep){
 								Broadcast bc = (seqEvents.ContainsKey(name)) ? seqEvents[name] : null;
 								bc?.Fire();
 							}
 						}
-					} else if (duration > elem.MaxDuration || last > elem.MaxMargin){
-						seq.currentStep = 0;
+					} else if (duration > elem.MaxDuration || !inMargin){
+						seq.Reset();
 					}
 				}
 			}
@@ -487,27 +473,28 @@ namespace Izhitsa {
 		 * </summary>
 		 */
 		public class Sequence {
-			/// The current SequenceElement.
-			internal SequenceElement current => elements[currentStep];
-			/// The current step; where the sequence pointer is right now.
-			internal int currentStep {
+			/// <summary>The current SequenceElement. (Read Only)</summary>
+			public SequenceElement Current => elements[CurrentStep];
+			/// <summary>The current step, where the sequence pointer is right now. (Read Only)</summary>
+			public int CurrentStep {
 				get {
 					return cStep;
 				}
-				set {
-					if (value > maxStep) currentStep = 0;
+				internal set {
+					if (value > MaxStep) cStep = 0;
 					else cStep = value;
 
 					if (cStep == 0)
 						lastStepTime = 0.0f;
 				}
 			}
-			/// The elements which make up the Sequence.
+			/// <summary>The maximum amount of steps before completion and reset. (Read Only)</summary>
+			public int MaxStep => elements.Length - 1;
+
+			/// <summary>The elements which make up the Sequence.</summary>
 			internal SequenceElement[] elements { get; set; }
-			/// The recorded `Time.time` from the last step's execution.
+			/// <summary>The recorded `Time.time` from the last step's execution.</summary>
 			internal float lastStepTime { get; set; } = 0.0f;
-			/// The maximum amount of steps before completion and reset.
-			internal int maxStep => elements.Length - 1;
 			
 			private int cStep = 0;
 
@@ -516,17 +503,17 @@ namespace Izhitsa {
 			 * Sequence indexer, for getting/setting SequenceElements.
 			 * </summary>
 			 * <param name="index">The integer to index the array with.
-			 * Must be between 0 and `maxStep`.
+			 * Must be between 0 and `MaxStep`.
 			 * </param>
 			 */
 			public SequenceElement this[int index]{
 				get {
-					if (index < 0 || index > maxStep)
+					if (index < 0 || index > MaxStep)
 						throw new ArgumentOutOfRangeException("index");
 					return elements[index];
 				}
 				set {
-					if (index < 0 || index >= maxStep)
+					if (index < 0 || index >= MaxStep)
 						throw new ArgumentOutOfRangeException("index");
 					elements[index] = value;
 				}
@@ -555,6 +542,82 @@ namespace Izhitsa {
 				}
 				elements = elems;
 			}
+
+			/**
+			 * <summary>
+			 * Resets the sequence.
+			 * </summary>
+			 */
+			public void Reset(){
+				CurrentStep = 0;
+			}
+			/**
+			 * <summary>
+			 * Sets `propName` property to `value` in all of the sequence's `SequenceElement`s,
+			 * and returns the sequence.
+			 * </summary>
+			 * <param name="propName">A `SequenceElement` float property name.
+			 * </param>
+			 * <param name="value">The value to assign to the property.</param>
+			 */
+			public Sequence Set(string propName, float value){
+				if (propName == null) throw new ArgumentNullException("propName");
+				switch(propName){
+					case "MaxDuration":
+						foreach(SequenceElement elem in elements)
+							elem.MaxDuration = value;
+						break;
+					case "MaxMargin":
+						foreach(SequenceElement elem in elements)
+							elem.MaxMargin = value;
+						break;
+					case "MinDuration":
+						foreach(SequenceElement elem in elements)
+							elem.MinDuration = value;
+						break;
+					case "MinMargin":
+						foreach(SequenceElement elem in elements)
+							elem.MinMargin = value;
+						break;
+					default:
+						throw new ArgumentException($"Invalid property name: \"{propName}\"" +
+						" for type \"string\".");
+				}
+				return this;
+			}
+			/**
+			 * <summary>
+			 * Sets InterruptFlags to `value` in all of the sequence's `SequenceElement`s,
+			 * and returns the sequence.
+			 * </summary>
+			 * <param name="value">The value to assign to the property.</param>
+			 */
+			public Sequence Set(InterruptFlags value){
+				foreach(SequenceElement elem in elements) elem.InterruptFlags = value;
+				return this;
+			}
+			/**
+			 * <summary>
+			 * Sets Key to `value` in all of the sequence's `SequenceElement`s,
+			 * and returns the sequence.
+			 * </summary>
+			 * <param name="value">The value to assign to the property.</param>
+			 */
+			public Sequence Set(KeyCode key){
+				foreach(SequenceElement elem in elements) elem.Key = key;
+				return this;
+			}
+			/**
+			 * <summary>
+			 * Sets Type to `value` in all of the sequence's `SequenceElement`s,
+			 * and returns the sequence.
+			 * </summary>
+			 * <param name="value">The value to assign to the property.</param>
+			 */
+			public Sequence Set(InputEventType type){
+				foreach(SequenceElement elem in elements) elem.Type = type;
+				return this;
+			}
 		}
 		/**
 		 * <summary>
@@ -562,19 +625,19 @@ namespace Izhitsa {
 		 * </summary>
 		 */
 		public class SequenceElement {
-			/// Flags used to check if the sequence should be interrupted. (Default: `InterruptFlags.DifferentKeyDown`)
+			/// <summary>Flags used to check if the sequence should be interrupted. (Default: `InterruptFlags.DifferentKeyDown`)</summary>
 			public InterruptFlags InterruptFlags { get; set; } = InterruptFlags.DifferentKeyDown;
-			/// The KeyCode to check. (Default: `KeyCode.None`)
+			/// <summary>The KeyCode to check. (Default: `KeyCode.None`)</summary>
 			public KeyCode Key { get; set; } = KeyCode.None;
-			/// The maximum duration of the keypress before invalidity. (Default: `float.MaxValue`)
+			/// <summary>The maximum duration of the keypress before invalidity. (Default: `float.MaxValue`)</summary>
 			public float MaxDuration { get; set; } = float.MaxValue;
-			/// The maximum time which can pass since the last element in the sequence before invalidity. (Default: `float.MaxValue`)
+			/// <summary>The maximum time which can pass since the last element in the sequence before invalidity. (Default: `float.MaxValue`)</summary>
 			public float MaxMargin { get; set; } = float.MaxValue;
-			/// The minimum duration of the keypress for the element to be valid. (Default: `0`)
+			/// <summary>The minimum duration of the keypress for the element to be valid. (Default: `0`)</summary>
 			public float MinDuration { get; set; } = 0.0f;
-			/// The minimum time which has to pass since the last element in the sequence for the element to be valid. (Default: `0`)
+			/// <summary>The minimum time which has to pass since the last element in the sequence for the element to be valid. (Default: `0`)</summary>
 			public float MinMargin { get; set; } = 0.0f;
-			/// The element's input type. (Default: `InputEventType.KeyDown`)
+			/// <summary>The element's input type. (Default: `InputEventType.KeyDown`)</summary>
 			public InputEventType Type { get; set; } = InputEventType.KeyDown;
 			
 			/**
@@ -587,22 +650,20 @@ namespace Izhitsa {
 			 * </summary>
 			 * <param name="key">The KeyCode to check.
 			 * </param>
-			 * <param name="type">The element's input type. (Default: `InputEventType.KeyDown`)
+			 * <param name="type">The element's input type.
 			 * </param>
 			 * <param name="flags">Flags used to check if the sequence should be interrupted.
-			 * (Default: `InterruptFlags.DifferentKeyDown`)
 			 * </param>
 			 * <param name="minDuration">The minimum duration of the keypress for the element to
-			 * be valid. (Default: `0`)
+			 * be valid.
 			 * </param>
 			 * <param name="maxDuration">The maximum duration of the keypress before invalidity.
-			 * (Default: `float.MaxValue`)
 			 * </param>
 			 * <param name="minMargin">The minimum time which has to pass since the last element
-			 * in the sequence for the element to be valid. (Default: `0`)
+			 * in the sequence for the element to be valid.
 			 * </param>
 			 * <param name="maxMargin">The maximum time which can pass since the last element in
-			 * the sequence before invalidity. (Default: `float.MaxValue`)
+			 * the sequence before invalidity.
 			 * </param>
 			 */
 			public SequenceElement(KeyCode key, InputEventType type = InputEventType.KeyDown,
@@ -624,11 +685,11 @@ namespace Izhitsa {
 		 * </summary>
 		 */
 		internal class InputEvent {
-			/// The time, in seconds, that the key has/had been held down.
+			/// <summary>The time, in seconds, that the key has/had been held down.</summary>
 			public float HeldDuration { get; internal set; } = 0.0f;
-			/// The key related to this event.
+			/// <summary>The key related to this event.</summary>
 			public KeyCode Key { get; internal set; } = KeyCode.None;
-			/// The input type of this event.
+			/// <summary>The input type of this event.</summary>
 			public InputEventType Type { get; internal set; } = InputEventType.None;
 		}
 	}

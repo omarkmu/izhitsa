@@ -4,13 +4,13 @@ using System.Collections.Generic;
 using static Izhitsa.Utility;
 
 namespace Izhitsa {
-	/// Delegate for handling event connections.
+	/// <summary>Delegate for handling event connections.</summary>
 	public delegate void Handler(object[] args);
 	/**
 	 * <summary>Class which facilitates event usage.</summary>
 	 */
     public static class EventManager {
-		/// A container for all broadcasts.
+		/// <summary>A container for all broadcasts.</summary>
         private static Dictionary<string, Broadcast> broadcasts = new Dictionary<string, Broadcast>();
 		
 		/**
@@ -25,29 +25,29 @@ namespace Izhitsa {
 		public static Signal Connect(string name, Action func)
 			=> getBroadcast(name).Connect((args) => func());
 		/**
-		* <summary>
-		* Connects a function to a `Broadcast`, and returns a `Signal`.
-		* </summary>
-		* <param name="name">The name of the `Broadcast` to connect to.
-		* </param>
-		* <param name="func">A function to connect.
-		* </param>
-		*/
+		 * <summary>
+		 * Connects a function to a `Broadcast`, and returns a `Signal`.
+		 * </summary>
+		 * <param name="name">The name of the `Broadcast` to connect to.
+		 * </param>
+		 * <param name="func">A function to connect.
+		 * </param>
+		 */
 		public static Signal Connect(string name, Action<object[]> func)
 			=> getBroadcast(name).Connect((args) => func(args));
 		/**
-		* <summary>
-		* Fires the `Broadcast` which matches the `name`.
-		* </summary>
-		* <param name="name">The name of the `Broadcast` to fire.
-		* </param>
-		* <param name="args">The arguments to fire the `Broadcast` with.
-		* </param>
-		*/
-		public static void Fire(string name, params object[] args){
-			if (!broadcasts.ContainsKey(name)) return;
-			broadcasts[name].Fire(args);
-		}
+		 * <summary>
+		 * Fires the `Broadcast` which matches the `name`.
+		 * </summary>
+		 * <param name="name">The name of the `Broadcast` to fire.
+		 * </param>
+		 * <param name="args">The arguments to fire the `Broadcast` with.
+		 * </param>
+		 */
+        public static void Fire(string name, params object[] args){
+            if (!broadcasts.ContainsKey(name)) return;
+            broadcasts[name].Fire(args);
+        }
 		/**
 		 * <summary>
 		 * Returns the `Broadcast` which matches the name `name`, or null if none is found.
@@ -80,10 +80,10 @@ namespace Izhitsa {
 		}
 		
 		/**
-		 * <summary>Class to represent an event.</summary>
+		 * <summary>Class which represents an event.</summary>
 		 */
 		public class Broadcast {
-			/// The name of the Broadcast.
+			/// <summary>The name of the Broadcast. (Read Only)</summary>
 			public string Name { get; private set; }
 			private List<Signal> signals;
 
@@ -103,7 +103,7 @@ namespace Izhitsa {
 			 * <param name="name">The name of the Broadcast, for EventManager registering.
 			 * </param>
 			 * <param name="unregistered">If this is true, the Broadcast will not be registered with
-			 * the EventManager. (Default: false)
+			 * the EventManager.
 			 * </param>
 			 */
 			public Broadcast(string name, bool unregistered = false){
@@ -148,7 +148,9 @@ namespace Izhitsa {
 			 * <summary>
 			 * Connects a function to the Broadcast.
 			 * </summary>
-			 * <param name="f">A function to connect.
+			 * <param name="bc">The Broadcast.
+			 * </param>
+			 * <param name="func">A function to connect.
 			 * </param>
 			 */
 			public static Broadcast operator +(Broadcast bc, Handler func){
@@ -159,7 +161,9 @@ namespace Izhitsa {
 			 * <summary>
 			 * Disconnects a function from the Broadcast.
 			 * </summary>
-			 * <param name="f">The function to disconnect.
+			 * <param name="bc">The Broadcast.
+			 * </param>
+			 * <param name="func">The function to disconnect.
 			 * </param>
 			 */
 			public static Broadcast operator -(Broadcast bc, Handler func){
@@ -196,10 +200,10 @@ namespace Izhitsa {
 			}
 		}
 		/**
-		 * <summary>Class to contain callbacks.</summary>
+		 * <summary>Class which contains callbacks.</summary>
 		 */
 		public class Signal {
-			/// The Broadcast this Signal is connected to. (Read Only)
+			/// <summary>The Broadcast this Signal is connected to. (Read Only)</summary>
 			public Broadcast Broadcast => broadcast;
 			internal Handler callback {
 				get {

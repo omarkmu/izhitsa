@@ -9,17 +9,17 @@ namespace Izhitsa {
 	 * </summary>
 	 */
 	public static class Random {
-		/// Returns a random point inside a circle with radius 1. (Read Only)
+		/// <summary>Returns a random point inside a circle with radius 1. (Read Only)</summary>
 		public static Vector2 insideUnitCircle => UnityEngine.Random.insideUnitCircle;
-		/// Returns a random point inside a sphere with radius 1. (Read Only)
+		/// <summary>Returns a random point inside a sphere with radius 1. (Read Only)</summary>
 		public static Vector3 insideUnitSphere => UnityEngine.Random.insideUnitSphere;
-		/// Returns a random point on the surface of a sphere with radius 1. (Read Only)
+		/// <summary>Returns a random point on the surface of a sphere with radius 1. (Read Only)</summary>
 		public static Vector3 onUnitSphere => UnityEngine.Random.onUnitSphere;
-		/// Returns a random rotation. (Read Only)
+		/// <summary>Returns a random rotation. (Read Only)</summary>
 		public static Quaternion rotation => UnityEngine.Random.rotation;
-		/// Returns a random rotation with uniform distribution. (Read Only)
+		/// <summary>Returns a random rotation with uniform distribution. (Read Only)</summary>
 		public static Quaternion rotationUniform =>  UnityEngine.Random.rotationUniform;
-		/// Gets/Sets the full internal state of the random number generator.
+		/// <summary>Gets/Sets the full internal state of the random number generator.</summary>
 		public static UnityEngine.Random.State state {
 			get {
 				return UnityEngine.Random.state;
@@ -28,7 +28,7 @@ namespace Izhitsa {
 				UnityEngine.Random.state = value;
 			}
 		}
-		/// Returns a random number between 0.0 [inclusive] and 1.0 [inclusive]. (Read Only)
+		/// <summary>Returns a random number between 0.0 [inclusive] and 1.0 [inclusive]. (Read Only)</summary>
 		public static float value => UnityEngine.Random.value;
 
 		/**
@@ -124,7 +124,7 @@ namespace Izhitsa {
 		}
 		/**
 		 * <summary>
-		 * Returns a random element from a List.
+		 * Returns a random element from a List of type `T`.
 		 * </summary>
 		 * <param name="list">A list to choose from.
 		 * </param>
@@ -139,7 +139,8 @@ namespace Izhitsa {
 		 * <summary>
 		 * Returns a random color.
 		 * </summary>
-		 * <param name="randomAlpha">Whether or not to randomise alpha value. (Default: false)
+		 * <param name="randomAlpha">Whether or not to randomise alpha value.
+		 * </param>
 		 */
 		public static Color RandomColor(bool randomAlpha = false){
 			return new Color(

@@ -11,17 +11,50 @@ namespace Izhitsa {
 	 * </summary>
 	 */
 	public static class Utility {
+		/// <summary>The asset cache.</summary>
 		private static Dictionary<string, UnityEngine.Object> cache { get; set; }
 			= new Dictionary<string, UnityEngine.Object>();
+		/// <summary>Used for storing image data.</summary>
 		private static Dictionary<Texture2D, ImageData> data { get; set; }
 			= new Dictionary<Texture2D, ImageData>();
 		
+		/**
+		 * <summary>
+		 * Struct which contains the visible (non-transparent)
+		 * points of an image.
+		 * </summary>
+		 */
+		public struct ImageData {
+			public List<Vector2> VisiblePoints { get; set; }
+			public ImageData(List<Vector2> vps){
+				VisiblePoints = vps;
+			}
+		}
+
+		/**
+		 * <summary>
+		 * Clones a texture.
+		 * </summary>
+		 * <param name="src">The texture to clone.</param>
+		 */
 		public static Texture2D CloneTexture(Texture2D src){
 			Texture2D copy = new Texture2D(src.width, src.height, src.format, src.mipmapCount > 1);
 			copy.LoadRawTextureData(src.GetRawTextureData());
 			copy.Apply();
 			return copy;
 		}
+		/**
+		 * <summary>
+		 * Combines two textures.
+		 * </summary>
+		 * <param name="img1">The first texture.
+		 * </param>
+		 * <param name="img2">The second texture.
+		 * </param>
+		 * <exception cref="System.ArgumentNullException">
+		 * Thrown when either texture is null.
+		 * </exception>
+		 */
 		public static Texture2D CombineTextures(Texture2D img1, Texture2D img2){
 			if (img1 == null) throw new ArgumentNullException("img1");
 			if (img2 == null) throw new ArgumentNullException("img2");
@@ -48,16 +81,45 @@ namespace Izhitsa {
 			dest.Apply();
 			return dest;
 		}
+		/**
+		 * <summary>
+		 * Combines a variable amount of textures.
+		 * </summary>
+		 * <param name="args">The textures to combine.
+		 * </param>
+		 * <exception cref="System.ArgumentNullException">
+		 * Thrown when a texture is null.
+		 * </exception>
+		 */
 		public static Texture2D CombineTextures(params Texture2D[] args){
 			if (args.Length == 0) return null;
 			if (args.Length == 1) return CloneTexture(args[0]);
 			Texture2D tex = args[0];
-			for (int i = 1; i < args.Length; i++)
+			for (int i = 1; i < args.Length; i++){
+				if (args[i] == null) throw new System.ArgumentNullException($"arg{i}");
 				tex = CombineTextures(tex, args[i]);
+			}
 
 			return tex;
 		}
+		/**
+		 * <summary>
+		 * Returns a boolean representing whether or not data for a texture exists.
+		 * </summary>
+		 * <param name="tex">The texture to check.
+		 * </param>
+		 */
 		public static bool DataExists(this Texture2D tex) => data.ContainsKey(tex);
+		/**
+		 * <summary>
+		 * Loads a resource and caches it.
+		 * </summary>
+		 * <param name="path">The path to the resource.
+		 * </param>
+		 * <param name="forceReload">If this is true, the resource is reloaded
+		 * even if it exists in the cache.
+		 * </param>
+		 */
 		public static T LoadResource<T>(string path, bool forceReload = false)
 		where T : UnityEngine.Object {
 			if (cache.ContainsKey(path) && !forceReload) return cache[path] as T;
@@ -65,6 +127,15 @@ namespace Izhitsa {
 			cache.Add(path, resource);
 			return resource;
 		}
+		/**
+		 * <summary>
+		 * Loads all assets in a folder or file at path in a Resource folder.
+		 * </summary>
+		 * <param name="path">The path to the folder or file.
+		 * </param>
+		 * <returns>An List of type T, containing the assets.
+		 * </returns>
+		 */
 		public static List<T> LoadAllResources<T>(string path)
 		where T : UnityEngine.Object {
 			UnityEngine.Object[] objs = Resources.LoadAll(path);
@@ -72,6 +143,25 @@ namespace Izhitsa {
 			foreach (UnityEngine.Object obj in objs) resources.Add(obj as T);
 			return resources;
 		}
+		/**
+		 * <summary>
+		 * Replaces one color in a texture with another.
+		 * </summary>
+		 * <param name="src">The source texture.
+		 * </param>
+		 * <param name="toReplace">The color to replace.
+		 * </param>
+		 * <param name="repl">The replacement color.
+		 * </param>
+		 * <param name="alphaMatch">If this is true, the alpha from the source
+		 * image is used.
+		 * </param>
+		 * <param name="ignoreAlpha">If this is true, the color is replaced even if
+		 * the alpha doesn't match.
+		 * </param>
+		 * <exception cref="System.ArgumentNullException">Thrown when `<paramref name="src"/>`
+		 * is null.</exception>
+		 */
 		public static Texture2D ReplaceTextureColor(Texture2D src, Color toReplace, Color repl,
 			bool alphaMatch = false, bool ignoreAlpha = false
 		){
@@ -101,7 +191,20 @@ namespace Izhitsa {
 			dest.Apply();
 			return dest;
 		}
+		/**
+		 * <summary>
+		 * Starts a coroutine.
+		 * </summary>
+		 * <param name="routine">An IEnumerator to run.
+		 * </param>
+		 */
 		public static Coroutine StartCoroutine(IEnumerator routine) => Main.startCoroutine(routine);
+		/**
+		 * <summary>
+		 * Updates the image data associated with a texture.
+		 * </summary>
+		 * <param name="tex">The texture to update.</param>
+		 */
 		public static ImageData UpdateImageData(Texture2D tex){
 			List<Vector2> vis = new List<Vector2>();
 			for (int x = 0; x < tex.width ; x++){
@@ -116,29 +219,6 @@ namespace Izhitsa {
 			else data.Add(tex, imgData);
 
 			return imgData;
-		}
-
-		public class CoroutineData {
-			public object Result { get; set; }
-			public Coroutine Coroutine { get; set; }
-			private IEnumerator enumerator { get; set; }
-
-			public CoroutineData(IEnumerator e){
-				enumerator = e;
-				Coroutine = StartCoroutine(Run());
-			}
-			private IEnumerator Run(){
-				while (enumerator.MoveNext()){
-					Result = enumerator.Current;
-					yield return Result;
-				}
-			}
-		}
-		public class ImageData {
-			public List<Vector2> VisiblePoints { get; set; }
-			public ImageData(List<Vector2> vps){
-				VisiblePoints = vps;
-			}
 		}
 	}
 }
