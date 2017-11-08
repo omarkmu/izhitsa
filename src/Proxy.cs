@@ -9,30 +9,30 @@ namespace Izhitsa {
 	 * Izhitsa classes.
 	 * </summary>
 	 */
-	public class Main : MonoBehaviour {
+	internal class Proxy : MonoBehaviour {
 		/** <summary>
 		 * Proxy object which allows access to MonoBehaviour
 		 * methods in static classes.
 		 * </summary>
 		 */
-		private static Main obj;
+		private static Proxy obj;
 		/// <summary>Is the application quitting?</summary>
 		private static bool quitting = false;
 
 		/**
 		 * <summary>
 		 * Static constructor which creates a GameObject
-		 * and attaches a Main component.
+		 * and attaches a Proxy component.
 		 * </summary>
 		 */
-		static Main(){
-			GameObject go = new GameObject("IzhitsaMain");
-			go.AddComponent<Main>();
+		static Proxy(){
+			GameObject go = new GameObject("IzhitsaProxy");
+			go.AddComponent<Proxy>();
 		}
 		/**
 		 * <summary>
 		 * Sets up Singleton and deletes any Main components which aren't
-		 * the Singleton. Also sets adds the object to DontDestroyOnLoad.
+		 * the Singleton. Also adds the object to DontDestroyOnLoad.
 		 * </summary>
 		 */
 		void Awake(){
@@ -46,8 +46,7 @@ namespace Izhitsa {
 		}
 		/**
 		 * <summary>
-		 * Passes events to the InputManager so they can be
-		 * handled.
+		 * Passes events to the InputManager so that they can be handled.
 		 * </summary>
 		 */
 		void OnGUI(){
@@ -66,13 +65,13 @@ namespace Izhitsa {
 		void OnDestroy(){
 			obj = null;
 			if (quitting) return;
-			GameObject go = new GameObject("IzhitsaMain");
-			go.AddComponent<Main>();
+			GameObject go = new GameObject("IzhitsaProxy");
+			go.AddComponent<Proxy>();
 		}
 		/**
 		 * <summary>
-		 * Sets a flag to let `<see cref="Main.OnDestroy"/>` know
-		 * not to create a new GameObject when the application is
+		 * Sets a flag to let `<see cref="OnDestroy"/>` know
+		 * not to create a new GameObject while the application is
 		 * quitting.
 		 * </summary>
 		 */

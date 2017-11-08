@@ -12,9 +12,9 @@ namespace Izhitsa {
 	 */
 	public static class Utility {
 		/// <summary>The asset cache.</summary>
-		private static Dictionary<string, UnityEngine.Object> cache { get; set; }
+		private static Dictionary<string, UnityEngine.Object> assetCache { get; set; }
 			= new Dictionary<string, UnityEngine.Object>();
-		/// <summary>Used for storing image data.</summary>
+		/// <summary>Image data associated with a texture.</summary>
 		private static Dictionary<Texture2D, ImageData> data { get; set; }
 			= new Dictionary<Texture2D, ImageData>();
 		
@@ -25,7 +25,13 @@ namespace Izhitsa {
 		 * </summary>
 		 */
 		public struct ImageData {
+			/// <summary>The visible points of the image.</summary>
 			public List<Vector2> VisiblePoints { get; set; }
+			/**
+			 * <summary>Creates new ImageData.
+			 * </summary>
+			 * <param name="vps">A List of the image's visible points.</param>
+			 */
 			public ImageData(List<Vector2> vps){
 				VisiblePoints = vps;
 			}
@@ -96,7 +102,7 @@ namespace Izhitsa {
 			if (args.Length == 1) return CloneTexture(args[0]);
 			Texture2D tex = args[0];
 			for (int i = 1; i < args.Length; i++){
-				if (args[i] == null) throw new System.ArgumentNullException($"arg{i}");
+				if (args[i] == null) throw new System.ArgumentNullException($"Argument {i}");
 				tex = CombineTextures(tex, args[i]);
 			}
 
@@ -122,9 +128,9 @@ namespace Izhitsa {
 		 */
 		public static T LoadResource<T>(string path, bool forceReload = false)
 		where T : UnityEngine.Object {
-			if (cache.ContainsKey(path) && !forceReload) return cache[path] as T;
+			if (assetCache.ContainsKey(path) && !forceReload) return assetCache[path] as T;
 			T resource = Resources.Load<T>(path);
-			cache.Add(path, resource);
+			assetCache.Add(path, resource);
 			return resource;
 		}
 		/**
@@ -133,7 +139,7 @@ namespace Izhitsa {
 		 * </summary>
 		 * <param name="path">The path to the folder or file.
 		 * </param>
-		 * <returns>An List of type T, containing the assets.
+		 * <returns>A List of type T, containing the assets.
 		 * </returns>
 		 */
 		public static List<T> LoadAllResources<T>(string path)
@@ -198,7 +204,7 @@ namespace Izhitsa {
 		 * <param name="routine">An IEnumerator to run.
 		 * </param>
 		 */
-		public static Coroutine StartCoroutine(IEnumerator routine) => Main.startCoroutine(routine);
+		public static Coroutine StartCoroutine(IEnumerator routine) => Proxy.startCoroutine(routine);
 		/**
 		 * <summary>
 		 * Updates the image data associated with a texture.

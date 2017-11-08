@@ -4,23 +4,23 @@ using System.Collections.Generic;
 namespace Izhitsa {
 	/**
 	 * <summary>
-	 * Class which serves as a wrapper for `UnityEngine.Random` and provides extended
-	 * functionality.
+	 * Class which serves as a wrapper for `<see cref="UnityEngine.Random"/>` and
+	 * provides extended functionality.
 	 * </summary>
 	 */
 	public static class Random {
 		/// <summary>Returns a random point inside a circle with radius 1. (Read Only)</summary>
-		public static Vector2 insideUnitCircle => UnityEngine.Random.insideUnitCircle;
+		public static Vector2 InsideUnitCircle => UnityEngine.Random.insideUnitCircle;
 		/// <summary>Returns a random point inside a sphere with radius 1. (Read Only)</summary>
-		public static Vector3 insideUnitSphere => UnityEngine.Random.insideUnitSphere;
+		public static Vector3 InsideUnitSphere => UnityEngine.Random.insideUnitSphere;
 		/// <summary>Returns a random point on the surface of a sphere with radius 1. (Read Only)</summary>
-		public static Vector3 onUnitSphere => UnityEngine.Random.onUnitSphere;
+		public static Vector3 OnUnitSphere => UnityEngine.Random.onUnitSphere;
 		/// <summary>Returns a random rotation. (Read Only)</summary>
-		public static Quaternion rotation => UnityEngine.Random.rotation;
+		public static Quaternion Rotation => UnityEngine.Random.rotation;
 		/// <summary>Returns a random rotation with uniform distribution. (Read Only)</summary>
-		public static Quaternion rotationUniform =>  UnityEngine.Random.rotationUniform;
+		public static Quaternion RotationUniform =>  UnityEngine.Random.rotationUniform;
 		/// <summary>Gets/Sets the full internal state of the random number generator.</summary>
-		public static UnityEngine.Random.State state {
+		public static UnityEngine.Random.State State {
 			get {
 				return UnityEngine.Random.state;
 			}
@@ -29,7 +29,7 @@ namespace Izhitsa {
 			}
 		}
 		/// <summary>Returns a random number between 0.0 [inclusive] and 1.0 [inclusive]. (Read Only)</summary>
-		public static float value => UnityEngine.Random.value;
+		public static float Value => UnityEngine.Random.value;
 
 		/**
 		 * <summary>
@@ -42,7 +42,6 @@ namespace Izhitsa {
 			if (args.Length == 1) return args[0];
 			return args[Rand(0, args.Length - 1)];
 		}
-
 		/**
 		 * <summary>
 		 * Returns a random integer between `min` [inclusive] and `max` [inclusive].
@@ -62,7 +61,7 @@ namespace Izhitsa {
 		 * <param name="color">The "maximum" color.
 		 * </param>
 		 */
-		public static Color Rand(Color color) => Rand(new Color(0f, 0f, 0f, 1f), color);
+		public static Color Rand(this Color color) => Rand(Color.black, color);
 		/**
 		 * <summary>
 		 * Returns a random color between two provided color values.
@@ -144,12 +143,36 @@ namespace Izhitsa {
 		 */
 		public static Color RandomColor(bool randomAlpha = false){
 			return new Color(
-				value,
-				value,
-				value,
-				(randomAlpha ? value : 1.0f)
+				Value,
+				Value,
+				Value,
+				(randomAlpha ? Value : 1.0f)
 			);
 		}
+		/**
+		 * <summary>
+		 * Generates a random color from HSV and alpha ranges.
+		 * </summary>
+		 * <param name="hueMin">Minimum hue. [0..1]
+		 * </param>
+		 * <param name="hueMax">Maximum hue. [0..1]
+		 * </param>
+		 * <param name="saturationMin">Minimum saturation. [0..1]
+		 * </param>
+		 * <param name="saturationMax">Maximum saturation. [0..1]
+		 * </param>
+		 * <param name="valueMin">Minimum value. [0..1]
+		 * </param>
+		 * <param name="valueMax">Maximum value. [0..1]
+		 * </param>
+		 * <param name="alphaMin">Minimum alpha. [0..1]
+		 * </param>
+		 * <param name="alphaMax">Maximum alpha. [0..1]
+		 * </param>
+		 */
+		public static Color RandomColorHSV(float hueMin = 0, float hueMax = 1, float saturationMin = 0, float saturationMax = 1,
+			float valueMin = 0, float valueMax = 1, float alphaMin = 0, float alphaMax = 1)
+			=> UnityEngine.Random.ColorHSV(hueMin, hueMax, saturationMin, saturationMax, valueMin, valueMax, alphaMin, alphaMax);
 		/**
 		 * <summary>
 		 * Initialises the random number generator state with a seed.
