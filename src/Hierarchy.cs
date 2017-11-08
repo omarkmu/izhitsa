@@ -139,12 +139,12 @@ namespace Izhitsa {
 		 * Must be smaller than `<see cref="ChildCount"/>`.
 		 * </param>
 		 * <exception cref="ArgumentOutOfRangeException">Thrown if `<paramref name="index"/>` is
-		 * smaller than `0` or bigger than `<see cref="ChildCount"/>`
+		 * smaller than `0` or bigger than/equal to `<see cref="ChildCount"/>`
 		 * </exception>
 		 */
 		public static GameObject GetChild(int index){
 			GameObject[] children = GetChildren();
-			if (index < 0 || index > children.Length)
+			if (index < 0 || index >= children.Length)
 				throw new ArgumentOutOfRangeException("index");
 			return children[index];
 		}
@@ -161,13 +161,13 @@ namespace Izhitsa {
 		 * `<paramref name="go"/>` is null.
 		 * </exception>
 		 * <exception cref="ArgumentOutOfRangeException">Thrown if `<paramref name="index"/>` is
-		 * smaller than `0` or bigger than `<see cref="GameObject.transform.childCount"/>`
+		 * smaller than `0` or bigger than/equal to `<see cref="GameObject.transform.childCount"/>`
 		 * </exception>
 		 */
 		public static GameObject GetChild(this GameObject go, int index){
 			if (go == null)
 				throw new ArgumentNullException("go");
-			if (index < 0 || index > go.transform.childCount)
+			if (index < 0 || index >= go.transform.childCount)
 				throw new ArgumentOutOfRangeException("index");
 			return go.transform.GetChild(index).gameObject;
 		}
