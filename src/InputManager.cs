@@ -36,7 +36,7 @@ namespace Izhitsa {
 		 * <para>arg1: `{KeyCode}` The previous KeyCode value of the binding.
 		 * </para>
 		 */
-		public static Broadcast KeyUnbound { 
+		public static Broadcast KeyUnbound {
 			get { return keyUnbound; }
 			set {}
 		}
@@ -363,7 +363,7 @@ namespace Izhitsa {
 			KeyCode key = KeyCode.None;
 			InputEventType type = InputEventType.None;
 			
-			switch(ev.type){
+			switch (ev.type){
 				case EventType.KeyDown:
 					key = ev.keyCode;
 					if (heldKeys.ContainsKey(key)){

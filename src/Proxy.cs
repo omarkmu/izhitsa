@@ -10,7 +10,8 @@ namespace Izhitsa {
 	 * </summary>
 	 */
 	internal class Proxy : MonoBehaviour {
-		/** <summary>
+		/**
+		 * <summary>
 		 * Proxy object which allows access to MonoBehaviour
 		 * methods in static classes.
 		 * </summary>
@@ -21,13 +22,11 @@ namespace Izhitsa {
 
 		/**
 		 * <summary>
-		 * Static constructor which creates a GameObject
-		 * and attaches a Proxy component.
+		 * Static constructor which creates the proxy.
 		 * </summary>
 		 */
-		static Proxy(){
-			GameObject go = new GameObject("IzhitsaProxy");
-			go.AddComponent<Proxy>();
+		static Proxy() {
+			createProxy();
 		}
 		/**
 		 * <summary>
@@ -63,10 +62,7 @@ namespace Izhitsa {
 		 * </summary>
 		 */
 		void OnDestroy(){
-			obj = null;
-			if (quitting) return;
-			GameObject go = new GameObject("IzhitsaProxy");
-			go.AddComponent<Proxy>();
+			if (!quitting) createProxy();
 		}
 		/**
 		 * <summary>
@@ -87,5 +83,16 @@ namespace Izhitsa {
 		 * </param>
 		 */
 		internal static Coroutine startCoroutine(IEnumerator e) => obj?.StartCoroutine(e);
+		/**
+		 * <summary>
+		 * Creates a GameObject and attaches a Proxy script to it.
+		 * </summary>
+		 */
+		private static void createProxy(){
+			obj = null;
+			GameObject go = new GameObject("IzhitsaProxy");
+			go.AddComponent<Proxy>();
+			go.hideFlags = HideFlags.HideInHierarchy;
+		}
 	}
 }
