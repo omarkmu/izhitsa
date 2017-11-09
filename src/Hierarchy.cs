@@ -238,7 +238,7 @@ namespace Izhitsa {
 		 * <exception cref="ArgumentNullException">Thrown if
 		 * `<paramref name="go"/>` is null.
 		 * </exception>
-		 */ 
+		 */
 		public static bool IsChildOf(this GameObject go, GameObject parent){
 			if (go == null) throw new ArgumentNullException("go");
 			return go.transform.IsChildOf(parent?.transform);

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Izhitsa.EventManager;
@@ -71,6 +72,7 @@ namespace Izhitsa {
 			=> Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 		
 		/// <summary>A container which associates strings and KeyCodes.</summary>
+		
 		private static Dictionary<string, KeyCode> boundKeys { get; }
 			= new Dictionary<string, KeyCode>();
 		/// <summary>A container which associates strings and Sequences.</summary>
@@ -114,6 +116,8 @@ namespace Izhitsa {
 			KeyUp,
 			/// <summary>Key is being held down.</summary>
 			KeyHeld,
+			/// <summary>The scroll wheel was scrolled.</summary>
+			Scroll,
 			/// <summary>Any key event occurred.</summary>
 			Any
 		}
@@ -134,18 +138,22 @@ namespace Izhitsa {
 			SameKeyDown = 16,
 			/// <summary>When the same key is held down.</summary>
 			SameKeyHeld = 32,
+			/// <summary>When the mouse wheel is scrolled.</summarY>
+			Scroll = 64,
 			/// <summary>When any event occurs on a different key.</summary>
 			DifferentKey = DifferentKeyUp | DifferentKeyDown | DifferentKeyHeld,
 			/// <summary>When any event occurs on the same key.</summary>
 			SameKey = SameKeyUp | SameKeyDown | SameKeyHeld,
 			/// <summary>When any event occurs.</summary>
-			Any = DifferentKey | SameKey
+			Any = DifferentKey | SameKey | Scroll
 		}
 
 		/// <summary>Contains information about input events.</summary>
 		internal struct InputEvent {
 			/// <summary>The mouse button this event occurred on. If it equals -1, this isn't a mouse event.</summary>
 			public int Button { get; internal set; }
+			/// <summary>The mouse scroll wheel delta.</summary>
+			public float Delta { get; internal set; }
 			/// <summary>The time, in seconds, that the key has/had been held down.</summary>
 			public float HeldDuration { get; internal set; }
 			/// <summary>The key related to this event.</summary>
@@ -153,11 +161,12 @@ namespace Izhitsa {
 			/// <summary>The input type of this event.</summary>
 			public InputEventType Type { get; internal set; }
 
-			public InputEvent(int button, float heldDur, KeyCode key, InputEventType type){
+			public InputEvent(int button, float heldDur, KeyCode key, InputEventType type, float delta){
 				Button = button;
 				HeldDuration = heldDur;
 				Key = key;
 				Type = type;
+				Delta = delta;
 			}
 		}
 
@@ -355,11 +364,12 @@ namespace Izhitsa {
 		 * </summary>
 		 * <param name="ev">The `Event` to convert and handle.</param>
 		 */
-		internal static void handleEvent(Event ev){
+		internal static IEnumerator handleEvent(Event ev){
 			bool valid = true;
 
 			int button = -1;
 			float heldDuration = 0.0f;
+			float delta = 0.0f;
 			KeyCode key = KeyCode.None;
 			InputEventType type = InputEventType.None;
 			
@@ -416,10 +426,16 @@ namespace Izhitsa {
 						heldDuration = Time.time - time;
 					}
 					break;
+				case EventType.ScrollWheel:
+					type = InputEventType.Scroll;
+					delta = ev.delta.y;
+					break;
 			}
 			
-			if (valid) registerEvent(new InputEvent(button, heldDuration, key, type));
+			if (valid) registerEvent(new InputEvent(button, heldDuration, key, type, delta));
+			yield return null;
 		}
+
 		/**
 		 * <summary>
 		 * Returns the `InterruptFlags` which are true for the
@@ -436,6 +452,7 @@ namespace Izhitsa {
 				if (ev.Type == InputEventType.KeyUp) flags = InterruptFlags.SameKeyUp;
 				if (ev.Type == InputEventType.KeyDown) flags = InterruptFlags.SameKeyDown;
 				if (ev.Type == InputEventType.KeyHeld) flags = InterruptFlags.SameKeyHeld;
+				if (ev.Type == InputEventType.Scroll) flags = InterruptFlags.Scroll;
 			} else {
 				if (ev.Type == InputEventType.KeyUp) flags = InterruptFlags.DifferentKeyUp;
 				if (ev.Type == InputEventType.KeyDown) flags = InterruptFlags.DifferentKeyDown;
@@ -466,9 +483,11 @@ namespace Izhitsa {
 				if (ev.Key == elem.Key){
 					float margin = ((seq.lastStepTime == 0.0f) ? 0 : Time.time - seq.lastStepTime);
 					float duration = ev.HeldDuration;
+					float delta = ev.Delta;
 					float last = Time.time - seq.lastStepTime;
 					bool inMargin = (seq.CurrentStep == 0 || (last >= elem.MinMargin && last <= elem.MaxMargin));
 					bool inDuration = (duration >= elem.MinDuration && duration <= elem.MaxDuration);
+					bool inDelta = (delta >= elem.MinDelta && delta <= elem.MaxDelta);
 					if (inDuration && inMargin){
 						if (ev.Type == elem.Type){
 							seq.lastStepTime = Time.time;
@@ -477,7 +496,7 @@ namespace Izhitsa {
 								bc?.Fire();
 							}
 						}
-					} else if (duration > elem.MaxDuration || !inMargin){
+					} else if (duration > elem.MaxDuration || !inDelta || !inMargin){
 						seq.Reset();
 					}
 				}
