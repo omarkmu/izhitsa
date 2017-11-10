@@ -71,10 +71,10 @@ namespace Izhitsa {
 		public static bool Shift
 			=> Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 		
-		
+
 		/// <summary>A container which associates strings and KeyCodes.</summary>
-		private static Dictionary<string, KeyCode> boundKeys { get; }
-			= new Dictionary<string, KeyCode>();
+		private static Dictionary<string, List<KeyCode>> boundKeys { get; }
+			= new Dictionary<string, List<KeyCode>>();
 		/// <summary>A container which associates strings and Sequences.</summary>
 		private static Dictionary<string, Sequence> boundSeqs { get; }
 			= new Dictionary<string, Sequence>();
@@ -173,25 +173,54 @@ namespace Izhitsa {
 
 		/**
 		 * <summary>
-		 * Binds a name to a `KeyCode`.
+		 * Binds an action string to a `KeyCode`.
 		 * </summary>
-		 * <param name="keyName">The name to bind to a key.
+		 * <param name="action">The action to bind to a key.
 		 * </param>
 		 * <param name="keyCode">The `KeyCode` to bind.
 		 * </param>
+		 * <param name="clear">If true, any previously bound keys to this action
+		 * will be removed.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * </exception>
 		 */
-		public static void BindKey(string keyName, KeyCode keyCode = KeyCode.None){
-			if (boundKeys.ContainsKey(keyName)){
-				KeyUnbound.Fire(keyName, boundKeys[keyName]);
-				tryFire(keyUnboundEvents, keyName, boundKeys[keyName]);
-				boundKeys[keyName] = keyCode;
-				KeyBound.Fire(keyName, keyCode);
-				tryFire(keyBoundEvents, keyName, keyCode);
+		public static void BindKey(string action, KeyCode keyCode, bool clear = false){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (boundKeys.ContainsKey(action)){
+				List<KeyCode> keyList = boundKeys[action];
+				if (clear){
+					for (int i = 0; i < keyList.Count; i++){
+						KeyUnbound.Fire(action, keyList[i]);
+						tryFire(keyUnboundEvents, action, keyList[i]);
+					}
+					keyList = boundKeys[action] = new List<KeyCode>();
+				}
+				keyList.Add(keyCode);
+				KeyBound.Fire(action, keyCode);
+				tryFire(keyBoundEvents, action, keyCode);
 			} else {
-				boundKeys.Add(keyName, keyCode);
-				KeyBound.Fire(keyName, keyCode);
-				tryFire(keyBoundEvents, keyName, keyCode);
+				boundKeys.Add(action, new List<KeyCode>(){ keyCode });
+				KeyBound.Fire(action, keyCode);
+				tryFire(keyBoundEvents, action, keyCode);
 			}
+		}
+		/**
+		 * <summary>
+		 * Binds an action string to `KeyCode`s.
+		 * </summary>
+		 * <param name="action">The action to bind to the keys.
+		 * </param>
+		 * <param name="keyCodes">The `KeyCode`s to bind.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * </exception>
+		 */
+		public static void BindKey(string action, params KeyCode[] keyCodes){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			foreach(KeyCode key in keyCodes) BindKey(action, key, false);
 		}
 		/**
 		 * <summary>
@@ -242,70 +271,115 @@ namespace Izhitsa {
 		}
 		/**
 		 * <summary>
-		 * Returns true while the key bound to `keyName` is held down.
-		 * If `keyName` isn't bound, the method will silently fail and
-		 * return false.
+		 * Returns true while any of the keys bound to `<paramref name="action"/>` are held down.
 		 * </summary>
-		 * <param name="keyName">The name of the key to check.
+		 * <param name="action">The name of the key to check.
 		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * </exception>
+		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+		 * </exception>
 		 */
-		public static bool GetKey(string keyName)
-			=> boundKeys.ContainsKey(keyName) ?
-				Input.GetKey(boundKeys[keyName]) :
-				false;
+		public static bool GetKey(string action){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundKeys.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
+			foreach(KeyCode key in boundKeys[action])
+				if (Input.GetKey(key)) return true;
+			return false;
+		}
 		/**
 		 * <summary>
-		 * Returns the key bound to a name, or `KeyCode.None` if unmatched.
+		 * Returns the keys bound to a string.
 		 * </summary>
-		 * <param name="keyName">
+		 * <param name="action">
 		 * The name of the key to check.
 		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * </exception>
 		 */
-		public static KeyCode GetBoundKey(string keyName)
-			=> boundKeys.ContainsKey(keyName) ?
-				boundKeys[keyName] :
-				KeyCode.None;
+		public static List<KeyCode> GetBoundKeys(string action){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundKeys.ContainsKey(action))
+				return new List<KeyCode>();
+			return new List<KeyCode>(boundKeys[action]);
+		}
 		/**
 		 * <summary>
-		 * Checks if the key bound to `keyName` was pressed during the frame.
+		 * Checks if any of the keys bound to `<paramref name="action"/>` were pressed during the frame.
 		 * </summary>
-		 * <param name="keyName">The name of the key to check.
+		 * <param name="action">The name of the key to check.
 		 * </param>
 		 * <returns>A boolean representing whether or not the key was pressed.</returns>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * </exception>
+		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+		 * </exception>
 		 */
-		public static bool KeyDown(string keyName)
-			=> boundKeys.ContainsKey(keyName) ?
-				Input.GetKeyDown(boundKeys[keyName]) :
-				false;
+		public static bool KeyDown(string action){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundKeys.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
+			foreach(KeyCode key in boundKeys[action])
+				if (Input.GetKeyDown(key)) return true;
+			return false;
+		}
 		/**
 		 * <summary>
-		 * Checks if the key bound to `keyName` was released during the frame.
+		 * Checks if any of the keys bound to `<paramref name="action"/>` were released during the frame.
 		 * </summary>
-		 * <param name="keyName">
-		 * The name of the key to check.
+		 * <param name="action">The name of the key to check.
 		 * </param>
 		 * <returns>A boolean representing whether or not the key was released.</returns>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * </exception>
+		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+		 * </exception>
 		 */
-		public static bool KeyUp(string keyName)
-			=> boundKeys.ContainsKey(keyName) ?
-				Input.GetKeyUp(boundKeys[keyName]) :
-				false;
+		public static bool KeyUp(string action){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundKeys.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
+			foreach(KeyCode key in boundKeys[action])
+				if (Input.GetKeyUp(key)) return true;
+			return false;
+		}
 		/**
 		 * <summary>
-		 * Connects a function to a Broadcast which fires when `keyName` is bound
+		 * Connects a function to a Broadcast which fires when `<paramref name="action"/>` is bound
 		 * to a key, and returns a Signal.
 		 * </summary>
-		 * <param name="keyName">The name of the bound key to connect to.
+		 * <param name="action">The name of the bound key to connect to.
+		 * </param>
+		 * <param name="func">The function to connect.
+		 * </param>
+		 */
+		public static Signal OnKeyBound(string action, Action func){
+			if (!keyBoundEvents.ContainsKey(action))
+				keyBoundEvents.Add(action, new Broadcast());
+			Broadcast bc = keyBoundEvents[action];
+			return bc.Connect(func);
+		}
+		/**
+		 * <summary>
+		 * Connects a function to a Broadcast which fires when `<paramref name="action"/>` is bound
+		 * to a key, and returns a Signal.
+		 * </summary>
+		 * <param name="action">The name of the bound key to connect to.
 		 * </param>
 		 * <param name="func">
 		 * The function to connect.
 		 * </param>
 		 */
-		public static Signal OnKeyBound(string keyName, Action func){
-			if (!(keyBoundEvents.ContainsKey(keyName)))
-				keyBoundEvents.Add(keyName, new Broadcast());
-			Broadcast bc = keyBoundEvents[keyName];
-			return bc.Connect((args)=> func());
+		public static Signal OnKeyUnbound(string action, Action func){
+			if (!keyUnboundEvents.ContainsKey(action))
+				keyUnboundEvents.Add(action, new Broadcast());
+			Broadcast bc = keyUnboundEvents[action];
+			return bc.Connect(func);
 		}
 		/**
 		 * <summary>
@@ -320,10 +394,10 @@ namespace Izhitsa {
 		 * </param>
 		 */
 		public static Signal OnSequence(string seqName, Action func){
-			if (!(seqEvents.ContainsKey(seqName)))
+			if (!seqEvents.ContainsKey(seqName))
 				seqEvents.Add(seqName, new Broadcast());
 			Broadcast bc = seqEvents[seqName];
-			return bc.Connect((args)=> func());
+			return bc.Connect(func);
 		}
 		/**
 		 * <summary>
@@ -347,14 +421,48 @@ namespace Izhitsa {
 		 * <summary>
 		 * Unbinds a key.
 		 * </summary>
-		 * <param name="keyName">The name of the key to unbind.</param>
+		 * <param name="action">The action to unbind from.
+		 * </param>
+		 * <param name="keyToUnbind">The KeyCode to unbind.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * </exception>
+		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+		 * </exception>
 		 */
-		public static void UnbindKey(string keyName){
-			if (!(boundKeys.ContainsKey(keyName))) return;
-			KeyCode code = boundKeys[keyName];
-			boundKeys.Remove(keyName);
-			KeyUnbound.Fire(keyName, code);
-			tryFire(keyUnboundEvents, keyName, code);
+		public static void UnbindKey(string action, KeyCode keyToUnbind){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundKeys.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
+			foreach(KeyCode key in boundKeys[action]){
+				if (key == keyToUnbind){
+					KeyUnbound.Fire(action, key);
+					tryFire(keyUnboundEvents, action, key);
+				}
+			}
+		}
+		/**
+		 * <summary>
+		 * Unbinds a key.
+		 * </summary>
+		 * <param name="action">The action to unbind from.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * </exception>
+		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+		 * </exception>
+		 */
+		public static void UnbindKeys(string action){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundKeys.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
+			foreach(KeyCode key in boundKeys[action]){
+				KeyUnbound.Fire(action, key);
+				tryFire(keyUnboundEvents, action, key);
+			}
+			boundKeys.Remove(action);
 		}
 		
 		/**
