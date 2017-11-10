@@ -13,7 +13,7 @@ namespace Izhitsa {
 			public InterruptFlags InterruptFlags { get; set; } = InterruptFlags.DifferentKeyDown;
 			/// <summary>The KeyCode to check. `<see cref="KeyCode.None"/>` by default.</summary>
 			public KeyCode Key { get; set; } = KeyCode.None;
-			/// <summary>The maximum scroll wheel delta before invalidity.</summary>
+			/// <summary>The maximum scroll wheel delta for the sequence to be valid.</summary>
 			/// `<see cref="float.MaxValue"/>` by default.</summary>
 			public float MaxDelta { get; set; } = float.MaxValue;
 			/// <summary>The maximum duration of the keypress before invalidity.
@@ -57,6 +57,10 @@ namespace Izhitsa {
 			 * </param>
 			 * <param name="maxMargin">The maximum time which can pass since the last element in
 			 * the sequence before invalidity.
+			 * </param>
+			 * <param name="minDelta">The minimum scroll wheel delta for the sequence to be valid.
+			 * </param>
+			 * <param name="maxDelta">The maximum scroll wheel delta for the sequence to be valid.
 			 * </param>
 			 */
 			public SequenceElement(KeyCode key, InputEventType type = InputEventType.KeyDown,

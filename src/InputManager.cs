@@ -71,8 +71,8 @@ namespace Izhitsa {
 		public static bool Shift
 			=> Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 		
-		/// <summary>A container which associates strings and KeyCodes.</summary>
 		
+		/// <summary>A container which associates strings and KeyCodes.</summary>
 		private static Dictionary<string, KeyCode> boundKeys { get; }
 			= new Dictionary<string, KeyCode>();
 		/// <summary>A container which associates strings and Sequences.</summary>
@@ -471,7 +471,7 @@ namespace Izhitsa {
 				string name = pair.Key;
 				Sequence seq = pair.Value;
 				if (seq == null) continue;
-				if (seq.MaxStep < 1) continue;
+				if (seq.MaxStep < 0) continue;
 
 				SequenceElement elem = seq.Current;
 				InterruptFlags flags = getInterruptFlags(ev, elem);
@@ -485,10 +485,12 @@ namespace Izhitsa {
 					float duration = ev.HeldDuration;
 					float delta = ev.Delta;
 					float last = Time.time - seq.lastStepTime;
+
 					bool inMargin = (seq.CurrentStep == 0 || (last >= elem.MinMargin && last <= elem.MaxMargin));
 					bool inDuration = (duration >= elem.MinDuration && duration <= elem.MaxDuration);
 					bool inDelta = (delta >= elem.MinDelta && delta <= elem.MaxDelta);
-					if (inDuration && inMargin){
+
+					if (inDuration && inMargin && inDelta){
 						if (ev.Type == elem.Type){
 							seq.lastStepTime = Time.time;
 							if (seq.CurrentStep++ == seq.MaxStep){
@@ -496,7 +498,7 @@ namespace Izhitsa {
 								bc?.Fire();
 							}
 						}
-					} else if (duration > elem.MaxDuration || !inDelta || !inMargin){
+					} else if (duration > elem.MaxDuration || !inMargin || !inDelta){
 						seq.Reset();
 					}
 				}
