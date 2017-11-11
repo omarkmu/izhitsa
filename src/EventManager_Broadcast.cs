@@ -34,7 +34,11 @@ namespace Izhitsa {
 			 */
 			public Broadcast(string name, bool unregistered = false){
 				Name = name;
-				if (!unregistered) register(this);
+				if (!unregistered){
+					if (GetBroadcast(name) != null)
+						throw new ArgumentException($"{name} is already a registered Broadcast.", "name");
+					register(this);
+				}
 			}
 			
 			/**

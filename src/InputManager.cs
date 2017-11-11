@@ -72,6 +72,8 @@ namespace Izhitsa {
 			=> Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 		
 
+		private static Dictionary<string, Axis> axes { get; }
+			= new Dictionary<string, Axis>();
 		/// <summary>A container which associates strings and KeyCodes.</summary>
 		private static Dictionary<string, List<KeyCode>> boundKeys { get; }
 			= new Dictionary<string, List<KeyCode>>();
@@ -271,23 +273,109 @@ namespace Izhitsa {
 		}
 		/**
 		 * <summary>
-		 * Returns true while any of the keys bound to `<paramref name="action"/>` are held down.
+		 * Associates an input axis with the name `<paramref name="name"/>`.
 		 * </summary>
-		 * <param name="action">The name of the key to check.
+		 * <param name="name">The name to bind to the Axis.
 		 * </param>
-		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * <param name="axis">The Axis object to bind.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
 		 * </exception>
-		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+		 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` already exists.
 		 * </exception>
 		 */
-		public static bool GetKey(string action){
-			if (action == null)
-				throw new ArgumentNullException("action");
-			if (!boundKeys.ContainsKey(action))
-				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
-			foreach(KeyCode key in boundKeys[action])
-				if (Input.GetKey(key)) return true;
-			return false;
+		public static Axis CreateAxis(string name, Axis axis){
+			if (name == null)
+				throw new ArgumentNullException(name);
+			if (axes.ContainsKey(name))
+				throw new ArgumentException($"An axis named \"{name}\" already exists.");
+			axes.Add(name, axis);
+			return axis;
+		}
+		/**
+		 * <summary>
+		 * Creates an input axis associated with the name `<paramref name="name"/>` using
+		 * a negative and positive KeyCode.
+		 * </summary>
+		 * <param name="name">The name to bind to the Axis.
+		 * </param>
+		 * <param name="negative">The negative KeyCode.
+		 * </param>
+		 * <param name="positive">The positive KeyCode.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
+		 * </exception>
+		 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` already exists.
+		 * </exception>
+		 */
+		public static Axis CreateAxis(string name, KeyCode negative, KeyCode positive){
+			if (name == null)
+				throw new ArgumentNullException(name);
+			if (axes.ContainsKey(name))
+				throw new ArgumentException($"An axis named \"{name}\" already exists.");
+			Axis axis = new Axis(negative, positive);
+			axes.Add(name, axis);
+			return axis;
+		}
+		/**
+		 * <summary>
+		 * Creates an input axis associated with the name `<paramref name="name"/>` using
+		 * a negative and positive KeyCode.
+		 * </summary>
+		 * <param name="name">The name to bind to the Axis.
+		 * </param>
+		 * <param name="negative">The list of negative KeyCodes.
+		 * </param>
+		 * <param name="positive">The list of positive KeyCodes.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
+		 * </exception>
+		 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` already exists.
+		 * </exception>
+		 */
+		public static Axis CreateAxis(string name, List<KeyCode> negatives, List<KeyCode> positives){
+			if (name == null)
+				throw new ArgumentNullException(name);
+			if (axes.ContainsKey(name))
+				throw new ArgumentException($"An axis named \"{name}\" already exists.");
+			Axis axis = new Axis(negatives, positives);
+			axes.Add(name, axis);
+			return axis;
+		}
+		/// <todo>Create GetAxis</todo>
+		// public static float GetAxis(string name)
+		/**
+		 * <summary>
+		 * Returns the Axis object associated with a name.
+		 * </summary>
+		 * <param name="name">The name associated with the Axis object.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
+		 * </exception>
+		 */
+		public static Axis GetAxisObject(string name){
+			if (name == null)
+				throw new ArgumentNullException(name);
+			return (axes.ContainsKey(name)) ? axes[name] : null;
+		}
+		/**
+		 * <summary>
+		 * Returns the raw input value from an Axis.
+		 * </summary>
+		 * <param name="name">The name of the Axis object to check.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
+		 * </exception>
+		 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` is not associated
+		 * with an Axis.
+		 * </exception>
+		 */
+		public static float GetAxisRaw(string name){
+			if (name == null)
+				throw new ArgumentNullException(name);
+			if (!axes.ContainsKey(name))
+				throw new ArgumentException($"Axis \"{name}\" has not been defined.");
+			return axes[name].GetRawValue();
 		}
 		/**
 		 * <summary>
@@ -305,6 +393,26 @@ namespace Izhitsa {
 			if (!boundKeys.ContainsKey(action))
 				return new List<KeyCode>();
 			return new List<KeyCode>(boundKeys[action]);
+		}
+		/**
+		 * <summary>
+		 * Returns true while any of the keys bound to `<paramref name="action"/>` are held down.
+		 * </summary>
+		 * <param name="action">The name of the key to check.
+		 * </param>
+		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+		 * </exception>
+		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+		 * </exception>
+		 */
+		public static bool GetKey(string action){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundKeys.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
+			foreach(KeyCode key in boundKeys[action])
+				if (Input.GetKey(key)) return true;
+			return false;
 		}
 		/**
 		 * <summary>
