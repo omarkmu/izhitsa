@@ -13,5 +13,6 @@ Download *Izhitsa.dll* from a [release](https://github.com/omarkmu/izhitsa/relea
 1. Download the Source Code from a [release](https://github.com/omarkmu/izhitsa/releases/latest).
 2. Extract the contents of the archive.
 3. Drag & drop the files from the *\src* directory of the extracted archive into your Assets folder in Unity.
+4. Add C#6 or C#7 support to your project by going [here](https://bitbucket.org/alexzzzz/unity-c-5.0-and-6.0-integration/src). C#6 is required as a minimum.
 
 \* This project uses [Semantic Versioning](http://semver.org/).
