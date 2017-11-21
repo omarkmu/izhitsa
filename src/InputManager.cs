@@ -94,6 +94,8 @@ namespace Izhitsa {
 		/// <summary>Contains KeyUnbound events.</summary>
 		private static Dictionary<string, Broadcast> keyUnboundEvents { get; }
 			= new Dictionary<string, Broadcast>();
+		/// <summary>If true, methods will not register/return key events.</summary>
+		private static bool Paused { get; set; } = false;
 		/// <summary>Primary SequenceBound event.</summary>
 		private static Broadcast seqBound { get; } = new Broadcast();
 		/// <summary>Contains KeyBound events.</summary>
@@ -377,6 +379,7 @@ namespace Izhitsa {
 				throw new ArgumentNullException(name);
 			if (!axes.ContainsKey(name))
 				throw new ArgumentException($"Axis \"{name}\" has not been defined.");
+			if (Paused) return 0;
 			return axes[name].GetRawValue();
 		}
 		/**
@@ -412,6 +415,7 @@ namespace Izhitsa {
 				throw new ArgumentNullException("action");
 			if (!boundKeys.ContainsKey(action))
 				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
+			if (Paused) return false;
 			foreach(KeyCode key in boundKeys[action])
 				if (Input.GetKey(key)) return true;
 			return false;
@@ -433,6 +437,7 @@ namespace Izhitsa {
 				throw new ArgumentNullException("action");
 			if (!boundKeys.ContainsKey(action))
 				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
+			if (Paused) return false;
 			foreach(KeyCode key in boundKeys[action])
 				if (Input.GetKeyDown(key)) return true;
 			return false;
@@ -454,6 +459,7 @@ namespace Izhitsa {
 				throw new ArgumentNullException("action");
 			if (!boundKeys.ContainsKey(action))
 				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
+			if (Paused) return false;
 			foreach(KeyCode key in boundKeys[action])
 				if (Input.GetKeyUp(key)) return true;
 			return false;
@@ -583,6 +589,7 @@ namespace Izhitsa {
 		 * <param name="ev">The `Event` to convert and handle.</param>
 		 */
 		internal static IEnumerator handleEvent(Event ev){
+			if (Paused) yield break;
 			bool valid = true;
 
 			int button = -1;

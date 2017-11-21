@@ -65,6 +65,7 @@ namespace Izhitsa {
 			 * </summary>
 			 */
 			public float GetRawValue(){
+				if (InputManager.Paused) return 0;
 				float val = 0;
 				foreach (KeyCode key in PositiveKeys){
 					if (Input.GetKey(key)){
