@@ -41,6 +41,8 @@ namespace Izhitsa {
 			get { return keyUnbound; }
 			set {}
 		}
+		/// <summary>If true, methods will not register/return key events.</summary>
+		public static bool Paused { get; set; } = false;
 		/**
 		 * <summary>
 		 * An event which fires when a sequence is bound.
@@ -94,8 +96,6 @@ namespace Izhitsa {
 		/// <summary>Contains KeyUnbound events.</summary>
 		private static Dictionary<string, Broadcast> keyUnboundEvents { get; }
 			= new Dictionary<string, Broadcast>();
-		/// <summary>If true, methods will not register/return key events.</summary>
-		private static bool Paused { get; set; } = false;
 		/// <summary>Primary SequenceBound event.</summary>
 		private static Broadcast seqBound { get; } = new Broadcast();
 		/// <summary>Contains KeyBound events.</summary>
