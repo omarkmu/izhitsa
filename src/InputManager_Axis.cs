@@ -64,8 +64,8 @@ namespace Izhitsa {
 			 * <summary>Returns the raw value of the Axis.
 			 * </summary>
 			 */
-			public float GetRawValue(){
-				if (InputManager.Paused) return 0;
+			public float GetRawValue(bool ignorePause = false){
+				if (InputManager.Paused && !ignorePause) return 0;
 				float val = 0;
 				foreach (KeyCode key in PositiveKeys){
 					if (Input.GetKey(key)){

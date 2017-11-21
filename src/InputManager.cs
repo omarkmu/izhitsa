@@ -368,18 +368,20 @@ namespace Izhitsa {
 		 * </summary>
 		 * <param name="name">The name of the Axis object to check.
 		 * </param>
+		 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+		 * </param>
 		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
 		 * </exception>
 		 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` is not associated
 		 * with an Axis.
 		 * </exception>
 		 */
-		public static float GetAxisRaw(string name){
+		public static float GetAxisRaw(string name, bool ignorePause = false){
 			if (name == null)
 				throw new ArgumentNullException(name);
 			if (!axes.ContainsKey(name))
 				throw new ArgumentException($"Axis \"{name}\" has not been defined.");
-			if (Paused) return 0;
+			if (Paused && !ignorePause) return 0;
 			return axes[name].GetRawValue();
 		}
 		/**
@@ -405,17 +407,19 @@ namespace Izhitsa {
 		 * </summary>
 		 * <param name="action">The name of the key to check.
 		 * </param>
+		 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+		 * </param>
 		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
 		 * </exception>
 		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
 		 * </exception>
 		 */
-		public static bool GetKey(string action){
+		public static bool GetKey(string action, bool ignorePause = false){
 			if (action == null)
 				throw new ArgumentNullException("action");
 			if (!boundKeys.ContainsKey(action))
 				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
-			if (Paused) return false;
+			if (Paused && !ignorePause) return false;
 			foreach(KeyCode key in boundKeys[action])
 				if (Input.GetKey(key)) return true;
 			return false;
@@ -426,18 +430,21 @@ namespace Izhitsa {
 		 * </summary>
 		 * <param name="action">The name of the key to check.
 		 * </param>
-		 * <returns>A boolean representing whether or not the key was pressed.</returns>
+		 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+		 * </param>
+		 * <returns>A boolean representing whether or not the key was pressed.
+		 * </returns>
 		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
 		 * </exception>
 		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
 		 * </exception>
 		 */
-		public static bool KeyDown(string action){
+		public static bool KeyDown(string action, bool ignorePause = false){
 			if (action == null)
 				throw new ArgumentNullException("action");
 			if (!boundKeys.ContainsKey(action))
 				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
-			if (Paused) return false;
+			if (Paused && !ignorePause) return false;
 			foreach(KeyCode key in boundKeys[action])
 				if (Input.GetKeyDown(key)) return true;
 			return false;
@@ -448,18 +455,21 @@ namespace Izhitsa {
 		 * </summary>
 		 * <param name="action">The name of the key to check.
 		 * </param>
-		 * <returns>A boolean representing whether or not the key was released.</returns>
+		 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+		 * </param>
+		 * <returns>A boolean representing whether or not the key was released.
+		 * </returns>
 		 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
 		 * </exception>
 		 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
 		 * </exception>
 		 */
-		public static bool KeyUp(string action){
+		public static bool KeyUp(string action, bool ignorePause = false){
 			if (action == null)
 				throw new ArgumentNullException("action");
 			if (!boundKeys.ContainsKey(action))
 				throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
-			if (Paused) return false;
+			if (Paused && !ignorePause) return false;
 			foreach(KeyCode key in boundKeys[action])
 				if (Input.GetKeyUp(key)) return true;
 			return false;
