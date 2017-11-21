@@ -9,7 +9,7 @@ namespace Izhitsa {
 	 * Izhitsa classes.
 	 * </summary>
 	 */
-	internal class Proxy : MonoBehaviour {
+	public class Proxy : MonoBehaviour {
 		/**
 		 * <summary>
 		 * Proxy object which allows access to MonoBehaviour
@@ -77,6 +77,12 @@ namespace Izhitsa {
 
 		/**
 		 * <summary>
+		 * Used to call the static constructor manually, if necessary.
+		 * </summary>
+		 */
+		public static void Activate(){}
+		/**
+		 * <summary>
 		 * Starts a coroutine using the proxy object.
 		 * </summary>
 		 * <param name="e">An IEnumerator to run.
@@ -92,7 +98,7 @@ namespace Izhitsa {
 			obj = null;
 			GameObject go = new GameObject("IzhitsaProxy");
 			go.AddComponent<Proxy>();
-			go.hideFlags = HideFlags.HideInHierarchy;
+			//go.hideFlags = HideFlags.HideInHierarchy;
 		}
 	}
 }

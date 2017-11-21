@@ -113,19 +113,19 @@ namespace Izhitsa {
 				if (propName == null) throw new ArgumentNullException("propName");
 				switch(propName){
 					case "MaxDuration":
-						foreach(SequenceElement elem in elements)
+						foreach (SequenceElement elem in elements)
 							elem.MaxDuration = value;
 						break;
 					case "MaxMargin":
-						foreach(SequenceElement elem in elements)
+						foreach (SequenceElement elem in elements)
 							elem.MaxMargin = value;
 						break;
 					case "MinDuration":
-						foreach(SequenceElement elem in elements)
+						foreach (SequenceElement elem in elements)
 							elem.MinDuration = value;
 						break;
 					case "MinMargin":
-						foreach(SequenceElement elem in elements)
+						foreach (SequenceElement elem in elements)
 							elem.MinMargin = value;
 						break;
 					default:
@@ -142,7 +142,7 @@ namespace Izhitsa {
 			 * <param name="value">The value to assign to the property.</param>
 			 */
 			public Sequence Set(InterruptFlags value){
-				foreach(SequenceElement elem in elements) elem.InterruptFlags = value;
+				foreach (SequenceElement elem in elements) elem.InterruptFlags = value;
 				return this;
 			}
 			/**
@@ -153,7 +153,7 @@ namespace Izhitsa {
 			 * <param name="value">The value to assign to the property.</param>
 			 */
 			public Sequence Set(KeyCode value){
-				foreach(SequenceElement elem in elements) elem.Key = value;
+				foreach (SequenceElement elem in elements) elem.Key = value;
 				return this;
 			}
 			/**
@@ -164,7 +164,7 @@ namespace Izhitsa {
 			 * <param name="value">The value to assign to the property.</param>
 			 */
 			public Sequence Set(InputEventType value){
-				foreach(SequenceElement elem in elements) elem.Type = value;
+				foreach (SequenceElement elem in elements) elem.Type = value;
 				return this;
 			}
 		}

@@ -159,7 +159,7 @@ namespace Izhitsa {
 		 * </param>
 		 * <param name="repl">The replacement color.
 		 * </param>
-		 * <param name="alphaMatch">If this is true, the alpha from the source
+		 * <param name="useSrcAlpha">If this is true, the alpha from the source
 		 * image is used.
 		 * </param>
 		 * <param name="ignoreAlpha">If this is true, the color is replaced even if
@@ -169,10 +169,11 @@ namespace Izhitsa {
 		 * is null.</exception>
 		 */
 		public static Texture2D ReplaceTextureColor(Texture2D src, Color toReplace, Color repl,
-			bool alphaMatch = false, bool ignoreAlpha = false
+			bool useSrcAlpha = false, bool ignoreAlpha = false
 		){
 			if (src == null) throw new ArgumentNullException("src");
 			Texture2D dest = CloneTexture(src);
+
 			Func<Color, Color, bool> equals = (color, otherColor)=>{
 				if (color.r != otherColor.r) return false;
 				if (color.g != otherColor.g) return false;
@@ -180,13 +181,11 @@ namespace Izhitsa {
 				return true;
 			};
 			Action<int, int, Color> perform = (x, y, srcColor)=>{
-				if (!alphaMatch){
-					if (srcColor == toReplace) dest.SetPixel(x, y, repl);
-					else if (ignoreAlpha && equals(srcColor, toReplace)) dest.SetPixel(x, y, repl);
-				} else {
-					if (equals(srcColor, toReplace)){
+				if (srcColor == toReplace || (ignoreAlpha && equals(srcColor, toReplace))){
+					if (useSrcAlpha)
 						dest.SetPixel(x, y, new Color(repl.r, repl.g, repl.b, srcColor.a));
-					}
+					else
+						dest.SetPixel(x, y, repl);
 				}
 			};
 

@@ -72,6 +72,7 @@ namespace Izhitsa {
 			=> Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
 		
 
+		/// <summary>A container which associates strings and Axes.</summary>
 		private static Dictionary<string, Axis> axes { get; }
 			= new Dictionary<string, Axis>();
 		/// <summary>A container which associates strings and KeyCodes.</summary>
@@ -140,7 +141,7 @@ namespace Izhitsa {
 			SameKeyDown = 16,
 			/// <summary>When the same key is held down.</summary>
 			SameKeyHeld = 32,
-			/// <summary>When the mouse wheel is scrolled.</summarY>
+			/// <summary>When the mouse wheel is scrolled.</summary>
 			Scroll = 64,
 			/// <summary>When any event occurs on a different key.</summary>
 			DifferentKey = DifferentKeyUp | DifferentKeyDown | DifferentKeyHeld,
@@ -162,6 +163,7 @@ namespace Izhitsa {
 			public KeyCode Key { get; internal set; }
 			/// <summary>The input type of this event.</summary>
 			public InputEventType Type { get; internal set; }
+
 
 			public InputEvent(int button, float heldDur, KeyCode key, InputEventType type, float delta){
 				Button = button;
