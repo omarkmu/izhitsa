@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using static Izhitsa.Utility;
+using static Izhitsa.Tasks.TaskUtils;
 
 namespace Izhitsa {
 	namespace EventManagement {
