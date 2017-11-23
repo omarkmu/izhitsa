@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace InputManagement {
 		/**
-		 * <summary>Class which facilitates input handling.</summary>
+		 * <summary>Facilitates input handling.</summary>
 		 */
 		public static partial class InputManager {
 			/// <summary>A boolean representing whether or not either alt key is down.</summary>
@@ -197,9 +197,9 @@ namespace Izhitsa {
 			 * </summary>
 			 * <param name="name">The name to bind to the Axis.
 			 * </param>
-			 * <param name="negative">The list of negative KeyCodes.
+			 * <param name="negatives">The list of negative KeyCodes.
 			 * </param>
-			 * <param name="positive">The list of positive KeyCodes.
+			 * <param name="positives">The list of positive KeyCodes.
 			 * </param>
 			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
 			 * </exception>
@@ -511,16 +511,16 @@ namespace Izhitsa {
 
 				InputEvent iEvent = new InputEvent(button, heldDuration, key, type, delta);
 
-				if (iEvent.Type == InputEventType.Scroll){
+				if (type == InputEventType.Scroll){
 					scrollEvent.Fire(iEvent);
-				} else if (iEvent.Button != -1){
+				} else if (button != -1){
 					mouseEvent.Fire(iEvent);
-					if (mouseEvents.ContainsKey(iEvent.Button))
-						mouseEvents[iEvent.Button].Fire(iEvent);
+					if (mouseEvents.ContainsKey(button))
+						mouseEvents[button].Fire(iEvent);
 				} else {
 					keyEvent.Fire(iEvent);
-					if (keyEvents.ContainsKey(iEvent.Key))
-						keyEvents[iEvent.Key].Fire(iEvent);
+					if (keyEvents.ContainsKey(key))
+						keyEvents[key].Fire(iEvent);
 				}
 				input.Fire(iEvent);
 
