@@ -1,6 +1,6 @@
+using static Izhitsa.InputManagement.InputManager;
 using System;
 using UnityEngine;
-using static Izhitsa.InputManagement.InputManager;
 
 namespace Izhitsa {
 	namespace InputManagement {

@@ -1,8 +1,7 @@
-﻿using System;
-using System.Collections;
+﻿using Izhitsa.Events;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
-using Izhitsa.Events;
 
 namespace Izhitsa {
 	namespace InputManagement {
@@ -38,72 +37,6 @@ namespace Izhitsa {
 				= new Dictionary<KeyCode, float>();
 			///
 
-			
-			/// <summary>Input event types for use in InputEvents and SequenceElements.</summary>
-			public enum InputEventType {
-				/// <summary>Default value.</summary>
-				None,
-				/// <summary>A key was pressed down.</summary>
-				KeyDown,
-				/// <summary>A key was released.</summary>
-				KeyUp,
-				/// <summary>Key is being held down.</summary>
-				KeyHeld,
-				/// <summary>The scroll wheel was scrolled.</summary>
-				Scroll,
-				/// <summary>Any key event occurred.</summary>
-				Any
-			}
-			/// <summary>Flags which represent when a sequence should be interrupted.</summary>
-			[Flags]
-			public enum InterruptFlags {
-				/// <summary>Never interrupt.</summary>
-				None = 0,
-				/// <summary>When a different key is released.</summary>
-				DifferentKeyUp = 1,
-				/// <summary>When a different key is pressed.</summary>
-				DifferentKeyDown = 2,
-				/// <summary>When a different key is held down.</summary>
-				DifferentKeyHeld = 4,
-				/// <summary>When the same key is released.</summary>
-				SameKeyUp = 8,
-				/// <summary>When the same key is pressed.</summary>
-				SameKeyDown = 16,
-				/// <summary>When the same key is held down.</summary>
-				SameKeyHeld = 32,
-				/// <summary>When the mouse wheel is scrolled.</summary>
-				Scroll = 64,
-				/// <summary>When any event occurs on a different key.</summary>
-				DifferentKey = DifferentKeyUp | DifferentKeyDown | DifferentKeyHeld,
-				/// <summary>When any event occurs on the same key.</summary>
-				SameKey = SameKeyUp | SameKeyDown | SameKeyHeld,
-				/// <summary>When any event occurs.</summary>
-				Any = DifferentKey | SameKey | Scroll
-			}
-
-			/// <summary>Contains information about input events.</summary>
-			public struct InputEvent {
-				/// <summary>The mouse button this event occurred on. If it equals -1, this isn't a mouse event.</summary>
-				public int Button { get; internal set; }
-				/// <summary>The mouse scroll wheel delta.</summary>
-				public float Delta { get; internal set; }
-				/// <summary>The time, in seconds, that the key has/had been held down.</summary>
-				public float HeldDuration { get; internal set; }
-				/// <summary>The key related to this event.</summary>
-				public KeyCode Key { get; internal set; }
-				/// <summary>The input type of this event.</summary>
-				public InputEventType Type { get; internal set; }
-
-
-				public InputEvent(int button, float heldDur, KeyCode key, InputEventType type, float delta){
-					Button = button;
-					HeldDuration = heldDur;
-					Key = key;
-					Type = type;
-					Delta = delta;
-				}
-			}
-
 
 			/**
 			 * <summary>
@@ -126,18 +59,21 @@ namespace Izhitsa {
 					List<KeyCode> keyList = boundKeys[action];
 					if (clear){
 						for (int i = 0; i < keyList.Count; i++){
-							KeyUnbound.Fire(action, keyList[i]);
-							tryFire(keyUnboundEvents, action, keyList[i]);
+							keyUnbound.Fire(action, keyList[i]);
+							if (keyUnboundEvents.ContainsKey(action))
+								keyUnboundEvents[action].Fire(keyList[i]);
 						}
 						keyList = boundKeys[action] = new List<KeyCode>();
 					}
 					keyList.Add(keyCode);
-					KeyBound.Fire(action, keyCode);
-					tryFire(keyBoundEvents, action, keyCode);
+					keyBound.Fire(action, keyCode);
+					if (keyBoundEvents.ContainsKey(action))
+						keyBoundEvents[action].Fire(keyCode);
 				} else {
 					boundKeys.Add(action, new List<KeyCode>(){ keyCode });
-					KeyBound.Fire(action, keyCode);
-					tryFire(keyBoundEvents, action, keyCode);
+					keyBound.Fire(action, keyCode);
+					if (keyBoundEvents.ContainsKey(action))
+						keyBoundEvents[action].Fire(keyCode);
 				}
 			}
 			/**
@@ -167,15 +103,20 @@ namespace Izhitsa {
 			 */
 			public static Sequence BindSequence(string seqName, Sequence seq){
 				if (boundSeqs.ContainsKey(seqName)){
-					SequenceUnbound.Fire(seqName, boundSeqs[seqName]);
-					tryFire(seqUnboundEvents, seqName, boundSeqs[seqName]);
+					seqUnbound.Fire(seqName, boundSeqs[seqName]);
+					if (seqUnboundEvents.ContainsKey(seqName))
+						seqUnboundEvents[seqName].Fire(boundSeqs[seqName]);
+					
 					boundSeqs[seqName] = seq;
-					SequenceBound.Fire(seqName, seq);
-					tryFire(seqUnboundEvents, seqName, seq);
+
+					seqBound.Fire(seqName, seq);
+					if (seqBoundEvents.ContainsKey(seqName))
+						seqBoundEvents[seqName].Fire(seq);
 				} else {
 					boundSeqs.Add(seqName, seq);
-					SequenceBound.Fire(seqName, seq);
-					tryFire(seqUnboundEvents, seqName, seq);
+					seqBound.Fire(seqName, seq);
+					if (seqBoundEvents.ContainsKey(seqName))
+						seqBoundEvents[seqName].Fire(seq);
 				}
 				return seq;
 			}
@@ -457,11 +398,11 @@ namespace Izhitsa {
 					throw new ArgumentNullException("action");
 				if (!boundKeys.ContainsKey(action))
 					throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
-				foreach (KeyCode key in boundKeys[action]){
-					if (key == keyToUnbind){
-						KeyUnbound.Fire(action, key);
-						tryFire(keyUnboundEvents, action, key);
-					}
+				while (boundKeys[action].Contains(keyToUnbind)){
+					boundKeys[action].Remove(keyToUnbind);
+					keyUnbound.Fire(action, keyToUnbind);
+					if (keyUnboundEvents.ContainsKey(action))
+						keyUnboundEvents[action].Fire(keyToUnbind);
 				}
 			}
 			/**
@@ -481,8 +422,9 @@ namespace Izhitsa {
 				if (!boundKeys.ContainsKey(action))
 					throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
 				foreach (KeyCode key in boundKeys[action]){
-					KeyUnbound.Fire(action, key);
-					tryFire(keyUnboundEvents, action, key);
+					keyUnbound.Fire(action, key);
+					if (keyUnboundEvents.ContainsKey(action))
+						keyUnboundEvents[action].Fire(key);
 				}
 				boundKeys.Remove(action);
 			}
@@ -490,7 +432,8 @@ namespace Izhitsa {
 			/**
 			 * <summary>
 			 * Handles events, converts them into `InputEvent`s,
-			 * and registers them for `Sequence` checking.
+			 * and registers them for `Sequence` checking and other input-related
+			 * jobs.
 			 * </summary>
 			 * <param name="ev">The `Event` to convert and handle.</param>
 			 */
@@ -530,6 +473,7 @@ namespace Izhitsa {
 						key = (KeyCode)(323 + button);
 						type = InputEventType.KeyDown;
 						if (button > 6){
+							key = KeyCode.None;
 							valid = false;
 							break;
 						}
@@ -549,6 +493,7 @@ namespace Izhitsa {
 						key = (KeyCode)(323 + ev.button);
 						type = InputEventType.KeyUp;
 						if (ev.button > 6){
+							key = KeyCode.None;
 							valid = false;
 							break;
 						}
@@ -565,11 +510,20 @@ namespace Izhitsa {
 				}
 
 				InputEvent iEvent = new InputEvent(button, heldDuration, key, type, delta);
-				tryFire(keyEvents, iEvent.Key, iEvent);
-				if (iEvent.Button != -1){
-					tryFire(mouseEvents, iEvent.Button, iEvent);
+
+				if (iEvent.Type == InputEventType.Scroll){
+					scrollEvent.Fire(iEvent);
+				} else if (iEvent.Button != -1){
+					mouseEvent.Fire(iEvent);
+					if (mouseEvents.ContainsKey(iEvent.Button))
+						mouseEvents[iEvent.Button].Fire(iEvent);
+				} else {
+					keyEvent.Fire(iEvent);
+					if (keyEvents.ContainsKey(iEvent.Key))
+						keyEvents[iEvent.Key].Fire(iEvent);
 				}
-				KeyEvent.Fire(iEvent);
+				input.Fire(iEvent);
+
 				if (valid) registerEvent(iEvent);
 			}
 
@@ -640,10 +594,6 @@ namespace Izhitsa {
 						}
 					}
 				}
-			}
-
-			private static void tryFire<T>(Dictionary<T, Broadcast> dict, T key, params object[] args){
-				if (dict.ContainsKey(key)) dict[key].Fire(args);
 			}
 		}
 	}

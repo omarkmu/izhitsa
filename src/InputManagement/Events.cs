@@ -1,4 +1,5 @@
 using Izhitsa.Events;
+using Izhitsa.Events.Generic;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -8,87 +9,60 @@ namespace Izhitsa {
 		public static partial class InputManager {
 			/**
 			 * <summary>
-			 * An event which fires when a key is bound.
+			 * An event which fires for any type of input.
 			 * </summary>
-			 * <para>arg0: `{string}` The name of the key that was bound.
-			 * </para>
-			 * <para>arg1: `{KeyCode}` The KeyCode which was bound.
-			 * </para>
+			 * <param name="param0">The event that occurred.
+			 * </param>
 			 */
-			public static Broadcast KeyBound => keyBound;
-			/**
-			 * <summary>
-			 * An event which fires when a key is pressed.
-			 * </summary>
-			 * <para>arg0: `{InputEvent}` The event that occurred.
-			 * </para>
-			 */
-			public static Broadcast KeyEvent => keyEvent;
-			/**
-			 * <summary>
-			 * An event which fires when a key is unbound.
-			 * </summary>
-			 * <para>arg0: `{string}` The name of the key that was unbound.
-			 * </para>
-			 * <para>arg1: `{KeyCode}` The previous KeyCode value of the binding.
-			 * </para>
-			 */
-			public static Broadcast KeyUnbound => keyUnbound;
-			/**
-			 * <summary>
-			 * An event which fires when a sequence is bound.
-			 * </summary>
-			 * <para>arg0: `{string}` The name of the key that was bound.
-			 * </para>
-			 * <para>arg1: `{Sequence}` The Sequence which was bound.
-			 * </para>
-			 */
-			public static Broadcast SequenceBound => seqBound;
-			/**
-			 * <summary>
-			 * An event which fires when a sequence is unbound.
-			 * </summary>
-			 * <para>arg0: `{string}` The name of the sequence that was unbound.
-			 * </para>
-			 * <para>arg1: `{Sequence}` The previous Sequence of the binding.
-			 * </para>
-			 */
-			public static Broadcast SequenceUnbound => seqUnbound;
-
+			private static Broadcast<InputEvent> input { get; } = new Broadcast<InputEvent>();
 			/// <summary>Primary KeyBound event.</summary>
-			private static Broadcast keyBound = new Broadcast();
+			private static Broadcast<string, KeyCode> keyBound { get; } = new Broadcast<string, KeyCode>();
 			/// <summary>Contains KeyBound events.</summary>
-			private static Dictionary<string, Broadcast> keyBoundEvents { get; }
-				= new Dictionary<string, Broadcast>();
+			private static Dictionary<string, Broadcast<KeyCode>> keyBoundEvents { get; }
+				= new Dictionary<string, Broadcast<KeyCode>>();
 			/// <summary>Primary Key event.</summary>
-			private static Broadcast keyEvent { get; } = new Broadcast();
-			/// <summary>Contains KeyPressed events.</summary>
-			private static Dictionary<KeyCode, Broadcast> keyEvents { get; }
-				= new Dictionary<KeyCode, Broadcast>();
+			private static Broadcast<InputEvent> keyEvent { get; } = new Broadcast<InputEvent>();
+			/// <summary>Contains Key events.</summary>
+			private static Dictionary<KeyCode, Broadcast<InputEvent>> keyEvents { get; }
+				= new Dictionary<KeyCode, Broadcast<InputEvent>>();
 			/// <summary>Primary KeyUnbound event.</summary>
-			private static Broadcast keyUnbound = new Broadcast();
+			private static Broadcast<string, KeyCode> keyUnbound { get; } = new Broadcast<string, KeyCode>();
 			/// <summary>Contains KeyUnbound events.</summary>
-			private static Dictionary<string, Broadcast> keyUnboundEvents { get; }
-				= new Dictionary<string, Broadcast>();
+			private static Dictionary<string, Broadcast<KeyCode>> keyUnboundEvents { get; }
+				= new Dictionary<string, Broadcast<KeyCode>>();
+			/// <summary>Primary mouse event.</summary>
+			private static Broadcast<InputEvent> mouseEvent { get; }
+				= new Broadcast<InputEvent>();
 			/// <summary>Contains mouse events.</summary>
-			private static Dictionary<int, Broadcast> mouseEvents { get; }
-				= new Dictionary<int, Broadcast>();
+			private static Dictionary<int, Broadcast<InputEvent>> mouseEvents { get; }
+				= new Dictionary<int, Broadcast<InputEvent>>();
+			private static Broadcast<InputEvent> scrollEvent { get; }
+				= new Broadcast<InputEvent>();
 			/// <summary>Primary SequenceBound event.</summary>
-			private static Broadcast seqBound { get; } = new Broadcast();
-			/// <summary>Contains KeyBound events.</summary>
-			private static Dictionary<string, Broadcast> seqBoundEvents { get; }
-				= new Dictionary<string, Broadcast>();
+			private static Broadcast<string, Sequence> seqBound { get; } = new Broadcast<string, Sequence>();
+			/// <summary>Contains Sequence Bound events.</summary>
+			private static Dictionary<string, Broadcast<Sequence>> seqBoundEvents { get; }
+				= new Dictionary<string, Broadcast<Sequence>>();
 			/// <summary>Contains sequence completion events.</summary>
 			private static Dictionary<string, Broadcast> seqEvents { get; }
 				= new Dictionary<string, Broadcast>();
 			/// <summary>Primary SequenceUnbound event.</summary>
-			private static Broadcast seqUnbound { get; } = new Broadcast();
+			private static Broadcast<string, Sequence> seqUnbound { get; } = new Broadcast<string, Sequence>();
 			/// <summary>Contains SequenceUnbound events.</summary>
-			private static Dictionary<string, Broadcast> seqUnboundEvents { get; }
-				= new Dictionary<string, Broadcast>();
+			private static Dictionary<string, Broadcast<Sequence>> seqUnboundEvents { get; }
+				= new Dictionary<string, Broadcast<Sequence>>();
 			///
 
 
+			/**
+			 * <summary>
+			 * Connects `func` to an event which fires on any input.
+			 * </summary>
+			 * <param name="param0">An InputEvent representing the input.
+			 * </param>
+			 */
+			public static Signal<InputEvent> OnInput(Action<InputEvent> func)
+				=> input.Connect(func);
 			/**
 			 * <summary>
 			 * Connects a function to a Broadcast which fires when `<paramref name="action"/>` is bound
@@ -98,13 +72,26 @@ namespace Izhitsa {
 			 * </param>
 			 * <param name="func">The function to connect.
 			 * </param>
+			 * <param name="param0">The KeyCode which was bound.
+			 * </param>
 			 */
-			public static Signal OnKeyBound(string action, Action func){
+			public static Signal<KeyCode> OnKeyBound(string action, Action<KeyCode> func){
 				if (!keyBoundEvents.ContainsKey(action))
-					keyBoundEvents.Add(action, new Broadcast());
-				Broadcast bc = keyBoundEvents[action];
+					keyBoundEvents.Add(action, new Broadcast<KeyCode>());
+				Broadcast<KeyCode> bc = keyBoundEvents[action];
 				return bc.Connect(func);
 			}
+			/**
+			 * <summary>
+			 * Connects `func` to an event which fires when a key is bound.
+			 * </summary>
+			 * <param name="param0">The name of the key that was bound.
+			 * </param>
+			 * <param name="param1">The KeyCode which was bound.
+			 * </param>
+			 */
+			public static Signal<string, KeyCode> OnKeyBound(Action<string, KeyCode> func)
+				=> keyBound.Connect(func);
 			/**
 			 * <summary>
 			 * Connects a function to a Broadcast which fires when `<paramref name="key"/>` is pressed,
@@ -114,13 +101,24 @@ namespace Izhitsa {
 			 * </param>
 			 * <param name="func">The function to connect.
 			 * </param>
+			 * <param name="param0">An InputEvent representing the input.
+			 * </param>
 			 */
-			public static Signal OnKeyEvent(KeyCode key, Action<InputEvent> func){
+			public static Signal<InputEvent> OnKeyEvent(KeyCode key, Action<InputEvent> func){
 				if (!keyEvents.ContainsKey(key))
-					keyEvents.Add(key, new Broadcast());
-				Broadcast bc = keyEvents[key];
-				return bc.Connect((args) => func((InputEvent)args[0]));
+					keyEvents.Add(key, new Broadcast<InputEvent>());
+				Broadcast<InputEvent> bc = keyEvents[key];
+				return bc.Connect(func);
 			}
+			/**
+			 * <summary>
+			 * Connects `func` to an event which fires on any key input.
+			 * </summary>
+			 * <param name="param0">An InputEvent representing the input.
+			 * </param>
+			 */
+			public static Signal<InputEvent> OnKeyEvent(Action<InputEvent> func)
+				=> keyEvent.Connect(func);
 			/**
 			 * <summary>
 			 * Connects a function to a Broadcast which fires when `<paramref name="action"/>` is bound
@@ -131,13 +129,30 @@ namespace Izhitsa {
 			 * <param name="func">
 			 * The function to connect.
 			 * </param>
+			 * <param name="param0">The KeyCode that was bound previously.
+			 * </param>
 			 */
-			public static Signal OnKeyUnbound(string action, Action func){
+			public static Signal<KeyCode> OnKeyUnbound(string action, Action<KeyCode> func){
 				if (!keyUnboundEvents.ContainsKey(action))
-					keyUnboundEvents.Add(action, new Broadcast());
-				Broadcast bc = keyUnboundEvents[action];
+					keyUnboundEvents.Add(action, new Broadcast<KeyCode>());
+				Broadcast<KeyCode> bc = keyUnboundEvents[action];
 				return bc.Connect(func);
 			}
+			/**
+			 * <summary>
+			 * Connects a function to a Broadcast which fires when an action is bound
+			 * to a key, and returns a Signal.
+			 * </summary>
+			 * <param name="func">
+			 * The function to connect.
+			 * </param>
+			 * <param name="param0">The name of the key action which was unbound.
+			 * </param>
+			 * <param name="param1">The KeyCode that was bound previously.
+			 * </param>
+			 */
+			public static Signal<string, KeyCode> OnKeyUnbound(Action<string, KeyCode> func)
+				=> keyUnbound.Connect(func);
 			/**
 			 * <summary>
 			 * Connects a function to a Broadcast which fires when mouse button
@@ -148,13 +163,41 @@ namespace Izhitsa {
 			 * <param name="func">
 			 * The function to connect.
 			 * </param>
+			 * <param name="param0">An InputEvent representing the input.
+			 * </param>
 			 */
-			public static Signal OnMouse(int button, Action<InputEvent> func){
+			public static Signal<InputEvent> OnMouse(int button, Action<InputEvent> func){
 				if (!mouseEvents.ContainsKey(button))
-					mouseEvents.Add(button, new Broadcast());
-				Broadcast bc = mouseEvents[button];
-				return bc.Connect((args) => func((InputEvent)args[0]));
+					mouseEvents.Add(button, new Broadcast<InputEvent>());
+				Broadcast<InputEvent> bc = mouseEvents[button];
+				return bc.Connect(func);
 			}
+			/**
+			 * <summary>
+			 * Connects a function to a Broadcast which fires when a mouse button
+			 * is interacted with, and returns a Signal.
+			 * </summary>
+			 * <param name="func">
+			 * The function to connect.
+			 * </param>
+			 * <param name="param0">An InputEvent representing the input.
+			 * </param>
+			 */
+			public static Signal<InputEvent> OnMouse(Action<InputEvent> func)
+				=> mouseEvent.Connect(func);
+			/**
+			 * <summary>
+			 * Connects a function to a Broadcast which fires when the mouse scroll wheel
+			 * is interacted with, and returns a Signal.
+			 * </summary>
+			 * <param name="func">
+			 * The function to connect.
+			 * </param>
+			 * <param name="param0">An InputEvent representing the input.
+			 * </param>
+			 */
+			public static Signal<InputEvent> OnScroll(Action<InputEvent> func)
+				=> scrollEvent.Connect(func);
 			/**
 			 * <summary>
 			 * Connects a function to a Broadcast which fires when a `Sequence`
@@ -176,21 +219,59 @@ namespace Izhitsa {
 			/**
 			 * <summary>
 			 * Connects a function to a Broadcast which fires when a `Sequence`
-			 * bound to the name `seqName` is completed successfully, and returns
-			 * a `Signal`.
+			 * is bound to the name `seqName`, and returns a `Signal`.
 			 * </summary>
-			 * <param name="keyName">The name of the sequence.
+			 * <param name="seqName">The name to listen for.
 			 * </param>
 			 * <param name="func">
 			 * The function to connect.
 			 * </param>
 			 */
-			public static Signal OnSequence(string seqName, Action<object[]> func){
-				if (!(seqEvents.ContainsKey(seqName)))
-					seqEvents.Add(seqName, new Broadcast());
-				Broadcast bc = seqEvents[seqName];
-				return bc.Connect((args)=> func(args));
+			public static Signal<Sequence> OnSequenceBound(string seqName, Action<Sequence> func){
+				if (!seqBoundEvents.ContainsKey(seqName))
+					seqBoundEvents.Add(seqName, new Broadcast<Sequence>());
+				Broadcast<Sequence> bc = seqBoundEvents[seqName];
+				return bc.Connect(func);
 			}
+			/**
+			 * <summary>
+			 * Connects a function to a Broadcast which fires when a `Sequence`
+			 * is bound, and returns a `Signal`.
+			 * </summary>
+			 * <param name="func">
+			 * The function to connect.
+			 * </param>
+			 */
+			public static Signal<string, Sequence> OnSequenceBound(Action<string, Sequence> func)
+				=> seqBound.Connect(func);
+			/**
+			 * <summary>
+			 * Connects a function to a Broadcast which fires when a `Sequence`
+			 * is unbound from the name `seqName`, and returns a `Signal`.
+			 * </summary>
+			 * <param name="seqName">The name to listen for.
+			 * </param>
+			 * <param name="func">
+			 * The function to connect.
+			 * </param>
+			 */
+			public static Signal<Sequence> OnSequenceUnbound(string seqName, Action<Sequence> func){
+				if (!seqUnboundEvents.ContainsKey(seqName))
+					seqUnboundEvents.Add(seqName, new Broadcast<Sequence>());
+				Broadcast<Sequence> bc = seqUnboundEvents[seqName];
+				return bc.Connect(func);
+			}
+			/**
+			 * <summary>
+			 * Connects a function to a Broadcast which fires when a `Sequence`
+			 * is unbound, and returns a `Signal`.
+			 * </summary>
+			 * <param name="func">
+			 * The function to connect.
+			 * </param>
+			 */
+			public static Signal<string, Sequence> OnSequenceUnbound(Action<string, Sequence> func)
+				=> seqUnbound.Connect(func);
 		}
 	}
 }
