@@ -4,7 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 namespace Izhitsa {
-	namespace EventManagement {
+	namespace Events {
 		/**
 		 * <summary>Class which represents an event.</summary>
 		 */

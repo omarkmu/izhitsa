@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 
 namespace Izhitsa {
-	namespace EventManagement {
+	namespace Events {
 		namespace Generic {
 			/**
 			 * <summary>Generic form of `<see cref="Broadcast"/>`.</summary>

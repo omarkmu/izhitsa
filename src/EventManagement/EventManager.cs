@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using Izhitsa.EventManagement.Generic;
+using Izhitsa.Events.Generic;
 using UnityEngine;
 
 namespace Izhitsa {
-	namespace EventManagement {
+	namespace Events {
 		/**
 		 * <summary>Class which facilitates dynamic event creation and usage.</summary>
 		 */
@@ -12,6 +12,7 @@ namespace Izhitsa {
 			/// <summary>A container for all broadcasts.</summary>
 			private static Dictionary<string, object> broadcasts = new Dictionary<string, object>();
 
+			/// <summary>Returns true if a Broadcast with the name `<paramref name="name"/>` exists.</summary>
 			public static bool BroadcastExists(string name) => broadcasts.ContainsKey(name);
 
 			/**
@@ -93,9 +94,8 @@ namespace Izhitsa {
 			 */
 			public static void Fire(string name, params object[] args){
 				Broadcast bc = GetBroadcast(name);
-				if (bc != null){
+				if (bc != null)
 					bc.Fire(args);
-				}
 			}
 			/**
 			 * <summary>
@@ -106,9 +106,8 @@ namespace Izhitsa {
 			 */
 			public static void Fire<T>(string name, T arg){
 				Broadcast<T> bc = GetBroadcast<T>(name);
-				if (bc != null){
+				if (bc != null)
 					bc.Fire(arg);
-				}
 			}
 			/**
 			 * <summary>
@@ -119,9 +118,8 @@ namespace Izhitsa {
 			 */
 			public static void Fire<T, T2>(string name, T arg0, T2 arg1){
 				Broadcast<T, T2> bc = GetBroadcast<T, T2>(name);
-				if (bc != null){
+				if (bc != null)
 					bc.Fire(arg0, arg1);
-				}
 			}
 			/**
 			 * <summary>
@@ -132,9 +130,8 @@ namespace Izhitsa {
 			 */
 			public static void Fire<T, T2, T3>(string name, T arg0, T2 arg1, T3 arg2){
 				Broadcast<T, T2, T3> bc = GetBroadcast<T, T2, T3>(name);
-				if (bc != null){
+				if (bc != null)
 					bc.Fire(arg0, arg1, arg2);
-				}
 			}
 			/**
 			 * <summary>
@@ -145,9 +142,8 @@ namespace Izhitsa {
 			 */
 			public static void Fire<T, T2, T3, T4>(string name, T arg0, T2 arg1, T3 arg2, T4 arg3){
 				Broadcast<T, T2, T3, T4> bc = GetBroadcast<T, T2, T3, T4>(name);
-				if (bc != null){
+				if (bc != null)
 					bc.Fire(arg0, arg1, arg2, arg3);
-				}
 			}
 
 			/**
@@ -201,6 +197,15 @@ namespace Izhitsa {
 				}
 				return null;
 			}
+			/**
+			 * <summary>
+			 * Returns the Broadcast with the name
+			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 * is the wrong type.
+			 * </summary>
+			 * <param name="name">The name of the Broadcast to get.
+			 * </param>
+			 */
 			public static Broadcast<T, T2, T3> GetBroadcast<T, T2, T3>(string name){
 				if (broadcasts.ContainsKey(name)){
 					object bc = broadcasts[name];

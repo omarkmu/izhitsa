@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using Izhitsa.EventManagement;
+using Izhitsa.Events;
 
 namespace Izhitsa {
 	namespace Tasks {

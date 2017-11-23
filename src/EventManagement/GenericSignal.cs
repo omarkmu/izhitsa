@@ -1,7 +1,7 @@
 using System;
 
 namespace Izhitsa {
-	namespace EventManagement {
+	namespace Events {
 		namespace Generic {
 			/**
 			 * <summary>

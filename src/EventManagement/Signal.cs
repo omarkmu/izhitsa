@@ -1,10 +1,10 @@
 using System;
 
 namespace Izhitsa {
-	namespace EventManagement {
+	namespace Events {
 		/**
 		 * <summary>
-		 * Class which contains a callback for use in `<see cref="EventManagement.Broadcast"/>`.
+		 * Class which contains a callback for use in `<see cref="Events.Broadcast"/>`.
 		 * </summary>
 		 * <seealso cref="EventManager.Broadcast"/>
 		 */

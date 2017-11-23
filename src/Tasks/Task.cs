@@ -1,7 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using Izhitsa.EventManagement;
+using Izhitsa.Events;
 using static Izhitsa.Tasks.TaskUtils;
 
 namespace Izhitsa {
