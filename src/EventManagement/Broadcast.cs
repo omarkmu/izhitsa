@@ -54,12 +54,12 @@ namespace Izhitsa {
 				}
 				/**
 				 * <summary>
-				 * Connects a `<see cref="Handler"/>`, and returns a `<see cref="Signal"/>`.
+				 * Connects an Action and returns a `<see cref="Signal"/>`.
 				 * </summary>
-				 * <param name="func">The `<see cref="Handler"/>` to connect.
+				 * <param name="func">The Action to connect.
 				 * </param>
 				 */
-				public Signal Connect(Handler func){
+				public Signal Connect(Action<object[]> func){
 					Signal s = new Signal(func, this);
 					signals.Add(s);
 					return s;
@@ -75,27 +75,27 @@ namespace Izhitsa {
 				
 				/**
 				 * <summary>
-				 * Connects a `<see cref="Handler"/>` to the Broadcast.
+				 * Connects an Action to the Broadcast.
 				 * </summary>
 				 * <param name="bc">The Broadcast.
 				 * </param>
-				 * <param name="func">The Handler to connect.
+				 * <param name="func">The Action to connect.
 				 * </param>
 				 */
-				public static Broadcast operator +(Broadcast bc, Handler func){
+				public static Broadcast operator +(Broadcast bc, Action<object[]> func){
 					bc.Connect(func);
 					return bc;
 				}
 				/**
 				 * <summary>
-				 * Disconnects a Handler from the Broadcast.
+				 * Disconnects an Action from the Broadcast.
 				 * </summary>
 				 * <param name="bc">The Broadcast.
 				 * </param>
-				 * <param name="func">The Handler to disconnect.
+				 * <param name="func">The Action to disconnect.
 				 * </param>
 				 */
-				public static Broadcast operator -(Broadcast bc, Handler func){
+				public static Broadcast operator -(Broadcast bc, Action<object[]> func){
 					List<Signal> toRemove = new List<Signal>();
 					foreach (Signal s in bc.signals)
 						if (s.callback == func) toRemove.Add(s);

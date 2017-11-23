@@ -10,9 +10,6 @@ namespace Izhitsa {
 			/// <summary>A container for all broadcasts.</summary>
 			private static Dictionary<string, Broadcast> broadcasts = new Dictionary<string, Broadcast>();
 			
-			
-			/// <summary>Delegate for handling event connections.</summary>
-			public delegate void Handler(object[] args);
 
 
 			/**

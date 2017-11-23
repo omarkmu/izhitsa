@@ -31,7 +31,7 @@ namespace Izhitsa {
 				/// <summary>Is this signal disconnected? (Read Only)</summary>
 				public bool Disconnected { get; private set; }
 				/// <summary>The signal's callback function.</summary>
-				internal Handler callback { get; set; }
+				internal Action<object[]> callback { get; set; }
 
 				/// <summary>The `<see cref="EventManager.Broadcast"/>` this Signal is connected to.</summary>
 				private Broadcast broadcast;
@@ -46,7 +46,7 @@ namespace Izhitsa {
 				 * <param name="bc">The `<see cref="EventManager.Broadcast"/>`
 				 * that the Signal is being added to.</param>
 				 */
-				internal Signal(Handler func, Broadcast bc){
+				internal Signal(Action<object[]> func, Broadcast bc){
 					callback = func;
 					broadcast = bc;
 				}
