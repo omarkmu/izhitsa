@@ -1,7 +1,7 @@
 namespace Izhitsa {
 	namespace InputManagement {
 		public static partial class InputManager {
-			/// <summary>Input event types for use in InputEvents and SequenceElements.</summary>
+			/// <summary>Represents a type of input event.</summary>
 			public enum InputEventType {
 				/// <summary>Default value.</summary>
 				None,

@@ -12,6 +12,7 @@ namespace Izhitsa {
 			/// <summary>The name of the Broadcast. (Read Only)</summary>
 			public string Name { get; private set; }
 
+
 			/// <summary>The connected signals to this Broadcast.</summary>
 			private List<Signal> signals = new List<Signal>();
 
@@ -41,6 +42,8 @@ namespace Izhitsa {
 					EventManager.register(this);
 				}
 			}
+			
+
 			
 			/**
 			 * <summary>
@@ -73,7 +76,6 @@ namespace Izhitsa {
 			 */
 			public Signal Connect(Action func) => Connect((args) => func());
 			
-
 			/**
 			 * <summary>
 			 * Disconnects a `<see cref="Signal"/>`.

@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace InputManagement {
 		/**
-		 * <summary>Class which allows for axis creation and remapping at runtime.</summary>
+		 * <summary>Represents an input axis.</summary>
 		 */
 		public class Axis {
 			/// <summary>If true, the raw value of the input can factor in multiple positive and negative key values.</summary>
@@ -23,7 +23,9 @@ namespace Izhitsa {
 			public float Sensitivity { get; set; } = 3f;
 
 
+			/// <summary>The value from `<see cref="GetValue"/>`.</summary>
 			private float value;
+			/// <summary>The current frame count; used to avoid miscalculatons from multiple calls.</summary>
 			private float frameCount = -1;
 
 
@@ -68,6 +70,8 @@ namespace Izhitsa {
 			/**
 			 * <summary>Returns the smoothed value of the Axis.
 			 * </summary>
+			 * <param name="ignorePause">Should the `<see cref="InputManager.Paused"/>`
+			 * state be ignored?</param>
 			 */
 			public float GetValue(bool ignorePause = false){
 				if (InputManager.Paused && !ignorePause) return 0;
@@ -83,6 +87,8 @@ namespace Izhitsa {
 			/**
 			 * <summary>Returns the raw value of the Axis.
 			 * </summary>
+			 * <param name="ignorePause">Should the `<see cref="InputManager.Paused"/>`
+			 * state be ignored?</param>
 			 */
 			public float GetRawValue(bool ignorePause = false){
 				if (InputManager.Paused && !ignorePause) return 0;

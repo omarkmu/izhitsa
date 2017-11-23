@@ -28,8 +28,10 @@ namespace Izhitsa {
 				}
 				/// <summary>Is this signal disconnected? (Read Only)</summary>
 				public bool Disconnected { get; private set; }
+
 				/// <summary>The signal's callback function.</summary>
 				internal Action<T> callback { get; set; }
+
 
 				/// <summary>The Broadcast this Signal is connected to.</summary>
 				private Broadcast<T> broadcast;
@@ -48,6 +50,7 @@ namespace Izhitsa {
 					callback = func;
 					broadcast = bc;
 				}
+
 
 				/**
 				 * <summary>
@@ -102,8 +105,10 @@ namespace Izhitsa {
 				}
 				/// <summary>Is this signal disconnected? (Read Only)</summary>
 				public bool Disconnected { get; private set; }
+
 				/// <summary>The signal's callback function.</summary>
 				internal Action<T, T2> callback { get; set; }
+
 
 				/// <summary>The Broadcast this Signal is connected to.</summary>
 				private Broadcast<T, T2> broadcast;
@@ -122,6 +127,7 @@ namespace Izhitsa {
 					callback = func;
 					broadcast = bc;
 				}
+
 
 				/**
 				 * <summary>
@@ -176,8 +182,10 @@ namespace Izhitsa {
 				}
 				/// <summary>Is this signal disconnected? (Read Only)</summary>
 				public bool Disconnected { get; private set; }
+
 				/// <summary>The signal's callback function.</summary>
 				internal Action<T, T2, T3> callback { get; set; }
+
 
 				/// <summary>The Broadcast this Signal is connected to.</summary>
 				private Broadcast<T, T2, T3> broadcast;
@@ -196,6 +204,7 @@ namespace Izhitsa {
 					callback = func;
 					broadcast = bc;
 				}
+
 
 				/**
 				 * <summary>
@@ -250,8 +259,10 @@ namespace Izhitsa {
 				}
 				/// <summary>Is this signal disconnected? (Read Only)</summary>
 				public bool Disconnected { get; private set; }
+
 				/// <summary>The signal's callback function.</summary>
 				internal Action<T, T2, T3, T4> callback { get; set; }
+
 
 				/// <summary>The Broadcast this Signal is connected to.</summary>
 				private Broadcast<T, T2, T3, T4> broadcast;
@@ -270,6 +281,7 @@ namespace Izhitsa {
 					callback = func;
 					broadcast = bc;
 				}
+
 
 				/**
 				 * <summary>

@@ -4,7 +4,7 @@ namespace Izhitsa {
 	namespace Events {
 		/**
 		 * <summary>
-		 * Class which contains a callback for use in `<see cref="Events.Broadcast"/>`.
+		 * Contains a callback for use in `<see cref="Events.Broadcast"/>`.
 		 * </summary>
 		 * <seealso cref="EventManager.Broadcast"/>
 		 */
@@ -28,8 +28,10 @@ namespace Izhitsa {
 			}
 			/// <summary>Is this signal disconnected? (Read Only)</summary>
 			public bool Disconnected { get; private set; }
+
 			/// <summary>The signal's callback function.</summary>
 			internal Action<object[]> callback { get; set; }
+
 
 			/// <summary>The Broadcast this Signal is connected to.</summary>
 			private Broadcast broadcast;
@@ -48,6 +50,7 @@ namespace Izhitsa {
 				callback = func;
 				broadcast = bc;
 			}
+
 
 			/**
 			 * <summary>

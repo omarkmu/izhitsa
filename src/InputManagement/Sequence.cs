@@ -6,7 +6,7 @@ namespace Izhitsa {
 	namespace InputManagement {
 		/**
 		 * <summary>
-		 * Class which represents an ordered sequence of input events.
+		 * Represents an ordered sequence of input events.
 		 * </summary>
 		 */
 		public class Sequence {
@@ -64,6 +64,7 @@ namespace Izhitsa {
 				}
 				elements = elems;
 			}
+
 
 			/**
 			 * <summary>

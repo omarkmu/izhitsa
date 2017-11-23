@@ -11,8 +11,11 @@ namespace Izhitsa {
 				/// <summary>The name of the Broadcast. (Read Only)</summary>
 				public string Name { get; private set; }
 
+
+				/// <summary>The connected signals to this Broadcast.</summary>
 				private List<Signal<T>> signals = new List<Signal<T>>();
 			
+
 				/**
 				 * <summary>
 				 * Creates a nameless, empty Broadcast.
@@ -38,6 +41,7 @@ namespace Izhitsa {
 					}
 				}
 
+
 				/**
 				 * <summary>
 				 * Fires the Broadcast.
@@ -60,7 +64,6 @@ namespace Izhitsa {
 					return s;
 				}
 
-
 				/**
 				 * <summary>
 				 * Disconnects a `<see cref="Signal"/>`.
@@ -78,8 +81,11 @@ namespace Izhitsa {
 				/// <summary>The name of the Broadcast. (Read Only)</summary>
 				public string Name { get; private set; }
 
+
+				/// <summary>The connected signals to this Broadcast.</summary>
 				private List<Signal<T, T2>> signals = new List<Signal<T, T2>>();
 			
+
 				/**
 				 * <summary>
 				 * Creates a nameless, empty Broadcast.
@@ -105,6 +111,7 @@ namespace Izhitsa {
 					}
 				}
 
+
 				/**
 				 * <summary>
 				 * Fires the Broadcast.
@@ -127,7 +134,6 @@ namespace Izhitsa {
 					return s;
 				}
 
-
 				/**
 				 * <summary>
 				 * Disconnects a `<see cref="Signal"/>`.
@@ -145,8 +151,10 @@ namespace Izhitsa {
 				/// <summary>The name of the Broadcast. (Read Only)</summary>
 				public string Name { get; private set; }
 
+				/// <summary>The connected signals to this Broadcast.</summary>
 				private List<Signal<T, T2, T3>> signals = new List<Signal<T, T2, T3>>();
 			
+
 				/**
 				 * <summary>
 				 * Creates a nameless, empty Broadcast.
@@ -172,6 +180,7 @@ namespace Izhitsa {
 					}
 				}
 
+
 				/**
 				 * <summary>
 				 * Fires the Broadcast.
@@ -194,7 +203,6 @@ namespace Izhitsa {
 					return s;
 				}
 
-
 				/**
 				 * <summary>
 				 * Disconnects a `<see cref="Signal"/>`.
@@ -212,8 +220,11 @@ namespace Izhitsa {
 				/// <summary>The name of the Broadcast. (Read Only)</summary>
 				public string Name { get; private set; }
 
+
+				/// <summary>The connected signals to this Broadcast.</summary>
 				private List<Signal<T, T2, T3, T4>> signals = new List<Signal<T, T2, T3, T4>>();
 			
+
 				/**
 				 * <summary>
 				 * Creates a nameless, empty Broadcast.
@@ -239,6 +250,7 @@ namespace Izhitsa {
 					}
 				}
 
+
 				/**
 				 * <summary>
 				 * Fires the Broadcast.
@@ -260,7 +272,6 @@ namespace Izhitsa {
 					signals.Add(s);
 					return s;
 				}
-
 
 				/**
 				 * <summary>
