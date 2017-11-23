@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Izhitsa.EventManager;
+using static Izhitsa.EventManagement.EventManager;
 
 namespace Izhitsa {
 	namespace InputManagement {
