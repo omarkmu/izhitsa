@@ -1,4 +1,4 @@
-using Izhitsa.EventManagement;
+using Izhitsa.Events;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
