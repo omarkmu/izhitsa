@@ -1,7 +1,7 @@
+using static Izhitsa.Tasks.TaskUtils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using static Izhitsa.Tasks.TaskUtils;
 
 namespace Izhitsa {
 	namespace EventManagement {
@@ -49,7 +49,7 @@ namespace Izhitsa {
 			 */
 			public void Fire(params object[] args){
 				for (int i = 0; i < signals.Count; i++)
-					StartCoroutine(fire(signals[i], args));
+					signals[i].call(args);
 			}
 			/**
 			 * <summary>
@@ -111,19 +111,6 @@ namespace Izhitsa {
 			 */
 			internal void disconnect(Signal sig){
 				if (signals.Contains(sig)) signals.Remove(sig);
-			}
-			
-			/**
-			 * <summary>
-			 * Fires a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="sig">`<see cref="Signal"/>` to fire.
-			 * </param>
-			 * <param name="args">Arguments to fire the `<see cref="Signal"/>` with.</param>
-			 */
-			private IEnumerator fire(Signal sig, params object[] args){
-				sig.call(args);
-				yield return null;
 			}
 		}
 	}
