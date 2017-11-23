@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using static Izhitsa.EventManagement.EventManager;
+using Izhitsa.EventManagement;
 
 namespace Izhitsa {
 	namespace InputManagement {
