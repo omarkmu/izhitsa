@@ -4,14 +4,14 @@ namespace Izhitsa {
 	namespace EventManagement {
 		/**
 		 * <summary>
-		 * Class which contains a callback for use in `<see cref="Broadcast"/>`.
+		 * Class which contains a callback for use in `<see cref="EventManagement.Broadcast"/>`.
 		 * </summary>
 		 * <seealso cref="EventManager.Broadcast"/>
 		 */
 		public class Signal {
 			/**
 			 * <summary>
-			 * The `<see cref="EventManager.Broadcast"/>` that this Signal is connected to. (Read Only)
+			 * The Broadcast that this Signal is connected to. (Read Only)
 			 * </summary>
 			 * <exception cref="MemberAccessException">
 			 * Thrown if an attempt to access the member is made
@@ -25,14 +25,13 @@ namespace Izhitsa {
 						"the signal is disconnected.");
 					return broadcast;
 				}
-				internal set { broadcast = value; }
 			}
 			/// <summary>Is this signal disconnected? (Read Only)</summary>
 			public bool Disconnected { get; private set; }
 			/// <summary>The signal's callback function.</summary>
 			internal Action<object[]> callback { get; set; }
 
-			/// <summary>The `<see cref="EventManager.Broadcast"/>` this Signal is connected to.</summary>
+			/// <summary>The Broadcast this Signal is connected to.</summary>
 			private Broadcast broadcast;
 			
 			
@@ -42,7 +41,7 @@ namespace Izhitsa {
 			 * </summary>
 			 * <param name="func">A callback function to connect to the Signal.
 			 * </param>
-			 * <param name="bc">The `<see cref="EventManager.Broadcast"/>`
+			 * <param name="bc">The Broadcast
 			 * that the Signal is being added to.</param>
 			 */
 			internal Signal(Action<object[]> func, Broadcast bc){
@@ -63,7 +62,7 @@ namespace Izhitsa {
 					throw new MethodAccessException("The signal is already disconnected.");
 				broadcast?.disconnect(this);
 				Disconnected = true;
-				Broadcast = null;
+				broadcast = null;
 				callback = null;
 			}
 			

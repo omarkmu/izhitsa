@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace Izhitsa {
 	namespace EventManagement {
 		/**
-		 * <summary>Class which facilitates event creation &amp; usage.</summary>
+		 * <summary>Class which facilitates event creation and usage.</summary>
 		 */
 		public static partial class EventManager {
 			/// <summary>A container for all broadcasts.</summary>
@@ -16,7 +16,7 @@ namespace Izhitsa {
 			 * <summary>
 			 * Connects a function to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
 			 * </summary>
-			 * <param name="name">The name of the `<see cref="Broadcast"/>` to connect to. 
+			 * <param name="name">The name of the Broadcast to connect to. 
 			 * </param>
 			 * <param name="func">An Action to connect.
 			 * </param>
@@ -27,7 +27,7 @@ namespace Izhitsa {
 			 * <summary>
 			 * Connects a function to a `<see cref="Broadcast"/>`, and returns a `<see cref="Signal"/>`.
 			 * </summary>
-			 * <param name="name">The name of the `<see cref="Broadcast"/>` to connect to.
+			 * <param name="name">The name of the Broadcast to connect to.
 			 * </param>
 			 * <param name="func">An Action to connect.
 			 * </param>
@@ -38,9 +38,9 @@ namespace Izhitsa {
 			 * <summary>
 			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
 			 * </summary>
-			 * <param name="name">The name of the `<see cref="Broadcast"/>` to fire.
+			 * <param name="name">The name of the Broadcast to fire.
 			 * </param>
-			 * <param name="args">The arguments to fire the `<see cref="Broadcast"/>` with.
+			 * <param name="args">The arguments to fire the Broadcast with.
 			 * </param>
 			 */
 			public static void Fire(string name, params object[] args){
@@ -50,9 +50,9 @@ namespace Izhitsa {
 			/**
 			 * <summary>
 			 * Returns the `<see cref="Broadcast"/>` with the name
-			 * `<paramref name="name"/>`, or `null` if none is found.
+			 * `<paramref name="name"/>`.
 			 * </summary>
-			 * <param name="name">The name of the `<see cref="Broadcast"/>` to get.
+			 * <param name="name">The name of the Broadcast to get.
 			 * </param>
 			 */
 			public static Broadcast GetBroadcast(string name)
@@ -62,15 +62,15 @@ namespace Izhitsa {
 			 * <summary>
 			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
 			 * </summary>
-			 * <param name="bc">The `<see cref="Broadcast"/>` to add.</param>
+			 * <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register(Broadcast bc) => broadcasts.Add(bc.Name, bc);
 			
 			/**
 			 * <summary>
-			 * Returns a broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 * Returns a `<see cref="Broadcast"/>` associated with `<paramref name="name"/>`, creating it if it does not exist.
 			 * </summary>
-			 * <param name="name">The name of the `<see cref="Broadcast"/>` to get.</param>
+			 * <param name="name">The name of the Broadcast to get.</param>
 			 */
 			private static Broadcast getBroadcast(string name){
 				Broadcast bc = GetBroadcast(name);

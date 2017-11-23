@@ -29,7 +29,7 @@ namespace Izhitsa {
 			 * <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
 			 * </param>
 			 * <param name="unregistered">If this is true, the Broadcast will not be registered with
-			 * `<see cref="EventManager"/>`.
+			 * EventManager.
 			 * </param>
 			 */
 			public Broadcast(string name, bool unregistered = false){
@@ -81,9 +81,8 @@ namespace Izhitsa {
 			 * <param name="func">The Action to connect.
 			 * </param>
 			 */
-			public static Broadcast operator +(Broadcast bc, Action<object[]> func){
-				bc.Connect(func);
-				return bc;
+			public static Signal operator +(Broadcast bc, Action<object[]> func){
+				return bc.Connect(func);
 			}
 			/**
 			 * <summary>
@@ -94,13 +93,17 @@ namespace Izhitsa {
 			 * <param name="func">The Action to disconnect.
 			 * </param>
 			 */
-			public static Broadcast operator -(Broadcast bc, Action<object[]> func){
+			public static bool operator -(Broadcast bc, Action<object[]> func){
+				bool found = false;
 				List<Signal> toRemove = new List<Signal>();
 				foreach (Signal s in bc.signals)
 					if (s.callback == func) toRemove.Add(s);
-				foreach(Signal s in toRemove) bc.disconnect(s);
-				
-				return bc;
+				foreach(Signal s in toRemove){
+					found = true;
+					bc.disconnect(s);
+				}
+
+				return found;
 			}
 
 			/**
