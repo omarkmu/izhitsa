@@ -6,12 +6,13 @@ using System.Collections.Generic;
 namespace Izhitsa {
 	namespace Events {
 		/**
-		 * <summary>Class which represents an event.</summary>
+		 * <summary>Represents an event.</summary>
 		 */
 		public class Broadcast {
 			/// <summary>The name of the Broadcast. (Read Only)</summary>
 			public string Name { get; private set; }
 
+			/// <summary>The connected signals to this Broadcast.</summary>
 			private List<Signal> signals = new List<Signal>();
 
 
@@ -29,7 +30,7 @@ namespace Izhitsa {
 			 * <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
 			 * </param>
 			 * <param name="unregistered">If this is true, the Broadcast will not be registered with
-			 * EventManager.
+			 * the EventManager.
 			 * </param>
 			 */
 			public Broadcast(string name, bool unregistered = false){
@@ -45,7 +46,7 @@ namespace Izhitsa {
 			 * <summary>
 			 * Fires the Broadcast.
 			 * </summary>
-			 * <param name="args">Arguments to fire with.</param>
+			 * <param name="args">Arguments to fire the Broadcast with.</param>
 			 */
 			public void Fire(params object[] args){
 				for (int i = 0; i < signals.Count; i++)

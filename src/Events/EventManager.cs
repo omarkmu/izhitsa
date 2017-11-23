@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace Events {
 		/**
-		 * <summary>Class which facilitates dynamic event creation and usage.</summary>
+		 * <summary>Facilitates dynamic event creation and usage.</summary>
 		 */
 		public static class EventManager {
 			/// <summary>A container for all broadcasts.</summary>
@@ -17,7 +17,7 @@ namespace Izhitsa {
 
 			/**
 			 * <summary>
-			 * Connects a function to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to connect to. 
 			 * </param>
@@ -28,7 +28,7 @@ namespace Izhitsa {
 				=> getBroadcast(name).Connect(func);
 			/**
 			 * <summary>
-			 * Connects a function to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to connect to.
 			 * </param>
@@ -39,7 +39,7 @@ namespace Izhitsa {
 				=> getBroadcast(name).Connect(func);
 			/**
 			 * <summary>
-			 * Connects a function to a Broadcast and returns a Signal.
+			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to connect to.
 			 * </param>
@@ -50,7 +50,7 @@ namespace Izhitsa {
 				=> getBroadcast<T>(name).Connect(func);
 			/**
 			 * <summary>
-			 * Connects a function to a Broadcast and returns a Signal.
+			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to connect to.
 			 * </param>
@@ -61,7 +61,7 @@ namespace Izhitsa {
 				=> getBroadcast<T, T2>(name).Connect(func);
 			/**
 			 * <summary>
-			 * Connects a function to a Broadcast and returns a Signal.
+			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to connect to.
 			 * </param>
@@ -72,7 +72,7 @@ namespace Izhitsa {
 				=> getBroadcast<T, T2, T3>(name).Connect(func);
 			/**
 			 * <summary>
-			 * Connects a function to a Broadcast and returns a Signal.
+			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to connect to.
 			 * </param>
@@ -99,7 +99,8 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Fires the Broadcast which matches the `<paramref name="name"/>`.
+			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 * All arguments after `name` are fired with the Broadcast.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to fire.
 			 * </param>
@@ -111,7 +112,8 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Fires the Broadcast which matches the `<paramref name="name"/>`.
+			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 * All arguments after `name` are fired with the Broadcast.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to fire.
 			 * </param>
@@ -123,7 +125,8 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Fires the Broadcast which matches the `<paramref name="name"/>`.
+			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 * All arguments after `name` are fired with the Broadcast.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to fire.
 			 * </param>
@@ -135,7 +138,8 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Fires the Broadcast which matches the `<paramref name="name"/>`.
+			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 * All arguments after `name` are fired with the Broadcast.
 			 * </summary>
 			 * <param name="name">The name of the Broadcast to fire.
 			 * </param>
@@ -165,7 +169,7 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Returns the Broadcast with the name
+			 * Returns the `<see cref="Broadcast"/>` with the name
 			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
 			 * is the wrong type.
 			 * </summary>
@@ -182,7 +186,7 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Returns the Broadcast with the name
+			 * Returns the `<see cref="Broadcast"/>` with the name
 			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
 			 * is the wrong type.
 			 * </summary>
@@ -199,7 +203,7 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Returns the Broadcast with the name
+			 * Returns the `<see cref="Broadcast"/>` with the name
 			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
 			 * is the wrong type.
 			 * </summary>
@@ -216,7 +220,7 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Returns the Broadcast with the name
+			 * Returns the `<see cref="Broadcast"/>` with the name
 			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
 			 * is the wrong type.
 			 * </summary>
@@ -241,28 +245,28 @@ namespace Izhitsa {
 			internal static void register(Broadcast bc) => broadcasts.Add(bc.Name, bc);
 			/**
 			 * <summary>
-			 * Registers a Broadcast (adds it to the dictionary).
+			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
 			 * </summary>
 			 * <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T>(Broadcast<T> bc) => broadcasts.Add(bc.Name, bc);
 			/**
 			 * <summary>
-			 * Registers a Broadcast (adds it to the dictionary).
+			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
 			 * </summary>
 			 * <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T, T2>(Broadcast<T, T2> bc) => broadcasts.Add(bc.Name, bc);
 			/**
 			 * <summary>
-			 * Registers a Broadcast (adds it to the dictionary).
+			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
 			 * </summary>
 			 * <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T, T2, T3>(Broadcast<T, T2, T3> bc) => broadcasts.Add(bc.Name, bc);
 			/**
 			 * <summary>
-			 * Registers a Broadcast (adds it to the dictionary).
+			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
 			 * </summary>
 			 * <param name="bc">The Broadcast to add.</param>
 			 */
