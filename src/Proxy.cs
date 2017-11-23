@@ -54,7 +54,7 @@ namespace Izhitsa {
 			if (type == EventType.Layout || type == EventType.Repaint || type == EventType.Ignore)
 				return;
 			if (type == EventType.KeyDown && e.keyCode == KeyCode.None) return;
-			StartCoroutine(InputManager.handleEvent(e));
+			StartCoroutine(InputManagement.InputManager.handleEvent(e));
 		}
 		/**
 		 * <summary>

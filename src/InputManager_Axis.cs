@@ -2,7 +2,7 @@ using UnityEngine;
 using System.Collections.Generic;
 
 namespace Izhitsa {
-	public static partial class InputManager {
+	namespace InputManagement {
 		/**
 		 * <summary>Class which allows for axis creation and remapping at runtime.</summary>
 		 */

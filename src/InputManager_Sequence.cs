@@ -1,8 +1,9 @@
 using System;
 using UnityEngine;
+using static Izhitsa.InputManagement.InputManager;
 
 namespace Izhitsa {
-	public static partial class InputManager {
+	namespace InputManagement {
 		/**
 		 * <summary>
 		 * Class which represents an ordered sequence of input events.
