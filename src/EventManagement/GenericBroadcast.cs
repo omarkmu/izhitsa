@@ -21,11 +21,21 @@ namespace Izhitsa {
 				public Broadcast(){}
 				/**
 				 * <summary>
-				 * Creates a Broadcast.
+				 * Creates a new Broadcast.
 				 * </summary>
+				 * <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
+				 * </param>
+				 * <param name="unregistered">If this is true, the Broadcast will not be registered with
+				 * EventManager.
+				 * </param>
 				 */
-				public Broadcast(string name){
+				public Broadcast(string name, bool unregistered = false){
 					Name = name;
+					if (!unregistered){
+						if (EventManager.BroadcastExists(name))
+							throw new ArgumentException($"{name} is already a registered Broadcast.", "name");
+						EventManager.register<T>(this);
+					}
 				}
 
 				/**
@@ -76,7 +86,7 @@ namespace Izhitsa {
 					List<Signal<T>> toRemove = new List<Signal<T>>();
 					foreach (Signal<T> s in bc.signals)
 						if (s.callback == func) toRemove.Add(s);
-					foreach(Signal<T> s in toRemove){
+					foreach (Signal<T> s in toRemove){
 						found = true;
 						bc.disconnect(s);
 					}
@@ -111,11 +121,21 @@ namespace Izhitsa {
 				public Broadcast(){}
 				/**
 				 * <summary>
-				 * Creates a Broadcast.
+				 * Creates a new Broadcast.
 				 * </summary>
+				 * <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
+				 * </param>
+				 * <param name="unregistered">If this is true, the Broadcast will not be registered with
+				 * EventManager.
+				 * </param>
 				 */
-				public Broadcast(string name){
+				public Broadcast(string name, bool unregistered = false){
 					Name = name;
+					if (!unregistered){
+						if (EventManager.BroadcastExists(name))
+							throw new ArgumentException($"{name} is already a registered Broadcast.", "name");
+						EventManager.register<T, T2>(this);
+					}
 				}
 
 				/**
@@ -166,7 +186,7 @@ namespace Izhitsa {
 					List<Signal<T, T2>> toRemove = new List<Signal<T, T2>>();
 					foreach (Signal<T, T2> s in bc.signals)
 						if (s.callback == func) toRemove.Add(s);
-					foreach(Signal<T, T2> s in toRemove){
+					foreach (Signal<T, T2> s in toRemove){
 						found = true;
 						bc.disconnect(s);
 					}
@@ -201,11 +221,21 @@ namespace Izhitsa {
 				public Broadcast(){}
 				/**
 				 * <summary>
-				 * Creates a Broadcast.
+				 * Creates a new Broadcast.
 				 * </summary>
+				 * <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
+				 * </param>
+				 * <param name="unregistered">If this is true, the Broadcast will not be registered with
+				 * EventManager.
+				 * </param>
 				 */
-				public Broadcast(string name){
+				public Broadcast(string name, bool unregistered = false){
 					Name = name;
+					if (!unregistered){
+						if (EventManager.BroadcastExists(name))
+							throw new ArgumentException($"{name} is already a registered Broadcast.", "name");
+						EventManager.register<T, T2, T3>(this);
+					}
 				}
 
 				/**
@@ -256,7 +286,7 @@ namespace Izhitsa {
 					List<Signal<T, T2, T3>> toRemove = new List<Signal<T, T2, T3>>();
 					foreach (Signal<T, T2, T3> s in bc.signals)
 						if (s.callback == func) toRemove.Add(s);
-					foreach(Signal<T, T2, T3> s in toRemove){
+					foreach (Signal<T, T2, T3> s in toRemove){
 						found = true;
 						bc.disconnect(s);
 					}
@@ -291,11 +321,21 @@ namespace Izhitsa {
 				public Broadcast(){}
 				/**
 				 * <summary>
-				 * Creates a Broadcast.
+				 * Creates a new Broadcast.
 				 * </summary>
+				 * <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
+				 * </param>
+				 * <param name="unregistered">If this is true, the Broadcast will not be registered with
+				 * EventManager.
+				 * </param>
 				 */
-				public Broadcast(string name){
+				public Broadcast(string name, bool unregistered = false){
 					Name = name;
+					if (!unregistered){
+						if (EventManager.BroadcastExists(name))
+							throw new ArgumentException($"{name} is already a registered Broadcast.", "name");
+						EventManager.register<T, T2, T3, T4>(this);
+					}
 				}
 
 				/**
@@ -346,7 +386,7 @@ namespace Izhitsa {
 					List<Signal<T, T2, T3, T4>> toRemove = new List<Signal<T, T2, T3, T4>>();
 					foreach (Signal<T, T2, T3, T4> s in bc.signals)
 						if (s.callback == func) toRemove.Add(s);
-					foreach(Signal<T, T2, T3, T4> s in toRemove){
+					foreach (Signal<T, T2, T3, T4> s in toRemove){
 						found = true;
 						bc.disconnect(s);
 					}

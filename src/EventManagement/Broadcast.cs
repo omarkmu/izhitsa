@@ -35,7 +35,7 @@ namespace Izhitsa {
 			public Broadcast(string name, bool unregistered = false){
 				Name = name;
 				if (!unregistered){
-					if (EventManager.GetBroadcast(name) != null)
+					if (EventManager.BroadcastExists(name))
 						throw new ArgumentException($"{name} is already a registered Broadcast.", "name");
 					EventManager.register(this);
 				}
@@ -98,7 +98,7 @@ namespace Izhitsa {
 				List<Signal> toRemove = new List<Signal>();
 				foreach (Signal s in bc.signals)
 					if (s.callback == func) toRemove.Add(s);
-				foreach(Signal s in toRemove){
+				foreach (Signal s in toRemove){
 					found = true;
 					bc.disconnect(s);
 				}
