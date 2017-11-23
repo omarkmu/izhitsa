@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using static Izhitsa.Utility;
 using static Izhitsa.EventManagement.EventManager;
 
 namespace Izhitsa {
@@ -207,6 +206,14 @@ namespace Izhitsa {
 					throw new Exception("The Task is currently waiting.");
 				return StartCoroutine(run(enumerator));
 			}
+			/**
+			 * <summary>
+			 * Starts a Coroutine.
+			 * </summary>
+			 * <param name="routine">An IEnumerator to start the Coroutine with.
+			 * </param>
+			 */
+			public static Coroutine StartCoroutine(IEnumerator routine) => Proxy.startCoroutine(routine);
 			/**
 			 * <summary>
 			 * Returns a TaskAwaiter which will wait until the task is not running.
