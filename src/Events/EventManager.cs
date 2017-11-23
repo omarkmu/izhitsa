@@ -1,6 +1,6 @@
-﻿using System;
+﻿using Izhitsa.Events.Generic;
+using System;
 using System.Collections.Generic;
-using Izhitsa.Events.Generic;
 using UnityEngine;
 
 namespace Izhitsa {
