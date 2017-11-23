@@ -73,39 +73,6 @@ namespace Izhitsa {
 			 */
 			public Signal Connect(Action func) => Connect((args) => func());
 			
-			/**
-			 * <summary>
-			 * Connects an Action to the Broadcast.
-			 * </summary>
-			 * <param name="bc">The Broadcast.
-			 * </param>
-			 * <param name="func">The Action to connect.
-			 * </param>
-			 */
-			public static Signal operator +(Broadcast bc, Action<object[]> func){
-				return bc.Connect(func);
-			}
-			/**
-			 * <summary>
-			 * Disconnects an Action from the Broadcast.
-			 * </summary>
-			 * <param name="bc">The Broadcast.
-			 * </param>
-			 * <param name="func">The Action to disconnect.
-			 * </param>
-			 */
-			public static bool operator -(Broadcast bc, Action<object[]> func){
-				bool found = false;
-				List<Signal> toRemove = new List<Signal>();
-				foreach (Signal s in bc.signals)
-					if (s.callback == func) toRemove.Add(s);
-				foreach (Signal s in toRemove){
-					found = true;
-					bc.disconnect(s);
-				}
-
-				return found;
-			}
 
 			/**
 			 * <summary>

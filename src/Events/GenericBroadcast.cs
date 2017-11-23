@@ -60,39 +60,6 @@ namespace Izhitsa {
 					return s;
 				}
 
-				/**
-				 * <summary>
-				 * Connects an Action to the Broadcast.
-				 * </summary>
-				 * <param name="bc">The Broadcast.
-				 * </param>
-				 * <param name="func">The Action to connect.
-				 * </param>
-				 */
-				public static Signal<T> operator +(Broadcast<T> bc, Action<T> func){
-					return bc.Connect(func);
-				}
-				/**
-				 * <summary>
-				 * Disconnects an Action from the Broadcast.
-				 * </summary>
-				 * <param name="bc">The Broadcast.
-				 * </param>
-				 * <param name="func">The Action to disconnect.
-				 * </param>
-				 */
-				public static bool operator -(Broadcast<T> bc, Action<T> func){
-					bool found = false;
-					List<Signal<T>> toRemove = new List<Signal<T>>();
-					foreach (Signal<T> s in bc.signals)
-						if (s.callback == func) toRemove.Add(s);
-					foreach (Signal<T> s in toRemove){
-						found = true;
-						bc.disconnect(s);
-					}
-
-					return found;
-				}
 
 				/**
 				 * <summary>
@@ -160,39 +127,6 @@ namespace Izhitsa {
 					return s;
 				}
 
-				/**
-				 * <summary>
-				 * Connects an Action to the Broadcast.
-				 * </summary>
-				 * <param name="bc">The Broadcast.
-				 * </param>
-				 * <param name="func">The Action to connect.
-				 * </param>
-				 */
-				public static Signal<T, T2> operator +(Broadcast<T, T2> bc, Action<T, T2> func){
-					return bc.Connect(func);
-				}
-				/**
-				 * <summary>
-				 * Disconnects an Action from the Broadcast.
-				 * </summary>
-				 * <param name="bc">The Broadcast.
-				 * </param>
-				 * <param name="func">The Action to disconnect.
-				 * </param>
-				 */
-				public static bool operator -(Broadcast<T, T2> bc, Action<T, T2> func){
-					bool found = false;
-					List<Signal<T, T2>> toRemove = new List<Signal<T, T2>>();
-					foreach (Signal<T, T2> s in bc.signals)
-						if (s.callback == func) toRemove.Add(s);
-					foreach (Signal<T, T2> s in toRemove){
-						found = true;
-						bc.disconnect(s);
-					}
-
-					return found;
-				}
 
 				/**
 				 * <summary>
@@ -260,39 +194,6 @@ namespace Izhitsa {
 					return s;
 				}
 
-				/**
-				 * <summary>
-				 * Connects an Action to the Broadcast.
-				 * </summary>
-				 * <param name="bc">The Broadcast.
-				 * </param>
-				 * <param name="func">The Action to connect.
-				 * </param>
-				 */
-				public static Signal<T, T2, T3> operator +(Broadcast<T, T2, T3> bc, Action<T, T2, T3> func){
-					return bc.Connect(func);
-				}
-				/**
-				 * <summary>
-				 * Disconnects an Action from the Broadcast.
-				 * </summary>
-				 * <param name="bc">The Broadcast.
-				 * </param>
-				 * <param name="func">The Action to disconnect.
-				 * </param>
-				 */
-				public static bool operator -(Broadcast<T, T2, T3> bc, Action<T, T2, T3> func){
-					bool found = false;
-					List<Signal<T, T2, T3>> toRemove = new List<Signal<T, T2, T3>>();
-					foreach (Signal<T, T2, T3> s in bc.signals)
-						if (s.callback == func) toRemove.Add(s);
-					foreach (Signal<T, T2, T3> s in toRemove){
-						found = true;
-						bc.disconnect(s);
-					}
-
-					return found;
-				}
 
 				/**
 				 * <summary>
@@ -360,39 +261,6 @@ namespace Izhitsa {
 					return s;
 				}
 
-				/**
-				 * <summary>
-				 * Connects an Action to the Broadcast.
-				 * </summary>
-				 * <param name="bc">The Broadcast.
-				 * </param>
-				 * <param name="func">The Action to connect.
-				 * </param>
-				 */
-				public static Signal<T, T2, T3, T4> operator +(Broadcast<T, T2, T3, T4> bc, Action<T, T2, T3, T4> func){
-					return bc.Connect(func);
-				}
-				/**
-				 * <summary>
-				 * Disconnects an Action from the Broadcast.
-				 * </summary>
-				 * <param name="bc">The Broadcast.
-				 * </param>
-				 * <param name="func">The Action to disconnect.
-				 * </param>
-				 */
-				public static bool operator -(Broadcast<T, T2, T3, T4> bc, Action<T, T2, T3, T4> func){
-					bool found = false;
-					List<Signal<T, T2, T3, T4>> toRemove = new List<Signal<T, T2, T3, T4>>();
-					foreach (Signal<T, T2, T3, T4> s in bc.signals)
-						if (s.callback == func) toRemove.Add(s);
-					foreach (Signal<T, T2, T3, T4> s in toRemove){
-						found = true;
-						bc.disconnect(s);
-					}
-
-					return found;
-				}
 
 				/**
 				 * <summary>
