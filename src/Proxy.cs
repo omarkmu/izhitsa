@@ -54,7 +54,7 @@ namespace Izhitsa {
 			if (type == EventType.Layout || type == EventType.Repaint || type == EventType.Ignore)
 				return;
 			if (type == EventType.KeyDown && e.keyCode == KeyCode.None) return;
-			StartCoroutine(InputManagement.InputManager.handleEvent(e));
+			InputManagement.InputManager.handleEvent(e);
 		}
 		/**
 		 * <summary>
@@ -83,9 +83,9 @@ namespace Izhitsa {
 		public static void Activate(){}
 		/**
 		 * <summary>
-		 * Starts a coroutine using the proxy object.
+		 * Starts a Coroutine using the proxy object.
 		 * </summary>
-		 * <param name="e">An IEnumerator to run.
+		 * <param name="e">An IEnumerator to start the Coroutine with.
 		 * </param>
 		 */
 		internal static Coroutine startCoroutine(IEnumerator e) => obj?.StartCoroutine(e);
