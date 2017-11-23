@@ -11,7 +11,7 @@ namespace Izhitsa {
 		 */
 		public class Sequence {
 			/// <summary>The current SequenceElement. (Read Only)</summary>
-			public SequenceElement Current => elements[CurrentStep];
+			public SequenceElement Current => (elements.Length > 0) ? elements[CurrentStep] : null;
 			/// <summary>The current step, where the Sequence's pointer is right now. (Read Only)</summary>
 			public int CurrentStep {
 				get {

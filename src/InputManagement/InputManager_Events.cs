@@ -1,6 +1,7 @@
+using Izhitsa.EventManagement;
 using System;
 using System.Collections.Generic;
-using Izhitsa.EventManagement;
+using UnityEngine;
 
 namespace Izhitsa {
 	namespace InputManagement {
@@ -15,6 +16,14 @@ namespace Izhitsa {
 			 * </para>
 			 */
 			public static Broadcast KeyBound => keyBound;
+			/**
+			 * <summary>
+			 * An event which fires when a key is pressed.
+			 * </summary>
+			 * <para>arg0: `{InputEvent}` The event that occurred.
+			 * </para>
+			 */
+			public static Broadcast KeyEvent => keyEvent;
 			/**
 			 * <summary>
 			 * An event which fires when a key is unbound.
@@ -51,11 +60,19 @@ namespace Izhitsa {
 			/// <summary>Contains KeyBound events.</summary>
 			private static Dictionary<string, Broadcast> keyBoundEvents { get; }
 				= new Dictionary<string, Broadcast>();
+			/// <summary>Primary Key event.</summary>
+			private static Broadcast keyEvent { get; } = new Broadcast();
+			/// <summary>Contains KeyPressed events.</summary>
+			private static Dictionary<KeyCode, Broadcast> keyEvents { get; }
+				= new Dictionary<KeyCode, Broadcast>();
 			/// <summary>Primary KeyUnbound event.</summary>
 			private static Broadcast keyUnbound = new Broadcast();
 			/// <summary>Contains KeyUnbound events.</summary>
 			private static Dictionary<string, Broadcast> keyUnboundEvents { get; }
 				= new Dictionary<string, Broadcast>();
+			/// <summary>Contains mouse events.</summary>
+			private static Dictionary<int, Broadcast> mouseEvents { get; }
+				= new Dictionary<int, Broadcast>();
 			/// <summary>Primary SequenceBound event.</summary>
 			private static Broadcast seqBound { get; } = new Broadcast();
 			/// <summary>Contains KeyBound events.</summary>
@@ -90,6 +107,22 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
+			 * Connects a function to a Broadcast which fires when `<paramref name="key"/>` is pressed,
+			 * and returns a Signal.
+			 * </summary>
+			 * <param name="key">The key to listen for.
+			 * </param>
+			 * <param name="func">The function to connect.
+			 * </param>
+			 */
+			public static Signal OnKeyEvent(KeyCode key, Action<InputEvent> func){
+				if (!keyEvents.ContainsKey(key))
+					keyEvents.Add(key, new Broadcast());
+				Broadcast bc = keyEvents[key];
+				return bc.Connect((args) => func((InputEvent)args[0]));
+			}
+			/**
+			 * <summary>
 			 * Connects a function to a Broadcast which fires when `<paramref name="action"/>` is bound
 			 * to a key, and returns a Signal.
 			 * </summary>
@@ -104,6 +137,23 @@ namespace Izhitsa {
 					keyUnboundEvents.Add(action, new Broadcast());
 				Broadcast bc = keyUnboundEvents[action];
 				return bc.Connect(func);
+			}
+			/**
+			 * <summary>
+			 * Connects a function to a Broadcast which fires when mouse button
+			 * `<paramref name="button"/>` is interacted with, and returns a Signal.
+			 * </summary>
+			 * <param name="button">The mouse button.
+			 * </param>
+			 * <param name="func">
+			 * The function to connect.
+			 * </param>
+			 */
+			public static Signal OnMouse(int button, Action<InputEvent> func){
+				if (!mouseEvents.ContainsKey(button))
+					mouseEvents.Add(button, new Broadcast());
+				Broadcast bc = mouseEvents[button];
+				return bc.Connect((args) => func((InputEvent)args[0]));
 			}
 			/**
 			 * <summary>

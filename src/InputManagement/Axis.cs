@@ -22,6 +22,11 @@ namespace Izhitsa {
 			/// <summary>How fast the input will become 1 or -1.</summary>
 			public float Sensitivity { get; set; } = 3f;
 
+
+			private float value;
+			private float frameCount = -1;
+
+
 			/**
 			 * <summary>Creates an Axis using a negative and positive KeyCode.
 			 * </summary>
@@ -60,6 +65,21 @@ namespace Izhitsa {
 			}
 
 
+			/**
+			 * <summary>Returns the smoothed value of the Axis.
+			 * </summary>
+			 */
+			public float GetValue(bool ignorePause = false){
+				if (InputManager.Paused && !ignorePause) return 0;
+				if (frameCount == Time.frameCount) return value;
+				frameCount = Time.frameCount;
+
+				float target = GetRawValue();
+				float mult = target < Mathf.Abs(value) ? Gravity : Sensitivity;
+				value = Mathf.MoveTowards(value, target, mult * Time.deltaTime);
+
+				return (Mathf.Abs(value) > Dead) ? value : 0f;
+			}
 			/**
 			 * <summary>Returns the raw value of the Axis.
 			 * </summary>

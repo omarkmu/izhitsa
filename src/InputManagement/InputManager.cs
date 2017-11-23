@@ -82,7 +82,7 @@ namespace Izhitsa {
 			}
 
 			/// <summary>Contains information about input events.</summary>
-			internal struct InputEvent {
+			public struct InputEvent {
 				/// <summary>The mouse button this event occurred on. If it equals -1, this isn't a mouse event.</summary>
 				public int Button { get; internal set; }
 				/// <summary>The mouse scroll wheel delta.</summary>
@@ -274,8 +274,28 @@ namespace Izhitsa {
 				axes.Add(name, axis);
 				return axis;
 			}
-			/// <todo>Create GetAxis</todo>
-			// public static float GetAxis(string name)
+			/**
+			 * <summary>
+			 * Returns the input value from an Axis.
+			 * </summary>
+			 * <param name="name">The name of the Axis object to check.
+			 * </param>
+			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 * </param>
+			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is null.
+			 * </exception>
+			 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` is not associated
+			 * with an Axis.
+			 * </exception>
+			 */
+			public static float GetAxis(string name, bool ignorePause = false){
+				if (name == null)
+					throw new ArgumentNullException(name);
+				if (!axes.ContainsKey(name))
+					throw new ArgumentException($"Axis \"{name}\" has not been defined.");
+				if (Paused && !ignorePause) return 0;
+				return axes[name].GetValue(true);
+			}
 			/**
 			 * <summary>
 			 * Returns the Axis object associated with a name.
@@ -310,7 +330,24 @@ namespace Izhitsa {
 				if (!axes.ContainsKey(name))
 					throw new ArgumentException($"Axis \"{name}\" has not been defined.");
 				if (Paused && !ignorePause) return 0;
-				return axes[name].GetRawValue();
+				return axes[name].GetRawValue(true);
+			}
+			/**
+			 * <summary>
+			 * Returns the first key bound to a string.
+			 * </summary>
+			 * <param name="action">
+			 * The name of the key to check.
+			 * </param>
+			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 * </exception>
+			 */
+			public static KeyCode GetBoundKey(string action){
+				if (action == null)
+					throw new ArgumentNullException("action");
+				List<KeyCode> keys = GetBoundKeys(action);
+				if (keys.Count == 0) return KeyCode.None;
+				return keys[0];
 			}
 			/**
 			 * <summary>
@@ -457,8 +494,8 @@ namespace Izhitsa {
 			 * </summary>
 			 * <param name="ev">The `Event` to convert and handle.</param>
 			 */
-			internal static IEnumerator handleEvent(Event ev){
-				if (Paused) yield break;
+			internal static void handleEvent(Event ev){
+				if (Paused) return;
 				bool valid = true;
 
 				int button = -1;
@@ -508,6 +545,7 @@ namespace Izhitsa {
 						heldKeys[key] = Time.time;
 						break;
 					case EventType.MouseUp:
+						button = ev.button;
 						key = (KeyCode)(323 + ev.button);
 						type = InputEventType.KeyUp;
 						if (ev.button > 6){
@@ -525,9 +563,14 @@ namespace Izhitsa {
 						delta = ev.delta.y;
 						break;
 				}
-				
-				if (valid) registerEvent(new InputEvent(button, heldDuration, key, type, delta));
-				yield return null;
+
+				InputEvent iEvent = new InputEvent(button, heldDuration, key, type, delta);
+				tryFire(keyEvents, iEvent.Key, iEvent);
+				if (iEvent.Button != -1){
+					tryFire(mouseEvents, iEvent.Button, iEvent);
+				}
+				KeyEvent.Fire(iEvent);
+				if (valid) registerEvent(iEvent);
 			}
 
 			/**
@@ -598,17 +641,8 @@ namespace Izhitsa {
 					}
 				}
 			}
-			/**
-			 * <summary>
-			 * Attempts to fire a Broadcast using a dictionary and a key.
-			 * </summary>
-			 * <param name="dict">The `Dictionary` to check.
-			 * </param>
-			 * <param name="key">The key.
-			 * </param>
-			 * <param name="args">The arguments to fire the Broadcast with.</param>
-			 */
-			private static void tryFire(Dictionary<string, Broadcast> dict, string key, params object[] args){
+
+			private static void tryFire<T>(Dictionary<T, Broadcast> dict, T key, params object[] args){
 				if (dict.ContainsKey(key)) dict[key].Fire(args);
 			}
 		}
