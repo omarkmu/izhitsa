@@ -1,8 +1,8 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Izhitsa.EventManagement;
 using static Izhitsa.Tasks.TaskUtils;
-using static Izhitsa.EventManagement.EventManager;
 
 namespace Izhitsa {
 	namespace Tasks {

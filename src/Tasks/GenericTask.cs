@@ -1,6 +1,6 @@
 using System;
 using System.Collections;
-using static Izhitsa.EventManagement.EventManager;
+using Izhitsa.EventManagement;
 
 namespace Izhitsa {
 	namespace Tasks {
@@ -8,8 +8,8 @@ namespace Izhitsa {
 			/**
 			 * <summary>
 			 * An IEnumerator task, for handling and controlling Coroutines.
-			 * The provided type is used for the Result type, and throws an exception if
-			 * the IEnumerator's return type doesn't match.
+			 * The provided type is used for the Result type, and throws an exception while
+			 * running if the IEnumerator's return type doesn't match it.
 			 * </summary>
 			 */
 			public class Task<TResult> : Task {
