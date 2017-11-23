@@ -154,7 +154,7 @@ namespace Izhitsa {
 			public static void BindKey(string action, params KeyCode[] keyCodes){
 				if (action == null)
 					throw new ArgumentNullException("action");
-				foreach(KeyCode key in keyCodes) BindKey(action, key, false);
+				foreach (KeyCode key in keyCodes) BindKey(action, key, false);
 			}
 			/**
 			 * <summary>
@@ -385,7 +385,7 @@ namespace Izhitsa {
 				if (!boundKeys.ContainsKey(action))
 					throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
 				if (Paused && !ignorePause) return false;
-				foreach(KeyCode key in boundKeys[action])
+				foreach (KeyCode key in boundKeys[action])
 					if (Input.GetKey(key)) return true;
 				return false;
 			}
@@ -410,7 +410,7 @@ namespace Izhitsa {
 				if (!boundKeys.ContainsKey(action))
 					throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
 				if (Paused && !ignorePause) return false;
-				foreach(KeyCode key in boundKeys[action])
+				foreach (KeyCode key in boundKeys[action])
 					if (Input.GetKeyDown(key)) return true;
 				return false;
 			}
@@ -435,7 +435,7 @@ namespace Izhitsa {
 				if (!boundKeys.ContainsKey(action))
 					throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
 				if (Paused && !ignorePause) return false;
-				foreach(KeyCode key in boundKeys[action])
+				foreach (KeyCode key in boundKeys[action])
 					if (Input.GetKeyUp(key)) return true;
 				return false;
 			}
@@ -457,7 +457,7 @@ namespace Izhitsa {
 					throw new ArgumentNullException("action");
 				if (!boundKeys.ContainsKey(action))
 					throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
-				foreach(KeyCode key in boundKeys[action]){
+				foreach (KeyCode key in boundKeys[action]){
 					if (key == keyToUnbind){
 						KeyUnbound.Fire(action, key);
 						tryFire(keyUnboundEvents, action, key);
@@ -480,7 +480,7 @@ namespace Izhitsa {
 					throw new ArgumentNullException("action");
 				if (!boundKeys.ContainsKey(action))
 					throw new ArgumentException($"\"{action}\" has not been bound to any keys.", "action");
-				foreach(KeyCode key in boundKeys[action]){
+				foreach (KeyCode key in boundKeys[action]){
 					KeyUnbound.Fire(action, key);
 					tryFire(keyUnboundEvents, action, key);
 				}

@@ -148,7 +148,7 @@ namespace Izhitsa {
 				};
 
 				if (!src.DataExists()) UpdateTextureData(src);
-				foreach(Vector2 p in data[src].VisiblePoints)
+				foreach (Vector2 p in data[src].VisiblePoints)
 					perform((int)p.x, (int)p.y, src.GetPixel((int)p.x, (int)p.y));
 
 				dest.Apply();
