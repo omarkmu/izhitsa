@@ -17,6 +17,11 @@ namespace Izhitsa {
 				public InputEventType Type { get; internal set; }
 
 
+				/**
+				 * <summary>
+				 * Creates an InputEvent.
+				 * </summary>
+				 */
 				public InputEvent(int button, float heldDur, KeyCode key, InputEventType type, float delta){
 					Button = button;
 					HeldDuration = heldDur;
@@ -26,6 +31,11 @@ namespace Izhitsa {
 				}
 
 
+				/**
+				 * <summary>
+				 * Returns the InputEvent in a displayable format.
+				 * <summary>
+				 */
 				public override string ToString(){
 					string ret = $"Type: {Type}";
 					switch (Type){
