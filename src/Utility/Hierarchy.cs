@@ -6,7 +6,7 @@ namespace Izhitsa {
 	namespace Utility {
 		/**
 		 * <summary>
-		 * Class which contains extension methods for `<see cref="GameObject"/>`
+		 * Contains extension methods for `<see cref="GameObject"/>`
 		 * and other hierarchy-related methods.
 		 * </summary>
 		 */

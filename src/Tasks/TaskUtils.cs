@@ -3,6 +3,11 @@ using UnityEngine;
 
 namespace Izhitsa {
 	namespace Tasks {
+		/**
+		 * <summary>
+		 * Provides concurrency-related utilities.
+		 * </summary>
+		 */
 		public static class TaskUtils {
 			/**
 			 * <summary>

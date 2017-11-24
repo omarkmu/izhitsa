@@ -4,8 +4,7 @@ using UnityEngine;
 namespace Izhitsa {
 	/**
 	 * <summary>
-	 * Class which attaches itself to a GameObject
-	 * and provides MonoBehaviour method access to the other
+	 * Provides MonoBehaviour method access to the other
 	 * Izhitsa classes.
 	 * </summary>
 	 */
@@ -51,7 +50,7 @@ namespace Izhitsa {
 		void OnGUI(){
 			Event e = Event.current;
 			EventType type = e.type;
-			if (type == EventType.Layout || type == EventType.Repaint || type == EventType.Ignore)
+			if (type == EventType.Repaint || type == EventType.Ignore)
 				return;
 			if (type == EventType.KeyDown && e.keyCode == KeyCode.None) return;
 			InputManagement.InputManager.handleEvent(e);
@@ -98,7 +97,7 @@ namespace Izhitsa {
 			obj = null;
 			GameObject go = new GameObject("IzhitsaProxy");
 			go.AddComponent<Proxy>();
-			//go.hideFlags = HideFlags.HideInHierarchy;
+			go.hideFlags = HideFlags.HideInHierarchy;
 		}
 	}
 }

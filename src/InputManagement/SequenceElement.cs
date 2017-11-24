@@ -5,7 +5,7 @@ namespace Izhitsa {
 	namespace InputManagement {
 		/**
 		 * <summary>
-		 * Class which represents an element in a Sequence.
+		 * Represents an element in a Sequence.
 		 * </summary>
 		 */
 		public class SequenceElement {

@@ -66,6 +66,7 @@ namespace Izhitsa {
 			 */
 			public Task(IEnumerator enumerator){ Run(enumerator); }
 
+
 			/**
 			 * <summary>
 			 * Requests task cancellation in the running IEnumerator.

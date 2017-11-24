@@ -7,9 +7,9 @@ namespace Izhitsa {
 		namespace Generic {
 			/**
 			 * <summary>
-			 * An IEnumerator task, for handling and controlling Coroutines.
+			 * The generic form of `<see cref="Task"/>`, for handling and controlling Coroutines.
 			 * The provided type is used for the Result type, and throws an exception while
-			 * running if the IEnumerator's return type doesn't match it.
+			 * running if the IEnumerator's return type is incompatible.
 			 * </summary>
 			 */
 			public class Task<TResult> : Task {
@@ -32,6 +32,7 @@ namespace Izhitsa {
 				 * </exception>
 				 */
 				public Task(IEnumerator enumerator) : base(enumerator) {}
+
 
 				/**
 				 * <summary>

@@ -5,7 +5,7 @@ namespace Izhitsa {
 	namespace Utility {
 		/**
 		 * <summary>
-		 * Class which serves as a wrapper for `<see cref="UnityEngine.Random"/>` and
+		 * Serves as a wrapper for `<see cref="UnityEngine.Random"/>` and
 		 * provides extended functionality.
 		 * </summary>
 		 */
