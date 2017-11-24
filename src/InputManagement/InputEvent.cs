@@ -7,12 +7,14 @@ namespace Izhitsa {
 			public struct InputEvent {
 				/// <summary>The mouse button this event occurred on. If it equals -1, this isn't a mouse event.</summary>
 				public int Button { get; internal set; }
-				/// <summary>The mouse scroll wheel delta.</summary>
-				public float Delta { get; internal set; }
-				/// <summary>The time, in seconds, that the key has/had been held down.</summary>
+				/// <summary>The mouse delta, used for scroll and move events.</summary>
+				public Vector2 Delta { get; internal set; }
+				/// <summary>The time, in seconds, that the key has been held down.</summary>
 				public float HeldDuration { get; internal set; }
 				/// <summary>The key related to this event.</summary>
 				public KeyCode Key { get; internal set; }
+				/// <summary>The mouse position, on applicable event types.</summary>
+				public Vector2 Position { get; internal set; }
 				/// <summary>The input type of this event.</summary>
 				public InputEventType Type { get; internal set; }
 
@@ -22,12 +24,15 @@ namespace Izhitsa {
 				 * Creates an InputEvent.
 				 * </summary>
 				 */
-				public InputEvent(int button, float heldDur, KeyCode key, InputEventType type, float delta){
+				public InputEvent(int button, float heldDuration, KeyCode key,
+					InputEventType type, Vector2 delta, Vector2 position
+				){
 					Button = button;
-					HeldDuration = heldDur;
+					HeldDuration = heldDuration;
 					Key = key;
 					Type = type;
 					Delta = delta;
+					Position = position;
 				}
 
 
@@ -43,10 +48,11 @@ namespace Izhitsa {
 						case InputEventType.KeyDown:
 						case InputEventType.KeyHeld:
 							ret += $", Key: {Key}, HeldDuration: {HeldDuration}";
-							if (Button != -1) ret += $", Button: {Button}";
+							if (Button != -1) ret += $", Button: {Button}, Position: {Position}";
 							break;
+						case InputEventType.MouseMove:
 						case InputEventType.Scroll:
-							ret += $", Delta: {Delta}";
+							ret += $", Position {Position}, Delta: {Delta}";
 							break;
 					}
 					return ret;

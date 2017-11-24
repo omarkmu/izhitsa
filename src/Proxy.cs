@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Izhitsa.InputManagement;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Izhitsa {
@@ -18,6 +20,10 @@ namespace Izhitsa {
 		private static Proxy obj;
 		/// <summary>Is the application quitting?</summary>
 		private static bool quitting = false;
+		private static List<KeyCode> unregistered = new List<KeyCode> {
+			KeyCode.LeftShift,
+			KeyCode.RightShift
+		};
 
 		/**
 		 * <summary>
@@ -44,16 +50,45 @@ namespace Izhitsa {
 		}
 		/**
 		 * <summary>
+		 * Creates events for keys/events that aren't registered by OnGUI.
+		 * </summary>
+		 */
+		void Update(){
+			List<Event> events = new List<Event>();
+			foreach(KeyCode key in unregistered){
+				if (Input.GetKey(key)){
+					Event e = new Event();
+					e.type = EventType.KeyDown;
+					e.keyCode = key;
+					events.Add(e);
+				}
+				if (Input.GetKeyUp(key)){
+					Event e = new Event();
+					e.type = EventType.KeyUp;
+					e.keyCode = key;
+					events.Add(e);
+				}
+			}
+			foreach (Event e in events) InputManager.handleEvent(e);
+
+			Event mouse = new Event();
+			mouse.type = EventType.MouseMove;
+			mouse.mousePosition = Input.mousePosition;
+			InputManager.handleEvent(mouse);
+		}
+		/**
+		 * <summary>
 		 * Passes events to the InputManager so that they can be handled.
 		 * </summary>
 		 */
 		void OnGUI(){
 			Event e = Event.current;
 			EventType type = e.type;
-			if (type == EventType.Repaint || type == EventType.Ignore)
+			if (type == EventType.Repaint || type == EventType.Ignore || type == EventType.Used)
 				return;
 			if (type == EventType.KeyDown && e.keyCode == KeyCode.None) return;
-			InputManagement.InputManager.handleEvent(e);
+			e.mousePosition = Input.mousePosition;
+			InputManager.handleEvent(e);
 		}
 		/**
 		 * <summary>

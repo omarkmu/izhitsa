@@ -38,6 +38,9 @@ namespace Izhitsa {
 			///
 
 
+			private static Vector2? lastPosition;
+
+
 			/**
 			 * <summary>
 			 * Binds an action string to a `KeyCode`.
@@ -443,7 +446,8 @@ namespace Izhitsa {
 
 				int button = -1;
 				float heldDuration = 0.0f;
-				float delta = 0.0f;
+				Vector2 delta = Vector2.zero;
+				Vector2 position = ev.mousePosition;
 				KeyCode key = KeyCode.None;
 				InputEventType type = InputEventType.None;
 				
@@ -470,13 +474,15 @@ namespace Izhitsa {
 						break;
 					case EventType.MouseDown:
 						button = ev.button;
-						key = (KeyCode)(323 + button);
 						type = InputEventType.KeyDown;
 						if (button > 6){
 							key = KeyCode.None;
 							valid = false;
 							break;
+						} else {
+							key = (KeyCode)(323 + button);
 						}
+
 						if (heldKeys.ContainsKey(key)){
 							float time = heldKeys[key];
 							type = InputEventType.KeyHeld;
@@ -490,29 +496,44 @@ namespace Izhitsa {
 						break;
 					case EventType.MouseUp:
 						button = ev.button;
-						key = (KeyCode)(323 + ev.button);
 						type = InputEventType.KeyUp;
 						if (ev.button > 6){
 							key = KeyCode.None;
 							valid = false;
 							break;
+						} else {
+							key = (KeyCode)(323 + ev.button);
 						}
+
 						if (heldKeys.ContainsKey(key)){
 							float time = heldKeys[key];
 							heldKeys.Remove(key);
 							heldDuration = Time.time - time;
 						}
 						break;
+					case EventType.MouseMove:
+						if (ev.mousePosition != lastPosition){
+							type = InputEventType.MouseMove;
+							delta = (lastPosition == null) ?
+								Vector2.zero :
+								ev.mousePosition - (Vector2)lastPosition;
+							lastPosition = position = ev.mousePosition;
+						} else {
+							valid = false;
+						}
+						break;
 					case EventType.ScrollWheel:
 						type = InputEventType.Scroll;
-						delta = ev.delta.y;
+						delta = ev.delta;
 						break;
 				}
 
-				InputEvent iEvent = new InputEvent(button, heldDuration, key, type, delta);
+				InputEvent iEvent = new InputEvent(button, heldDuration, key, type, delta, position);
 
 				if (type == InputEventType.Scroll){
 					scrollEvent.Fire(iEvent);
+				} else if (type == InputEventType.MouseMove){
+					mouseMove.Fire(iEvent);
 				} else if (button != -1){
 					mouseEvent.Fire(iEvent);
 					if (mouseEvents.ContainsKey(button))
@@ -522,7 +543,10 @@ namespace Izhitsa {
 					if (keyEvents.ContainsKey(key))
 						keyEvents[key].Fire(iEvent);
 				}
-				input.Fire(iEvent);
+
+				if (valid || (!valid && ev.type != EventType.MouseMove)){
+					input.Fire(iEvent);
+				}
 
 				if (valid) registerEvent(iEvent);
 			}
@@ -574,7 +598,7 @@ namespace Izhitsa {
 					if (ev.Key == elem.Key){
 						float margin = ((seq.lastStepTime == 0.0f) ? 0 : Time.time - seq.lastStepTime);
 						float duration = ev.HeldDuration;
-						float delta = ev.Delta;
+						float delta = ev.Delta.y;
 						float last = Time.time - seq.lastStepTime;
 
 						bool inMargin = (seq.CurrentStep == 0 || (last >= elem.MinMargin && last <= elem.MaxMargin));

@@ -33,6 +33,9 @@ namespace Izhitsa {
 			/// <summary>Primary mouse event.</summary>
 			private static Broadcast<InputEvent> mouseEvent { get; }
 				= new Broadcast<InputEvent>();
+			/// <summary>Mouse move event.</summarY>
+			private static Broadcast<InputEvent> mouseMove { get; }
+				= new Broadcast<InputEvent>();
 			/// <summary>Contains mouse events.</summary>
 			private static Dictionary<int, Broadcast<InputEvent>> mouseEvents { get; }
 				= new Dictionary<int, Broadcast<InputEvent>>();
@@ -185,6 +188,19 @@ namespace Izhitsa {
 			 */
 			public static Signal<InputEvent> OnMouse(Action<InputEvent> func)
 				=> mouseEvent.Connect(func);
+			/**
+			 * <summary>
+			 * Connects an Action to a Broadcast which fires when the
+			 * mouse is moved, and returns a Signal.
+			 * </summary>
+			 * <param name="func">
+			 * The Action to connect.
+			 * </param>
+			 * <param name="param0">An InputEvent representing the input.
+			 * </param>
+			 */
+			public static Signal<InputEvent> OnMouseMove(Action<InputEvent> func)
+				=> mouseMove.Connect(func);
 			/**
 			 * <summary>
 			 * Connects an Action to a Broadcast which fires when the mouse scroll wheel

@@ -13,6 +13,8 @@ namespace Izhitsa {
 				KeyHeld,
 				/// <summary>The scroll wheel was scrolled.</summary>
 				Scroll,
+				/// <summary>The mouse was moved.</summary>
+				MouseMove,
 				/// <summary>Any key event occurred.</summary>
 				Any
 			}
