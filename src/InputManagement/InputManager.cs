@@ -335,6 +335,26 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
+			 * Returns a list of currently held down keys.
+			 * </summary>
+			 */
+			public static List<KeyCode> GetKeysDown(){
+				List<KeyCode> keys = new List<KeyCode>();
+				foreach (KeyCode k in heldKeys.Keys) keys.Add(k);
+				return keys;
+			}
+			/**
+			 * <summary>
+			 * Returns the amount of time the key has been held down,
+			 * or -1 if the key is not currently being held.
+			 * </summary>
+			 */
+			public static float GetKeyDuration(KeyCode key){
+				if (heldKeys.ContainsKey(key)) return Time.time - heldKeys[key];
+				return -1;
+			}
+			/**
+			 * <summary>
 			 * Checks if any of the keys bound to `<paramref name="action"/>` were pressed during the frame.
 			 * </summary>
 			 * <param name="action">The name of the key to check.
@@ -432,6 +452,7 @@ namespace Izhitsa {
 				boundKeys.Remove(action);
 			}
 			
+
 			/**
 			 * <summary>
 			 * Handles events, converts them into `InputEvent`s,
@@ -528,7 +549,20 @@ namespace Izhitsa {
 						break;
 				}
 
-				InputEvent iEvent = new InputEvent(button, heldDuration, key, type, delta, position);
+				Dictionary<KeyCode, float> keyTimes = new Dictionary<KeyCode, float>(heldKeys);
+				List<KeyCode> keys = new List<KeyCode>();
+				foreach(KeyCode k in keyTimes.Keys) keys.Add(k);
+
+				InputEvent iEvent = new InputEvent(
+					button,
+					heldDuration,
+					key,
+					type,
+					delta,
+					position,
+					keys,
+					keyTimes
+				);
 
 				if (type == InputEventType.Scroll){
 					scrollEvent.Fire(iEvent);
@@ -551,6 +585,25 @@ namespace Izhitsa {
 				if (valid) registerEvent(iEvent);
 			}
 
+
+			private static bool contains(List<KeyCode> keysDown, InputModifiers modifier){
+				switch (modifier){
+					case InputModifiers.Control:
+						return keysDown.Contains(KeyCode.LeftControl) || keysDown.Contains(KeyCode.RightControl);
+					case InputModifiers.Alt:
+						return keysDown.Contains(KeyCode.LeftAlt) || keysDown.Contains(KeyCode.RightAlt);
+					case InputModifiers.Shift:
+						return keysDown.Contains(KeyCode.LeftShift) || keysDown.Contains(KeyCode.RightShift);
+					case InputModifiers.Windows:
+						return keysDown.Contains(KeyCode.LeftWindows) || keysDown.Contains(KeyCode.RightWindows);
+					case InputModifiers.Command:
+						return keysDown.Contains(KeyCode.LeftCommand) || keysDown.Contains(KeyCode.RightCommand);
+					case InputModifiers.Apple:
+						return keysDown.Contains(KeyCode.LeftApple) || keysDown.Contains(KeyCode.RightApple);
+					default:
+						return false;
+				}
+			}
 			/**
 			 * <summary>
 			 * Returns the `InterruptFlags` which are true for the
@@ -561,8 +614,12 @@ namespace Izhitsa {
 			 * <param name="elem">The `SequenceElement`.
 			 * </param>
 			 */
-			private static InterruptFlags getInterruptFlags(InputEvent ev, SequenceElement elem){
+			private static InterruptFlags getInterruptFlags(InputEvent ev, SequenceElement elem, ref bool isModifier){
 				InterruptFlags flags = InterruptFlags.None;
+				InputModifiers modifiers = elem.InputModifiers;
+
+				if (ev.Type == InputEventType.MouseMove) flags = InterruptFlags.MouseMove;
+				if (ev.Type == InputEventType.Scroll) flags = InterruptFlags.Scroll;
 				if (ev.Key == elem.Key){
 					if (ev.Type == InputEventType.KeyUp) flags = InterruptFlags.SameKeyUp;
 					if (ev.Type == InputEventType.KeyDown) flags = InterruptFlags.SameKeyDown;
@@ -571,10 +628,147 @@ namespace Izhitsa {
 					if (ev.Type == InputEventType.KeyUp) flags = InterruptFlags.DifferentKeyUp;
 					if (ev.Type == InputEventType.KeyDown) flags = InterruptFlags.DifferentKeyDown;
 					if (ev.Type == InputEventType.KeyHeld) flags = InterruptFlags.DifferentKeyHeld;
+					if ((elem.InterruptFlags & InterruptFlags.NoIgnoreModifiers) != 0) return flags;
+
+					if (modifiers != InputModifiers.None){
+						if ((modifiers & InputModifiers.Control) != 0){
+							if (ev.Key == KeyCode.LeftControl || ev.Key == KeyCode.RightControl){
+								isModifier = true;
+							}
+						}
+						if ((modifiers & InputModifiers.Alt) != 0){
+							if (ev.Key == KeyCode.LeftAlt || ev.Key == KeyCode.RightAlt){
+								isModifier = true;
+							}
+						}
+						if ((modifiers & InputModifiers.Shift) != 0){
+							if (ev.Key == KeyCode.LeftShift || ev.Key == KeyCode.RightShift){
+								isModifier = true;
+							}
+						}
+						if ((modifiers & InputModifiers.Windows) != 0){
+							if (ev.Key == KeyCode.LeftWindows || ev.Key == KeyCode.RightWindows){
+								isModifier = true;
+							}
+						}
+						if ((modifiers & InputModifiers.Command) != 0){
+							if (ev.Key == KeyCode.LeftCommand || ev.Key == KeyCode.RightCommand){
+								isModifier = true;
+							}
+						}
+						if ((modifiers & InputModifiers.Apple) != 0){
+							if (ev.Key == KeyCode.LeftApple || ev.Key == KeyCode.RightApple){
+								isModifier = true;
+							}
+						}
+					}
+					foreach (KeyCode key in elem.modifiers){
+						if (ev.Key == key){
+							isModifier = true;
+							break;
+						}
+					}
 				}
-				if (ev.Type == InputEventType.MouseMove) flags = InterruptFlags.MouseMove;
-				if (ev.Type == InputEventType.Scroll) flags = InterruptFlags.Scroll;
+
+				if (isModifier){
+					switch (flags){
+						case InterruptFlags.DifferentKeyUp:
+							return InterruptFlags.ModifierKeyUp;
+						case InterruptFlags.DifferentKeyDown:
+							return InterruptFlags.ModifierKeyDown;
+						case InterruptFlags.DifferentKeyHeld:
+							return InterruptFlags.ModifierKeyHeld;
+					}
+				}
 				return flags;
+			}
+			private static bool valid(InputEvent ev, SequenceElement elem, out bool isModifier){
+				bool oneDown = false;
+				bool noModifiers = true;
+				isModifier = false;
+				InputModifiers modifiers = elem.InputModifiers;
+				InputModifierType type = elem.ModifierType;
+				List<KeyCode> keysDown = ev.KeysDown;
+				Dictionary<KeyCode, float> keyDurations = ev.KeyTimes;
+
+				InterruptFlags flags = getInterruptFlags(ev, elem, ref isModifier);
+				if ((elem.InterruptFlags & flags) != flags) {
+					if (ev.Key == elem.Key){
+						if (modifiers != InputModifiers.None){
+							noModifiers = false;
+							if ((modifiers & InputModifiers.Control) != 0){
+								if (!contains(keysDown, InputModifiers.Control)){
+									if (type == InputModifierType.All) return false;
+								} else {
+									if (type == InputModifierType.One && oneDown) return false;
+									oneDown = true;
+								}
+							}
+							if ((modifiers & InputModifiers.Alt) != 0){
+								if (!contains(keysDown, InputModifiers.Alt)){
+									if (type == InputModifierType.All) return false;
+								} else {
+									if (type == InputModifierType.One && oneDown) return false;
+									oneDown = true;
+								}
+							}
+							if ((modifiers & InputModifiers.Shift) != 0){
+								if (!contains(keysDown, InputModifiers.Shift)){
+									if (type == InputModifierType.All) return false;
+								} else {
+									if (type == InputModifierType.One && oneDown) return false;
+									oneDown = true;
+								}
+							}
+							if ((modifiers & InputModifiers.Windows) != 0){
+								if (!contains(keysDown, InputModifiers.Windows)){
+									if (type == InputModifierType.All) return false;
+								} else {
+									if (type == InputModifierType.One && oneDown) return false;
+									oneDown = true;
+								}
+							}
+							if ((modifiers & InputModifiers.Command) != 0){
+								if (!contains(keysDown, InputModifiers.Command)){
+									if (type == InputModifierType.All) return false;
+								} else {
+									if (type == InputModifierType.One && oneDown) return false;
+									oneDown = true;
+								}
+							}
+							if ((modifiers & InputModifiers.Apple) != 0){
+								if (!contains(keysDown, InputModifiers.Apple)){
+									if (type == InputModifierType.All) return false;
+								} else {
+									if (type == InputModifierType.One && oneDown) return false;
+									oneDown = true;
+								}
+							}
+						}
+
+						float min = float.MinValue;
+						foreach (KeyCode key in elem.modifiers){
+							noModifiers = false;
+							if (keyDurations.ContainsKey(key)){
+								if (type == InputModifierType.One && oneDown)
+									return false;
+								if (type == InputModifierType.Ordered && keyDurations[key] < min)
+									return false;
+								min = keyDurations[key];
+								oneDown = true;
+							} else {
+								if (type == InputModifierType.All) return false;
+								if (type == InputModifierType.Ordered) return false;
+							}
+						}
+						return noModifiers ? true : oneDown;
+					} else {
+						return true;
+					}
+				} else {
+					isModifier = false;
+				}
+				return false;
 			}
 			/**
 			 * <summary>
@@ -589,14 +783,16 @@ namespace Izhitsa {
 					if (seq == null) continue;
 					if (seq.MaxStep < 0) continue;
 
+					bool isModifier;
 					SequenceElement elem = seq.Current;
-					InterruptFlags flags = getInterruptFlags(ev, elem);
-					if ((elem.InterruptFlags & flags) == flags){
-						seq.Reset();
+					if (!valid(ev, elem, out isModifier)){
+						if (!isModifier)
+							seq.Reset();
 						continue;
 					}
+					if (isModifier) continue;
 
-					if (ev.Key == elem.Key){
+					if (ev.Key == elem.Key && ev.Type == elem.Type){
 						float duration = ev.HeldDuration;
 						float deltaX = ev.Delta.x;
 						float deltaY = ev.Delta.y;
@@ -609,12 +805,10 @@ namespace Izhitsa {
 							(deltaY >= elem.MinDeltaY && deltaY <= elem.MaxDeltaY);
 
 						if (inDuration && inMargin && inDelta){
-							if (ev.Type == elem.Type){
-								seq.lastStepTime = Time.time;
-								if (seq.CurrentStep++ == seq.MaxStep){
-									Broadcast bc = (seqEvents.ContainsKey(name)) ? seqEvents[name] : null;
-									bc?.Fire();
-								}
+							seq.lastStepTime = Time.time;
+							if (seq.CurrentStep++ == seq.MaxStep){
+								Broadcast bc = (seqEvents.ContainsKey(name)) ? seqEvents[name] : null;
+								bc?.Fire();
 							}
 						} else if (duration > elem.MaxDuration || !inMargin || !inDelta){
 							seq.Reset();

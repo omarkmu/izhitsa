@@ -1,5 +1,6 @@
 using static Izhitsa.InputManagement.InputManager;
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Izhitsa {
@@ -183,6 +184,18 @@ namespace Izhitsa {
 			 */
 			public Sequence Set(InputEventType value){
 				foreach (SequenceElement elem in elements) elem.Type = value;
+				return this;
+			}
+			/**
+			 * <summary>
+			 * Sets Modifiers to `<paramref name="value"/>` in all of the sequence's
+			 * `<see cref="SequenceElement"/>`s, and returns the sequence.
+			 * </summary>
+			 * <param name="value">The value to assign to the property.</param>
+			 * 
+			 */
+			public Sequence Set(List<KeyCode> value){
+				foreach (SequenceElement elem in elements) elem.Modifiers = value;
 				return this;
 			}
 		}

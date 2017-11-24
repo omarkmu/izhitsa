@@ -1,4 +1,5 @@
 using static Izhitsa.InputManagement.InputManager;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Izhitsa {
@@ -9,9 +10,11 @@ namespace Izhitsa {
 		 * </summary>
 		 */
 		public class SequenceElement {
+			/// <summary>InputModifiers to be checked while checking the sequence.</summary>
+			public InputModifiers InputModifiers { get; set; }
 			/// <summary>Flags used to check if the sequence should be interrupted.
 			/// `<see cref="InterruptFlags.DifferentKeyDown"/>` by default.</summary>
-			public InterruptFlags InterruptFlags { get; set; } = InterruptFlags.DifferentKeyDown;
+			public InterruptFlags InterruptFlags { get; set; }
 			/// <summary>The KeyCode to check. `<see cref="KeyCode.None"/>` by default.</summary>
 			public KeyCode Key { get; set; } = KeyCode.None;
 			/// <summary>The maximum mouse X delta for the sequence to be valid.
@@ -37,13 +40,27 @@ namespace Izhitsa {
 			/// <summary>The minimum time which has to pass since the last element in the sequence for the element to be valid.
 			/// `0` by default.</summary>
 			public float MinMargin { get; set; } = 0.0f;
+			/// <summary>Modifier keys which should be down at the time of this event.</summary>
+			public List<KeyCode> Modifiers {
+				get { return new List<KeyCode>(modifiers); }
+				set {
+					if (value == null){
+						modifiers = new KeyCode[0];
+						return;
+					}
+					modifiers = value.ToArray();
+				}
+			}
+			/// <summary>InputModifierType which describes how modifiers should be handled.
+			/// `<see cref="InputModifierType.All"/>` by default.</summary>
+			public InputModifierType ModifierType { get; set; }
 			/// <summary>The element's input type. `<see cref="InputEventType.KeyDown"/>` by default.</summary>
 			public InputEventType Type { get; set; } = InputEventType.KeyDown;
+
+
+			internal KeyCode[] modifiers;
 			
-			/**
-			 * <summary>Creates a default SequenceElement.</summary>
-			 */
-			public SequenceElement(){}
+
 			/**
 			 * <summary>
 			 * Creates a SequenceElement.
@@ -73,12 +90,19 @@ namespace Izhitsa {
 			 * </param>
 			 * <param name="minYDelta">The minimum mouse Y delta for the sequence to be valid.
 			 * </param>
+			 * <param name="modifiers">Keys to use as modifiers for the element.
+			 * </param>
+			 * <param name="inputModifiers">InputModifiers to use as modifiers for the element.
+			 * </param>
+			 * <param name="modifierType">The modifier type, for `<paramref name="inputModifiers"/>`.
+			 * </param>
 			 */
-			public SequenceElement(KeyCode key, InputEventType type = InputEventType.KeyDown,
+			public SequenceElement(KeyCode key = KeyCode.None, InputEventType type = InputEventType.KeyDown,
 				InterruptFlags flags = InterruptFlags.DifferentKeyDown, float minDuration = 0.0f,
 				float maxDuration = float.MaxValue, float minMargin = 0.0f, float maxMargin = float.MaxValue,
 				float minXDelta = float.MinValue, float maxXDelta = float.MaxValue, float minYDelta = float.MinValue,
-				float maxYDelta = float.MaxValue
+				float maxYDelta = float.MaxValue, List<KeyCode> modifiers = null, InputModifiers inputModifiers = InputModifiers.None,
+				InputModifierType modifierType = InputModifierType.All
 			){
 				Key = key;
 				Type = type;
@@ -91,6 +115,9 @@ namespace Izhitsa {
 				MaxDeltaX = maxXDelta;
 				MinDeltaY = minYDelta;
 				MaxDeltaY = maxYDelta;
+				Modifiers = modifiers;
+				InputModifiers = inputModifiers;
+				ModifierType = modifierType;
 			}
 		}
 	}

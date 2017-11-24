@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Izhitsa {
@@ -13,6 +14,10 @@ namespace Izhitsa {
 				public float HeldDuration { get; internal set; }
 				/// <summary>The key related to this event.</summary>
 				public KeyCode Key { get; internal set; }
+				/// <summary>The time the keys in `<see cref="KeysDown"/>` were initially pressed.</summary>
+				public Dictionary<KeyCode, float> KeyTimes { get; internal set; }
+				/// <summary>The keys which were down at the time of the event.</summary>
+				public List<KeyCode> KeysDown { get; internal set; }
 				/// <summary>The mouse position, on applicable event types.</summary>
 				public Vector2 Position { get; internal set; }
 				/// <summary>The input type of this event.</summary>
@@ -25,7 +30,8 @@ namespace Izhitsa {
 				 * </summary>
 				 */
 				public InputEvent(int button, float heldDuration, KeyCode key,
-					InputEventType type, Vector2 delta, Vector2 position
+					InputEventType type, Vector2 delta, Vector2 position,
+					List<KeyCode> keysDown, Dictionary<KeyCode, float> keyTimes
 				){
 					Button = button;
 					HeldDuration = heldDuration;
@@ -33,6 +39,8 @@ namespace Izhitsa {
 					Type = type;
 					Delta = delta;
 					Position = position;
+					KeysDown = keysDown;
+					KeyTimes = keyTimes;
 				}
 
 
