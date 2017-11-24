@@ -22,6 +22,8 @@ namespace Izhitsa {
 				SameKeyHeld = 32,
 				/// <summary>When the mouse wheel is scrolled.</summary>
 				Scroll = 64,
+				/// <summary>When the mouse is moved.</summary>
+				MouseMove = 128,
 				/// <summary>When any event occurs on a different key.</summary>
 				DifferentKey = DifferentKeyUp | DifferentKeyDown | DifferentKeyHeld,
 				/// <summary>When any event occurs on the same key.</summary>

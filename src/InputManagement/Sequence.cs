@@ -130,6 +130,22 @@ namespace Izhitsa {
 						foreach (SequenceElement elem in elements)
 							elem.MinMargin = value;
 						break;
+					case "MinDeltaX":
+						foreach (SequenceElement elem in elements)
+							elem.MinDeltaX = value;
+						break;
+					case "MinDeltaY":
+						foreach (SequenceElement elem in elements)
+							elem.MinDeltaY = value;
+						break;
+					case "MaxDeltaX":
+						foreach (SequenceElement elem in elements)
+							elem.MaxDeltaX = value;
+						break;
+					case "MaxDeltaY":
+						foreach (SequenceElement elem in elements)
+							elem.MaxDeltaY = value;
+						break;
 					default:
 						throw new ArgumentException($"Invalid property name: \"{propName}\"" +
 						" for type \"float\".");

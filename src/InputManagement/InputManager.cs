@@ -567,12 +567,13 @@ namespace Izhitsa {
 					if (ev.Type == InputEventType.KeyUp) flags = InterruptFlags.SameKeyUp;
 					if (ev.Type == InputEventType.KeyDown) flags = InterruptFlags.SameKeyDown;
 					if (ev.Type == InputEventType.KeyHeld) flags = InterruptFlags.SameKeyHeld;
-					if (ev.Type == InputEventType.Scroll) flags = InterruptFlags.Scroll;
 				} else {
 					if (ev.Type == InputEventType.KeyUp) flags = InterruptFlags.DifferentKeyUp;
 					if (ev.Type == InputEventType.KeyDown) flags = InterruptFlags.DifferentKeyDown;
 					if (ev.Type == InputEventType.KeyHeld) flags = InterruptFlags.DifferentKeyHeld;
 				}
+				if (ev.Type == InputEventType.MouseMove) flags = InterruptFlags.MouseMove;
+				if (ev.Type == InputEventType.Scroll) flags = InterruptFlags.Scroll;
 				return flags;
 			}
 			/**
@@ -596,14 +597,16 @@ namespace Izhitsa {
 					}
 
 					if (ev.Key == elem.Key){
-						float margin = ((seq.lastStepTime == 0.0f) ? 0 : Time.time - seq.lastStepTime);
 						float duration = ev.HeldDuration;
-						float delta = ev.Delta.y;
+						float deltaX = ev.Delta.x;
+						float deltaY = ev.Delta.y;
 						float last = Time.time - seq.lastStepTime;
 
 						bool inMargin = (seq.CurrentStep == 0 || (last >= elem.MinMargin && last <= elem.MaxMargin));
 						bool inDuration = (duration >= elem.MinDuration && duration <= elem.MaxDuration);
-						bool inDelta = (delta >= elem.MinDelta && delta <= elem.MaxDelta);
+						bool inDelta =
+							(deltaX >= elem.MinDeltaX && deltaX <= elem.MaxDeltaX) &&
+							(deltaY >= elem.MinDeltaY && deltaY <= elem.MaxDeltaY);
 
 						if (inDuration && inMargin && inDelta){
 							if (ev.Type == elem.Type){
