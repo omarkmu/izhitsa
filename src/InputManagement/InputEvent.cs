@@ -24,6 +24,23 @@ namespace Izhitsa {
 					Type = type;
 					Delta = delta;
 				}
+
+
+				public override string ToString(){
+					string ret = $"Type: {Type}";
+					switch (Type){
+						case InputEventType.KeyUp:
+						case InputEventType.KeyDown:
+						case InputEventType.KeyHeld:
+							ret += $", Key: {Key}, HeldDuration: {HeldDuration}";
+							if (Button != -1) ret += $", Button: {Button}";
+							break;
+						case InputEventType.Scroll:
+							ret += $", Delta: {Delta}";
+							break;
+					}
+					return ret;
+				}
 			}
 		}
 	}
