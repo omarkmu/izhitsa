@@ -532,7 +532,7 @@ namespace Izhitsa {
 
 				if (type == InputEventType.Scroll){
 					scrollEvent.Fire(iEvent);
-				} else if (type == InputEventType.MouseMove){
+				} else if (valid && type == InputEventType.MouseMove){
 					mouseMove.Fire(iEvent);
 				} else if (button != -1){
 					mouseEvent.Fire(iEvent);

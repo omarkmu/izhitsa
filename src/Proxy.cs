@@ -20,10 +20,12 @@ namespace Izhitsa {
 		private static Proxy obj;
 		/// <summary>Is the application quitting?</summary>
 		private static bool quitting = false;
+		/// <summary>KeyCodes which aren't registered by OnGUI.</summary>
 		private static List<KeyCode> unregistered = new List<KeyCode> {
 			KeyCode.LeftShift,
 			KeyCode.RightShift
 		};
+
 
 		/**
 		 * <summary>
@@ -33,6 +35,8 @@ namespace Izhitsa {
 		static Proxy() {
 			createProxy();
 		}
+
+
 		/**
 		 * <summary>
 		 * Sets up Singleton and deletes any Main components which aren't
@@ -54,27 +58,28 @@ namespace Izhitsa {
 		 * </summary>
 		 */
 		void Update(){
+			Event e;
 			List<Event> events = new List<Event>();
 			foreach(KeyCode key in unregistered){
 				if (Input.GetKey(key)){
-					Event e = new Event();
+					e = new Event();
 					e.type = EventType.KeyDown;
 					e.keyCode = key;
 					events.Add(e);
 				}
 				if (Input.GetKeyUp(key)){
-					Event e = new Event();
+					e = new Event();
 					e.type = EventType.KeyUp;
 					e.keyCode = key;
 					events.Add(e);
 				}
 			}
-			foreach (Event e in events) InputManager.handleEvent(e);
+			foreach (Event ev in events) InputManager.handleEvent(ev);
 
-			Event mouse = new Event();
-			mouse.type = EventType.MouseMove;
-			mouse.mousePosition = Input.mousePosition;
-			InputManager.handleEvent(mouse);
+			e = new Event();
+			e.type = EventType.MouseMove;
+			e.mousePosition = Input.mousePosition;
+			InputManager.handleEvent(e);
 		}
 		/**
 		 * <summary>
@@ -109,12 +114,14 @@ namespace Izhitsa {
 			quitting = true;
 		}
 
+
 		/**
 		 * <summary>
 		 * Used to call the static constructor manually, if necessary.
 		 * </summary>
 		 */
 		public static void Activate(){}
+
 		/**
 		 * <summary>
 		 * Starts a Coroutine using the proxy object.
@@ -123,6 +130,7 @@ namespace Izhitsa {
 		 * </param>
 		 */
 		internal static Coroutine startCoroutine(IEnumerator e) => obj?.StartCoroutine(e);
+
 		/**
 		 * <summary>
 		 * Creates a GameObject and attaches a Proxy script to it.
