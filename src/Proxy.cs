@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using System.Reflection;
 using UnityEngine;
 
+[assembly: AssemblyProduct("Izhitsa")]
+[assembly: AssemblyTitle("Utility scripts for Unity.")]
+[assembly: AssemblyCopyright("(c) 2017 Omar M")]
 [assembly: AssemblyVersion("0.0.0")]
 namespace Izhitsa {
 	/**
