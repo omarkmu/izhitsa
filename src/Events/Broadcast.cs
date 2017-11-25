@@ -28,7 +28,7 @@ namespace Izhitsa {
 			 <summary>
 			 Creates a new Broadcast.
 			 </summary>
-			 <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
+			 <param name="name">The name of the Broadcast, for <see cref="EventManager"/> registering.
 			 </param>
 			 <param name="unregistered">If this is true, the Broadcast will not be registered with
 			 the EventManager.
@@ -57,7 +57,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Connects an Action and returns a `<see cref="Signal"/>`.
+			 Connects an Action and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="func">The Action to connect.
 			 </param>
@@ -69,7 +69,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Connects an Action, and returns a `<see cref="Signal"/>`.
+			 Connects an Action, and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="func">The Action to connect.
 			 </param>
@@ -78,7 +78,7 @@ namespace Izhitsa {
 			
 			/**
 			 <summary>
-			 Disconnects a `<see cref="Signal"/>`.
+			 Disconnects a <see cref="Signal"/>.
 			 </summary>
 			 <param name="sig">The Signal to disconnect.</param>
 			 */

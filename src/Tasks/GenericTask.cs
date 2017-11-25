@@ -7,7 +7,7 @@ namespace Izhitsa {
 		namespace Generic {
 			/**
 			 <summary>
-			 The generic form of `<see cref="Task"/>`, for handling and controlling Coroutines.
+			 The generic form of <see cref="Task"/>, for handling and controlling Coroutines.
 			 The provided type is used for the Result type, and throws an exception while
 			 running if the IEnumerator's return type is incompatible.
 			 </summary>
@@ -28,7 +28,7 @@ namespace Izhitsa {
 				 </param>
 				 <exception cref="System.Exception">Thrown if the task is already running or waiting.
 				 Exceptions can also be thrown from running the Task, depending on the value of
-				 `<see cref="Izhitsa.Tasks.Task.SuppressExceptions"/>`.
+				 <see cref="Izhitsa.Tasks.Task.SuppressExceptions"/>.
 				 </exception>
 				 */
 				public Task(IEnumerator enumerator) : base(enumerator) {}

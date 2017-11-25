@@ -5,7 +5,7 @@ namespace Izhitsa {
 	namespace Utility {
 		/**
 		 <summary>
-		 Serves as a wrapper for `<see cref="UnityEngine.Random"/>` and
+		 Serves as a wrapper for <see cref="UnityEngine.Random"/> and
 		 provides extended functionality.
 		 </summary>
 		 */
@@ -45,19 +45,19 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns a random integer between `min` [inclusive] and `max` [inclusive].
+			 Returns a random integer between <paramref name="min"/> [inclusive] and <paramref name="max"/> [inclusive].
 			 </summary>
 			 */
 			public static int Rand(int min, int max) => UnityEngine.Random.Range(min, max + 1);
 			/**
 			 <summary>
-			 Returns a random float between `min` [inclusive] and `max` [inclusive].
+			 Returns a random float between <paramref name="min"/> [inclusive] and <paramref name="max"/> [inclusive].
 			 </summary>
 			 */
 			public static float Rand(float min, float max) => UnityEngine.Random.Range(min, max);
 			/**
 			 <summary>
-			 Returns a random color from black to `color`.
+			 Returns a random color from black to <paramref name="color"/>.
 			 </summary>
 			 <param name="color">The "maximum" color.
 			 </param>
@@ -124,7 +124,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns a random element from a List of type `T`.
+			 Returns a random element from a List of type T.
 			 </summary>
 			 <param name="list">A list to choose from.
 			 </param>

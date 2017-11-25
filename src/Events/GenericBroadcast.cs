@@ -5,7 +5,7 @@ namespace Izhitsa {
 	namespace Events {
 		namespace Generic {
 			/**
-			 <summary>Generic form of `<see cref="Broadcast"/>`.</summary>
+			 <summary>Generic form of <see cref="Broadcast"/>.</summary>
 			 */
 			public class Broadcast<T> {
 				/// <summary>The name of the Broadcast. (Read Only)</summary>
@@ -26,7 +26,7 @@ namespace Izhitsa {
 				 <summary>
 				 Creates a new Broadcast.
 				 </summary>
-				 <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
+				 <param name="name">The name of the Broadcast, for <see cref="EventManager"/> registering.
 				 </param>
 				 <param name="unregistered">If this is true, the Broadcast will not be registered with
 				 EventManager.
@@ -66,7 +66,7 @@ namespace Izhitsa {
 
 				/**
 				 <summary>
-				 Disconnects a `<see cref="Signal"/>`.
+				 Disconnects a <see cref="Signal"/>.
 				 </summary>
 				 <param name="sig">The Signal to disconnect.</param>
 				 */
@@ -75,7 +75,7 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 <summary>Generic form of `<see cref="Broadcast"/>`.</summary>
+			 <summary>Generic form of <see cref="Broadcast"/>.</summary>
 			 */
 			public class Broadcast<T, T2> {
 				/// <summary>The name of the Broadcast. (Read Only)</summary>
@@ -96,7 +96,7 @@ namespace Izhitsa {
 				 <summary>
 				 Creates a new Broadcast.
 				 </summary>
-				 <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
+				 <param name="name">The name of the Broadcast, for <see cref="EventManager"/> registering.
 				 </param>
 				 <param name="unregistered">If this is true, the Broadcast will not be registered with
 				 EventManager.
@@ -136,7 +136,7 @@ namespace Izhitsa {
 
 				/**
 				 <summary>
-				 Disconnects a `<see cref="Signal"/>`.
+				 Disconnects a <see cref="Signal"/>.
 				 </summary>
 				 <param name="sig">The Signal to disconnect.</param>
 				 */
@@ -145,7 +145,7 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 <summary>Generic form of `<see cref="Broadcast"/>`.</summary>
+			 <summary>Generic form of <see cref="Broadcast"/>.</summary>
 			 */
 			public class Broadcast<T, T2, T3> {
 				/// <summary>The name of the Broadcast. (Read Only)</summary>
@@ -165,7 +165,7 @@ namespace Izhitsa {
 				 <summary>
 				 Creates a new Broadcast.
 				 </summary>
-				 <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
+				 <param name="name">The name of the Broadcast, for <see cref="EventManager"/> registering.
 				 </param>
 				 <param name="unregistered">If this is true, the Broadcast will not be registered with
 				 EventManager.
@@ -205,7 +205,7 @@ namespace Izhitsa {
 
 				/**
 				 <summary>
-				 Disconnects a `<see cref="Signal"/>`.
+				 Disconnects a <see cref="Signal"/>.
 				 </summary>
 				 <param name="sig">The Signal to disconnect.</param>
 				 */
@@ -214,7 +214,7 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 <summary>Generic form of `<see cref="Broadcast"/>`.</summary>
+			 <summary>Generic form of <see cref="Broadcast"/>.</summary>
 			 */
 			public class Broadcast<T, T2, T3, T4> {
 				/// <summary>The name of the Broadcast. (Read Only)</summary>
@@ -235,7 +235,7 @@ namespace Izhitsa {
 				 <summary>
 				 Creates a new Broadcast.
 				 </summary>
-				 <param name="name">The name of the Broadcast, for `<see cref="EventManager"/>` registering.
+				 <param name="name">The name of the Broadcast, for <see cref="EventManager"/> registering.
 				 </param>
 				 <param name="unregistered">If this is true, the Broadcast will not be registered with
 				 EventManager.
@@ -275,7 +275,7 @@ namespace Izhitsa {
 
 				/**
 				 <summary>
-				 Disconnects a `<see cref="Signal"/>`.
+				 Disconnects a <see cref="Signal"/>.
 				 </summary>
 				 <param name="sig">The Signal to disconnect.</param>
 				 */

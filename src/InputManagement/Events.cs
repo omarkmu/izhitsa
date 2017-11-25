@@ -53,7 +53,7 @@ namespace Izhitsa {
 
 			/**
 			 <summary>
-			 Connects `<paramref name="func"/>` to an event which fires on any input.
+			 Connects <paramref name="func"/> to an event which fires on any input.
 			 </summary>
 			 <param name="param0">An InputEvent representing the input.
 			 </param>
@@ -62,7 +62,7 @@ namespace Izhitsa {
 				=> input.Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a Broadcast which fires when `<paramref name="action"/>` is bound
+			 Connects an Action to a Broadcast which fires when <paramref name="action"/> is bound
 			 to a key, and returns a Signal.
 			 </summary>
 			 <param name="action">The name of the bound key to connect to.
@@ -80,7 +80,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Connects `<paramref name="func"/>` to an event which fires when a key is bound.
+			 Connects <paramref name="func"/> to an event which fires when a key is bound.
 			 </summary>
 			 <param name="param0">The name of the key that was bound.
 			 </param>
@@ -92,7 +92,7 @@ namespace Izhitsa {
 			/**
 			 <summary>
 			 Connects an Action to a Broadcast which fires when a key event happens on
-			 `<paramref name="key"/>`, and returns a Signal.
+			 <paramref name="key"/>, and returns a Signal.
 			 </summary>
 			 <param name="key">The key to listen for.
 			 </param>
@@ -109,7 +109,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Connects `<paramref name="func"/>` to an event which fires on any key input.
+			 Connects <paramref name="func"/> to an event which fires on any key input.
 			 </summary>
 			 <param name="param0">An InputEvent representing the input.
 			 </param>
@@ -118,7 +118,7 @@ namespace Izhitsa {
 				=> keyEvent.Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a Broadcast which fires when `<paramref name="action"/>` is bound
+			 Connects an Action to a Broadcast which fires when <paramref name="action"/> is bound
 			 to a key, and returns a Signal.
 			 </summary>
 			 <param name="action">The name of the bound key to connect to.
@@ -153,7 +153,7 @@ namespace Izhitsa {
 			/**
 			 <summary>
 			 Connects an Action to a Broadcast which fires when mouse button
-			 `<paramref name="button"/>` is interacted with, and returns a Signal.
+			 <paramref name="button"/> is interacted with, and returns a Signal.
 			 </summary>
 			 <param name="button">The mouse button.
 			 </param>
@@ -210,9 +210,9 @@ namespace Izhitsa {
 				=> scrollEvent.Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 bound to the name `seqName` is completed successfully, and returns
-			 a `<see cref="Signal"/>`.
+			 Connects an Action to a Broadcast which fires when a <see cref="InputManager.Sequence"/>
+			 bound to the name <paramref name="seqName"/> is completed successfully, and returns
+			 a <see cref="Signal"/>.
 			 </summary>
 			 <param name="seqName">The name of the sequence.
 			 </param>
@@ -228,8 +228,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 is bound to the name `seqName`, and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a Broadcast which fires when a <see cref="InputManager.Sequence"/>
+			 is bound to the name <paramref name="seqName"/>, and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="seqName">The name to listen for.
 			 </param>
@@ -245,8 +245,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 is bound, and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a Broadcast which fires when a <see cref="InputManager.Sequence"/>
+			 is bound, and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="func">
 			 The Action to connect.
@@ -259,8 +259,8 @@ namespace Izhitsa {
 				=> seqBound.Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 is unbound from the name `seqName`, and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a Broadcast which fires when a <see cref="InputManager.Sequence"/>
+			 is unbound from the name <paramref name="seqName"/>, and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="seqName">The name to listen for.
 			 </param>
@@ -277,8 +277,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 is unbound, and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a Broadcast which fires when a <see cref="InputManager.Sequence"/>
+			 is unbound, and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="func">
 			 The Action to connect.

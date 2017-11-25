@@ -12,12 +12,12 @@ namespace Izhitsa {
 			/// <summary>A container for all broadcasts.</summary>
 			private static Dictionary<string, object> broadcasts = new Dictionary<string, object>();
 
-			/// <summary>Returns true if a Broadcast with the name `<paramref name="name"/>` exists.</summary>
+			/// <summary>Returns true if a Broadcast with the name <paramref name="name"/> exists.</summary>
 			public static bool BroadcastExists(string name) => broadcasts.ContainsKey(name);
 
 			/**
 			 <summary>
-			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a <see cref="Broadcast"/> and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="name">The name of the Broadcast to connect to. 
 			 </param>
@@ -28,7 +28,7 @@ namespace Izhitsa {
 				=> getBroadcast(name).Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a <see cref="Broadcast"/> and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="name">The name of the Broadcast to connect to.
 			 </param>
@@ -39,7 +39,7 @@ namespace Izhitsa {
 				=> getBroadcast(name).Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a <see cref="Broadcast"/> and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="name">The name of the Broadcast to connect to.
 			 </param>
@@ -50,7 +50,7 @@ namespace Izhitsa {
 				=> getBroadcast<T>(name).Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a <see cref="Broadcast"/> and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="name">The name of the Broadcast to connect to.
 			 </param>
@@ -61,7 +61,7 @@ namespace Izhitsa {
 				=> getBroadcast<T, T2>(name).Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a <see cref="Broadcast"/> and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="name">The name of the Broadcast to connect to.
 			 </param>
@@ -72,7 +72,7 @@ namespace Izhitsa {
 				=> getBroadcast<T, T2, T3>(name).Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 Connects an Action to a <see cref="Broadcast"/> and returns a <see cref="Signal"/>.
 			 </summary>
 			 <param name="name">The name of the Broadcast to connect to.
 			 </param>
@@ -85,7 +85,7 @@ namespace Izhitsa {
 
 			/**
 			 <summary>
-			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 Fires the <see cref="Broadcast"/> which matches the <paramref name="name"/>.
 			 </summary>
 			 <param name="name">The name of the Broadcast to fire.
 			 </param>
@@ -99,8 +99,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
-			 All arguments after `name` are fired with the Broadcast.
+			 Fires the <see cref="Broadcast"/> which matches the <paramref name="name"/>.
+			 All arguments after <paramref name="name"/> are fired with the Broadcast.
 			 </summary>
 			 <param name="name">The name of the Broadcast to fire.
 			 </param>
@@ -112,8 +112,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
-			 All arguments after `name` are fired with the Broadcast.
+			 Fires the <see cref="Broadcast"/> which matches the <paramref name="name"/>.
+			 All arguments after <paramref name="name"/> are fired with the Broadcast.
 			 </summary>
 			 <param name="name">The name of the Broadcast to fire.
 			 </param>
@@ -125,8 +125,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
-			 All arguments after `name` are fired with the Broadcast.
+			 Fires the <see cref="Broadcast"/> which matches the <paramref name="name"/>.
+			 All arguments after <paramref name="name"/> are fired with the Broadcast.
 			 </summary>
 			 <param name="name">The name of the Broadcast to fire.
 			 </param>
@@ -138,8 +138,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
-			 All arguments after `name` are fired with the Broadcast.
+			 Fires the <see cref="Broadcast"/> which matches the <paramref name="name"/>.
+			 All arguments after <paramref name="name"/> are fired with the Broadcast.
 			 </summary>
 			 <param name="name">The name of the Broadcast to fire.
 			 </param>
@@ -152,8 +152,8 @@ namespace Izhitsa {
 
 			/**
 			 <summary>
-			 Returns the `<see cref="Broadcast"/>` with the name
-			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 Returns the <see cref="Broadcast"/> with the name
+			 <paramref name="name"/>, or null if it doesn't exist or it 
 			 is the wrong type.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.
@@ -169,8 +169,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns the `<see cref="Broadcast"/>` with the name
-			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 Returns the <see cref="Broadcast"/> with the name
+			 <paramref name="name"/>, or null if it doesn't exist or it 
 			 is the wrong type.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.
@@ -186,8 +186,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns the `<see cref="Broadcast"/>` with the name
-			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 Returns the <see cref="Broadcast"/> with the name
+			 <paramref name="name"/>, or null if it doesn't exist or it 
 			 is the wrong type.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.
@@ -203,8 +203,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns the `<see cref="Broadcast"/>` with the name
-			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 Returns the <see cref="Broadcast"/> with the name
+			 <paramref name="name"/>, or null if it doesn't exist or it 
 			 is the wrong type.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.
@@ -220,8 +220,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns the `<see cref="Broadcast"/>` with the name
-			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 Returns the <see cref="Broadcast"/> with the name
+			 <paramref name="name"/>, or null if it doesn't exist or it 
 			 is the wrong type.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.
@@ -238,35 +238,35 @@ namespace Izhitsa {
 
 			/**
 			 <summary>
-			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 Registers a <see cref="Broadcast"/> (adds it to the dictionary).
 			 </summary>
 			 <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register(Broadcast bc) => broadcasts.Add(bc.Name, bc);
 			/**
 			 <summary>
-			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 Registers a <see cref="Broadcast"/> (adds it to the dictionary).
 			 </summary>
 			 <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T>(Broadcast<T> bc) => broadcasts.Add(bc.Name, bc);
 			/**
 			 <summary>
-			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 Registers a <see cref="Broadcast"/> (adds it to the dictionary).
 			 </summary>
 			 <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T, T2>(Broadcast<T, T2> bc) => broadcasts.Add(bc.Name, bc);
 			/**
 			 <summary>
-			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 Registers a <see cref="Broadcast"/> (adds it to the dictionary).
 			 </summary>
 			 <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T, T2, T3>(Broadcast<T, T2, T3> bc) => broadcasts.Add(bc.Name, bc);
 			/**
 			 <summary>
-			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 Registers a <see cref="Broadcast"/> (adds it to the dictionary).
 			 </summary>
 			 <param name="bc">The Broadcast to add.</param>
 			 */
@@ -274,7 +274,7 @@ namespace Izhitsa {
 
 			/**
 			 <summary>
-			 Returns a `<see cref="Broadcast"/>` associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 Returns a <see cref="Broadcast"/> associated with <paramref name="name"/>, creating it if it does not exist.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.</param>
 			 */
@@ -291,7 +291,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 Returns a Broadcast associated with <paramref name="name"/>, creating it if it does not exist.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.</param>
 			 */
@@ -308,7 +308,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 Returns a Broadcast associated with <paramref name="name"/>, creating it if it does not exist.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.</param>
 			 */
@@ -325,7 +325,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 Returns a Broadcast associated with <paramref name="name"/>, creating it if it does not exist.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.</param>
 			 */
@@ -342,7 +342,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 Returns a Broadcast associated with <paramref name="name"/>, creating it if it does not exist.
 			 </summary>
 			 <param name="name">The name of the Broadcast to get.</param>
 			 */

@@ -5,7 +5,7 @@ namespace Izhitsa {
 		namespace Generic {
 			/**
 			 <summary>
-			 Generic form of `<see cref="Signal"/>`.
+			 Generic form of <see cref="Signal"/>.
 			 </summary>
 			 */
 			public class Signal<T> {
@@ -82,7 +82,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Generic form of `<see cref="Signal"/>`.
+			 Generic form of <see cref="Signal"/>.
 			 </summary>
 			 */
 			public class Signal<T, T2> {
@@ -159,7 +159,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Generic form of `<see cref="Signal"/>`.
+			 Generic form of <see cref="Signal"/>.
 			 </summary>
 			 */
 			public class Signal<T, T2, T3> {
@@ -236,7 +236,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Generic form of `<see cref="Signal"/>`.
+			 Generic form of <see cref="Signal"/>.
 			 </summary>
 			 */
 			public class Signal<T, T2, T3, T4> {

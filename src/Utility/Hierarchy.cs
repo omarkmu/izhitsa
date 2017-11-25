@@ -6,15 +6,15 @@ namespace Izhitsa {
 	namespace Utility {
 		/**
 		 <summary>
-		 Contains extension methods for `<see cref="GameObject"/>`
+		 Contains extension methods for <see cref="GameObject"/>
 		 and other hierarchy-related methods.
 		 </summary>
 		 */
 		public static class Hierarchy {
-			/// <summary>The amount of root `<see cref="GameObject"/>`s in the hierarchy.</summary>
+			/// <summary>The amount of root <see cref="GameObject"/>s in the hierarchy.</summary>
 			public static int ChildCount => GetChildCount();
 			/**
-			 <summary>Destroys every `<see cref="GameObject"/>` in the hierarchy.</summary>
+			 <summary>Destroys every <see cref="GameObject"/> in the hierarchy.</summary>
 			 */
 			public static void Clear(){
 				foreach (GameObject go in GetChildren())
@@ -27,7 +27,7 @@ namespace Izhitsa {
 			 <param name="go">The GameObject.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static void Clear(this GameObject go){
@@ -44,7 +44,7 @@ namespace Izhitsa {
 			 <param name="parent">A GameObject to set as the clone's parent.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static GameObject Clone(this GameObject go, GameObject parent = null){
@@ -72,7 +72,7 @@ namespace Izhitsa {
 			 <param name="go">The GameObject to destroy.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static void Destroy(this GameObject go){
@@ -87,7 +87,7 @@ namespace Izhitsa {
 			 children from.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static void DetachChildren(this GameObject go){
@@ -96,7 +96,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Finds a `<see cref="GameObject"/>` by name and returns it, returning `null` if none can be found.
+			 Finds a <see cref="GameObject"/> by name and returns it, returning null if none can be found.
 			 </summary>
 			 <param name="name">The name of the GameObject to find.
 			 </param>
@@ -104,7 +104,7 @@ namespace Izhitsa {
 			public static GameObject Find(string name) => GameObject.Find(name);
 			/**
 			 <summary>
-			 Finds a `<see cref="GameObject"/>` in the scene's root by name and returns it, returning `null` if none can be found.
+			 Finds a <see cref="GameObject"/> in the scene's root by name and returns it, returning null if none can be found.
 			 </summary>
 			 <param name="name">The name of the GameObject to find.
 			 </param>
@@ -118,14 +118,14 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Finds a child GameObject by name and returns it, returning `null` if none can be found.
+			 Finds a child GameObject by name and returns it, returning null if none can be found.
 			 </summary>
 			 <param name="go">The GameObject to search.
 			 </param>
 			 <param name="name">The name of the GameObject to find.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static GameObject FindChild(this GameObject go, string name){
@@ -134,13 +134,13 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns a root `<see cref="GameObject"/>` by index.
+			 Returns a root <see cref="GameObject"/> by index.
 			 </summary>
 			 <param name="index">Index of the child to return.
-			 Must be smaller than `<see cref="ChildCount"/>`.
+			 Must be smaller than <see cref="ChildCount"/>.
 			 </param>
-			 <exception cref="ArgumentOutOfRangeException">Thrown if `<paramref name="index"/>` is
-			 smaller than `0` or bigger than/equal to `<see cref="ChildCount"/>`
+			 <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="index"/> is
+			 smaller than 0 or bigger than/equal to <see cref="ChildCount"/>
 			 </exception>
 			 */
 			public static GameObject GetChild(int index){
@@ -159,10 +159,10 @@ namespace Izhitsa {
 			 Must be smaller than child count.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
-			 <exception cref="ArgumentOutOfRangeException">Thrown if `<paramref name="index"/>` is
-			 smaller than `0` or bigger than/equal to `<see cref="GameObject.transform.childCount"/>`
+			 <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="index"/> is
+			 smaller than 0 or bigger than/equal to <see cref="GameObject.transform.childCount"/>
 			 </exception>
 			 */
 			public static GameObject GetChild(this GameObject go, int index){
@@ -173,7 +173,7 @@ namespace Izhitsa {
 				return go.transform.GetChild(index).gameObject;
 			}
 			/**
-			 <summary>Returns the amount of root `<see cref="GameObject"/>`s in the hierarchy.</summary>
+			 <summary>Returns the amount of root <see cref="GameObject"/>s in the hierarchy.</summary>
 			 */
 			public static int GetChildCount() => GetChildren().Length;
 			/**
@@ -183,7 +183,7 @@ namespace Izhitsa {
 			 <param name="go">The GameObject whose children are to be counted.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static int GetChildCount(this GameObject go){
@@ -192,7 +192,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns an array containing the root `<see cref="GameObject"/>`s in the hierarchy.
+			 Returns an array containing the root <see cref="GameObject"/>s in the hierarchy.
 			 </summary>
 			 */
 			public static GameObject[] GetChildren()
@@ -204,7 +204,7 @@ namespace Izhitsa {
 			 <param name="go">The GameObject.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static GameObject[] GetChildren(this GameObject go){
@@ -223,7 +223,7 @@ namespace Izhitsa {
 			 <param name="go">The GameObject.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static int GetSiblingIndex(this GameObject go){
@@ -232,12 +232,12 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Is this GameObject a child of `<paramref name="parent"/>`?
+			 Is this GameObject a child of <paramref name="parent"/>?
 			 </summary>
 			 <param name="parent">The parent to check.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static bool IsChildOf(this GameObject go, GameObject parent){
@@ -251,14 +251,14 @@ namespace Izhitsa {
 			 <param name="go">The GameObject.
 			 </param>
 			 <param name="parent">The parent GameObject to use.
-			 If this is `null`, the GameObject becomes a root GameObject.
+			 If this is null, the GameObject becomes a root GameObject.
 			 </param>
 			 <param name="worldPositionStays">If true, the parent-relative position, rotation,
 			 and scale are modified such that the object keeps the same world space position,
 			 rotation, and scale as before.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static void SetParent(this GameObject go, GameObject parent, bool worldPositionStays = true){
@@ -274,7 +274,7 @@ namespace Izhitsa {
 			 <param name="index">Index to set.
 			 </param>
 			 <exception cref="ArgumentNullException">Thrown if
-			 `<paramref name="go"/>` is null.
+			 <paramref name="go"/> is null.
 			 </exception>
 			 */
 			public static void SetSiblingIndex(this GameObject go, int index){

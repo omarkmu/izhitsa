@@ -21,7 +21,7 @@ namespace Izhitsa {
 			/// <summary>Control + Alt.</summary>
 			ControlAlt = Control | Alt,
 			/// <summary>A Windows or command key.
-			/// ModifierType should be `<see cref="InputModifierType.Any"/>` or `<see cref="InputModifierType.One"/>`
+			/// ModifierType should be <see cref="InputModifierType.Any"/> or <see cref="InputModifierType.One"/>
 			/// for this to function as "or" rather than "and".</summary>
 			WindowsOrCommand = Windows | Command | Apple
 		}

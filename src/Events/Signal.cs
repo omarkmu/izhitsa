@@ -4,7 +4,7 @@ namespace Izhitsa {
 	namespace Events {
 		/**
 		 <summary>
-		 Contains a callback for use in `<see cref="Events.Broadcast"/>`.
+		 Contains a callback for use in <see cref="Events.Broadcast"/>.
 		 </summary>
 		 <seealso cref="EventManager.Broadcast"/>
 		 */

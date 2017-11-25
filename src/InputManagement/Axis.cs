@@ -23,7 +23,7 @@ namespace Izhitsa {
 			public float Sensitivity { get; set; } = 3f;
 
 
-			/// <summary>The value from `<see cref="GetValue"/>`.</summary>
+			/// <summary>The value from <see cref="GetValue"/>.</summary>
 			private float value;
 			/// <summary>The current frame count; used to avoid miscalculatons from multiple calls.</summary>
 			private float frameCount = -1;
@@ -70,7 +70,7 @@ namespace Izhitsa {
 			/**
 			 <summary>Returns the smoothed value of the Axis.
 			 </summary>
-			 <param name="ignorePause">Should the `<see cref="InputManager.Paused"/>`
+			 <param name="ignorePause">Should the <see cref="InputManager.Paused"/>
 			 state be ignored?</param>
 			 */
 			public float GetValue(bool ignorePause = false){
@@ -87,7 +87,7 @@ namespace Izhitsa {
 			/**
 			 <summary>Returns the raw value of the Axis.
 			 </summary>
-			 <param name="ignorePause">Should the `<see cref="InputManager.Paused"/>`
+			 <param name="ignorePause">Should the <see cref="InputManager.Paused"/>
 			 state be ignored?</param>
 			 */
 			public float GetRawValue(bool ignorePause = false){

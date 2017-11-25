@@ -12,32 +12,32 @@ namespace Izhitsa {
 		 </summary>
 		 */
 		public class Task {
-			/// <summary>Was `<see cref="Cancel"/>` called?</summary>
+			/// <summary>Was <see cref="Cancel"/> called?</summary>
 			public bool CancelRequested { get; protected set; }
 			/// <summary>The Exception that was thrown.</summary>
 			public Exception Exception { get; protected set; }
-			/// <summary>Is the current status `<see cref="TaskStatus.Canceled"/>`?</summary>
+			/// <summary>Is the current status <see cref="TaskStatus.Canceled"/>?</summary>
 			public bool IsCanceled => Status == TaskStatus.Canceled;
-			/// <summary>Is the current status `<see cref="TaskStatus.Completed"/>`?</summary>
+			/// <summary>Is the current status <see cref="TaskStatus.Completed"/>?</summary>
 			public bool IsCompleted => Status == TaskStatus.Completed;
-			/// <summary>Is the current status `<see cref="TaskStatus.Faulted"/>`?</summary>
+			/// <summary>Is the current status <see cref="TaskStatus.Faulted"/>?</summary>
 			public bool IsFaulted => Status == TaskStatus.Faulted;
-			/// <summary>Is the value of `<see cref="Result"/>` null?</summary>
+			/// <summary>Is the value of <see cref="Result"/> null?</summary>
 			public bool IsNull { get; protected set; } = true;
-			/// <summary>Is the current status `<see cref="TaskStatus.Running"/>`?</summary>
+			/// <summary>Is the current status <see cref="TaskStatus.Running"/>?</summary>
 			public bool IsRunning => Status == TaskStatus.Running;
 			/// <summary>The return value of the IEnumerator.</summary>
 			public object Result { get; protected set; }
 			/// <summary>The current status of the Task.</summary>
 			public TaskStatus Status { get; protected set; } = TaskStatus.Created;
-			/// <summary>If exceptions are suppressed, `<see cref="Run"/>` will never throw exceptions.</summary>
+			/// <summary>If exceptions are suppressed, <see cref="Run"/> will never throw exceptions.</summary>
 			public bool SuppressExceptions { get; set; } = false;
 			/// <summary>The type of the Task.</summary>
 			public virtual Type Type => null;
 			/// <summary>Was the Task force canceled?</summary>
 			public bool WasForceCanceled { get; protected set; }
 
-			/// <summary>True if `<see cref="ForceCancel"/>` was called.</summary>
+			/// <summary>True if <see cref="ForceCancel"/> was called.</summary>
 			protected bool forceCancel = false;
 			/// <summary>Event which fires when the Task is canceled.</summary>
 			protected Broadcast onCancel = new Broadcast();
@@ -61,7 +61,7 @@ namespace Izhitsa {
 			 </param>
 			 <exception cref="System.Exception">Thrown if the task is already running or waiting.
 			 Exceptions can also be thrown from running the Task, depending on the value of
-			 `<see cref="SuppressExceptions"/>`.
+			 <see cref="SuppressExceptions"/>.
 			 </exception>
 			 */
 			public Task(IEnumerator enumerator){ Run(enumerator); }
@@ -78,7 +78,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Runs the Task after `<paramref name="seconds"/>` seconds have passed.
+			 Runs the Task after <paramref name="seconds"/> seconds have passed.
 			 Uses scaled time.
 			 </summary>
 			 <param name="enumerator">The IEnumerator to run the Task with.
@@ -97,7 +97,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Runs the Task after `<paramref name="seconds"/>` seconds have passed.
+			 Runs the Task after <paramref name="seconds"/> seconds have passed.
 			 Uses unscaled time.
 			 </summary>
 			 <param name="enumerator">The IEnumerator to run the Task with.
@@ -117,7 +117,7 @@ namespace Izhitsa {
 			/**
 			 <summary>
 			 Forces the IEnumerator to cancel.
-			 Usage of `<see cref="Cancel"/>` is preferred.
+			 Usage of <see cref="Cancel"/> is preferred.
 			 </summary>
 			 */
 			public void ForceCancel(){
@@ -198,7 +198,7 @@ namespace Izhitsa {
 			 </param>
 			 <exception cref="System.Exception">Thrown if the task is already running or waiting.
 			 Exceptions can also be thrown from running the Task, depending on the value of
-			 `<see cref="SuppressExceptions"/>`.
+			 <see cref="SuppressExceptions"/>.
 			 </exception>
 			 */
 			public Coroutine Run(IEnumerator enumerator){

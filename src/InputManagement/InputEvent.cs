@@ -14,7 +14,7 @@ namespace Izhitsa {
 				public float HeldDuration { get; internal set; }
 				/// <summary>The key related to this event.</summary>
 				public KeyCode Key { get; internal set; }
-				/// <summary>The time the keys in `<see cref="KeysDown"/>` were initially pressed.</summary>
+				/// <summary>The time the keys in <see cref="KeysDown"/> were initially pressed.</summary>
 				public Dictionary<KeyCode, float> KeyTimes { get; internal set; }
 				/// <summary>The keys which were down at the time of the event.</summary>
 				public List<KeyCode> KeysDown { get; internal set; }

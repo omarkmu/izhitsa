@@ -5,7 +5,7 @@ namespace Izhitsa {
 		/**
 		 <summary>
 		 YieldInstruction class which can be used in IEnumerators
-		 to wait for a `<see cref="Task"/>` to stop running.
+		 to wait for a <see cref="Task"/> to stop running.
 		 </summary>
 		 */
 		public class TaskAwaiter : CustomYieldInstruction {

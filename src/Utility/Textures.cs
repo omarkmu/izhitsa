@@ -128,7 +128,7 @@ namespace Izhitsa {
 			 <param name="ignoreAlpha">If this is true, the color is replaced even if
 			 the alpha doesn't match.
 			 </param>
-			 <exception cref="System.ArgumentNullException">Thrown when `<paramref name="src"/>`
+			 <exception cref="System.ArgumentNullException">Thrown when <paramref name="src"/>
 			 is null.</exception>
 			 */
 			public static Texture2D ReplaceColor(this Texture2D src, Color toReplace, Color repl,

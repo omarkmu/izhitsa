@@ -107,7 +107,7 @@ namespace Izhitsa {
 		}
 		/**
 		 <summary>
-		 Sets a flag to let `<see cref="OnDestroy"/>` know
+		 Sets a flag to let <see cref="OnDestroy"/> know
 		 not to create a new GameObject while the application is
 		 quitting.
 		 </summary>
