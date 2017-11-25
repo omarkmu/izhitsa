@@ -220,6 +220,14 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
+			 * Returns a `Dictionary<string, List<KeyCode>>` containing all key bindings.
+			 * </summary>
+			 */
+			public static Dictionary<string, List<KeyCode>> GetAllBoundKeys(){
+				return new Dictionary<string, List<KeyCode>>(boundKeys);
+			}
+			/**
+			 * <summary>
 			 * Returns the input value from an Axis.
 			 * </summary>
 			 * <param name="name">The name of the Axis object to check.
@@ -278,7 +286,8 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Returns the first key bound to a string.
+			 * Returns the nth key bound to `<paramref name="action"/>`, returning 
+			 * KeyCode.None if out of bounds or if a key isn't bound to the action.
 			 * </summary>
 			 * <param name="action">
 			 * The name of the key to check.
@@ -286,12 +295,12 @@ namespace Izhitsa {
 			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
 			 * </exception>
 			 */
-			public static KeyCode GetBoundKey(string action){
+			public static KeyCode GetBoundKey(string action, int index = 0){
 				if (action == null)
 					throw new ArgumentNullException("action");
 				List<KeyCode> keys = GetBoundKeys(action);
-				if (keys.Count == 0) return KeyCode.None;
-				return keys[0];
+				if (keys.Count <= index || keys.Count == 0) return KeyCode.None;
+				return keys[index];
 			}
 			/**
 			 * <summary>
@@ -335,6 +344,19 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
+			 * Returns true while the key is held down.
+			 * </summary>
+			 * <param name="key">The KeyCode to check.
+			 * </param>
+			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 * </param>
+			 */
+			public static bool GetKey(KeyCode key, bool ignorePause){
+				if (Paused && !ignorePause) return false;
+				return Input.GetKey(key);
+			}
+			/**
+			 * <summary>
 			 * Returns a list of currently held down keys.
 			 * </summary>
 			 */
@@ -346,7 +368,7 @@ namespace Izhitsa {
 			/**
 			 * <summary>
 			 * Returns the amount of time the key has been held down,
-			 * or -1 if the key is not currently being held.
+			 * or -1 if the key is not currently pressed.
 			 * </summary>
 			 */
 			public static float GetKeyDuration(KeyCode key){
@@ -355,7 +377,8 @@ namespace Izhitsa {
 			}
 			/**
 			 * <summary>
-			 * Checks if any of the keys bound to `<paramref name="action"/>` were pressed during the frame.
+			 * Returns true if any of the keys bound to `<paramref name="action"/>`
+			 * were pressed during the current frame.
 			 * </summary>
 			 * <param name="action">The name of the key to check.
 			 * </param>
@@ -377,6 +400,19 @@ namespace Izhitsa {
 				foreach (KeyCode key in boundKeys[action])
 					if (Input.GetKeyDown(key)) return true;
 				return false;
+			}
+			/**
+			 * <summary>
+			 * Returns true if the key was pressed during the current frame.
+			 * </summary>
+			 * <param name="key">The KeyCode to check.
+			 * </param>
+			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 * </param>
+			 */
+			public static bool KeyDown(KeyCode key, bool ignorePause = false){
+				if (Paused && !ignorePause) return false;
+				return Input.GetKeyDown(key);
 			}
 			/**
 			 * <summary>
@@ -402,6 +438,52 @@ namespace Izhitsa {
 				foreach (KeyCode key in boundKeys[action])
 					if (Input.GetKeyUp(key)) return true;
 				return false;
+			}
+			/**
+			 * <summary>
+			 * Returns true if the key was released during the current frame.
+			 * </summary>
+			 * <param name="key">The KeyCode to check.
+			 * </param>
+			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 * </param>
+			 */
+			public static bool KeyUp(KeyCode key, bool ignorePause = false){
+				if (Paused && !ignorePause) return false;
+				return Input.GetKeyUp(key);
+			}
+			/**
+			 * <summary>
+			 * Returns true if `<paramref name="seq"/>` was completed during the current frame.
+			 * </summary>
+			 * <param name="seq">A sequence to check.
+			 * </param>
+			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="seq"/>` is `null`.
+			 * </exception>
+			 */
+			public static bool SequenceCompleted(Sequence seq){
+				if (seq == null)
+					throw new ArgumentNullException("seq");
+				return (seq.completionFrame == Time.frameCount);
+			}
+			/**
+			 * <summary>
+			 * Returns true if the sequence bound to `<paramref name="action"/>` was completed during
+			 * the current frame.
+			 * </summary>
+			 * <param name="action">The action to check.
+			 * </param>
+			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 * </exception>
+			 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to a Sequence.
+			 * </exception>
+			 */
+			public static bool SequenceCompleted(string action){
+				if (action == null)
+					throw new ArgumentNullException("action");
+				if (!boundSeqs.ContainsKey(action))
+					throw new ArgumentException($"\"{action}\" has not been bound to a Sequence.", "action");
+				return (boundSeqs[action].completionFrame == Time.frameCount);
 			}
 			/**
 			 * <summary>
@@ -807,6 +889,7 @@ namespace Izhitsa {
 						if (inDuration && inMargin && inDelta){
 							seq.lastStepTime = Time.time;
 							if (seq.CurrentStep++ == seq.MaxStep){
+								seq.completionFrame = Time.frameCount;
 								Broadcast bc = (seqEvents.ContainsKey(name)) ? seqEvents[name] : null;
 								bc?.Fire();
 							}

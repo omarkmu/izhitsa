@@ -1,8 +1,10 @@
 ﻿using Izhitsa.InputManagement;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using UnityEngine;
 
+[assembly: AssemblyVersion("0.0.0")]
 namespace Izhitsa {
 	/**
 	 * <summary>

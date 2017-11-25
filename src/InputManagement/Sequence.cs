@@ -31,11 +31,12 @@ namespace Izhitsa {
 			/// <summary>The maximum amount of steps before completion and reset. (Read Only)</summary>
 			public int MaxStep => elements.Length - 1;
 
+			/// <summary>The frame in which this Sequence was completed.</summary>
+			internal float completionFrame = -1f;
 			/// <summary>The elements which make up the Sequence.</summary>
 			internal SequenceElement[] elements { get; set; }
 			/// <summary>The recorded `Time.time` from the last step's completion.</summary>
 			internal float lastStepTime { get; set; } = 0.0f;
-			
 			
 			/// <summary>The current step, where the Sequence's pointer is right now.</summary>
 			private int currentStep = 0;

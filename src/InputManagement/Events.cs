@@ -7,13 +7,7 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace InputManagement {
 		public static partial class InputManager {
-			/**
-			 * <summary>
-			 * An event which fires for any type of input.
-			 * </summary>
-			 * <param name="param0">The event that occurred.
-			 * </param>
-			 */
+			/// <summary>Main input event.</summary>
 			private static Broadcast<InputEvent> input { get; } = new Broadcast<InputEvent>();
 			/// <summary>Primary KeyBound event.</summary>
 			private static Broadcast<string, KeyCode> keyBound { get; } = new Broadcast<string, KeyCode>();
@@ -33,12 +27,12 @@ namespace Izhitsa {
 			/// <summary>Primary mouse event.</summary>
 			private static Broadcast<InputEvent> mouseEvent { get; }
 				= new Broadcast<InputEvent>();
-			/// <summary>Mouse move event.</summarY>
-			private static Broadcast<InputEvent> mouseMove { get; }
-				= new Broadcast<InputEvent>();
 			/// <summary>Contains mouse events.</summary>
 			private static Dictionary<int, Broadcast<InputEvent>> mouseEvents { get; }
 				= new Dictionary<int, Broadcast<InputEvent>>();
+			/// <summary>Mouse move event.</summary>
+			private static Broadcast<InputEvent> mouseMove { get; }
+				= new Broadcast<InputEvent>();
 			private static Broadcast<InputEvent> scrollEvent { get; }
 				= new Broadcast<InputEvent>();
 			/// <summary>Primary SequenceBound event.</summary>
