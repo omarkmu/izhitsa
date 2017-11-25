@@ -7,9 +7,9 @@ using static Izhitsa.Tasks.TaskUtils;
 namespace Izhitsa {
 	namespace Tasks {
 		/**
-		 * <summary>
-		 * An IEnumerator task, for handling and controlling Coroutines.
-		 * </summary>
+		 <summary>
+		 An IEnumerator task, for handling and controlling Coroutines.
+		 </summary>
 		 */
 		public class Task {
 			/// <summary>Was `<see cref="Cancel"/>` called?</summary>
@@ -54,39 +54,39 @@ namespace Izhitsa {
 			/// <summary>Creates an empty Task which can be run later.</summary>
 			public Task(){}
 			/**
-			 * <summary>
-			 * Creates and runs a Task.
-			 * </summary>
-			 * <param name="enumerator">The IEnumerator to run the Task with.
-			 * </param>
-			 * <exception cref="System.Exception">Thrown if the task is already running or waiting.
-			 * Exceptions can also be thrown from running the Task, depending on the value of
-			 * `<see cref="SuppressExceptions"/>`.
-			 * </exception>
+			 <summary>
+			 Creates and runs a Task.
+			 </summary>
+			 <param name="enumerator">The IEnumerator to run the Task with.
+			 </param>
+			 <exception cref="System.Exception">Thrown if the task is already running or waiting.
+			 Exceptions can also be thrown from running the Task, depending on the value of
+			 `<see cref="SuppressExceptions"/>`.
+			 </exception>
 			 */
 			public Task(IEnumerator enumerator){ Run(enumerator); }
 
 
 			/**
-			 * <summary>
-			 * Requests task cancellation in the running IEnumerator.
-			 * The IEnumerator is not guaranteed to respect a cancel request.
-			 * </summary>
+			 <summary>
+			 Requests task cancellation in the running IEnumerator.
+			 The IEnumerator is not guaranteed to respect a cancel request.
+			 </summary>
 			 */
 			public void Cancel(){
 				CancelRequested = true;
 			}
 			/**
-			 * <summary>
-			 * Runs the Task after `<paramref name="seconds"/>` seconds have passed.
-			 * Uses scaled time.
-			 * </summary>
-			 * <param name="enumerator">The IEnumerator to run the Task with.
-			 * </param>
-			 * <param name="seconds">The time to wait before running the Task.
-			 * </param>
-			 * <exception cref="System.Exception">Thrown if the task is already running or waiting.
-			 * </exception>
+			 <summary>
+			 Runs the Task after `<paramref name="seconds"/>` seconds have passed.
+			 Uses scaled time.
+			 </summary>
+			 <param name="enumerator">The IEnumerator to run the Task with.
+			 </param>
+			 <param name="seconds">The time to wait before running the Task.
+			 </param>
+			 <exception cref="System.Exception">Thrown if the task is already running or waiting.
+			 </exception>
 			 */
 			public void Delay(IEnumerator enumerator, float seconds){
 				if (IsRunning)
@@ -96,16 +96,16 @@ namespace Izhitsa {
 				StartCoroutine(delayedRun(enumerator, seconds, false));
 			}
 			/**
-			 * <summary>
-			 * Runs the Task after `<paramref name="seconds"/>` seconds have passed.
-			 * Uses unscaled time.
-			 * </summary>
-			 * <param name="enumerator">The IEnumerator to run the Task with.
-			 * </param>
-			 * <param name="seconds">The time to wait before running the Task.
-			 * </param>
-			 * <exception cref="System.Exception">Thrown if the task is already running or waiting.
-			 * </exception>
+			 <summary>
+			 Runs the Task after `<paramref name="seconds"/>` seconds have passed.
+			 Uses unscaled time.
+			 </summary>
+			 <param name="enumerator">The IEnumerator to run the Task with.
+			 </param>
+			 <param name="seconds">The time to wait before running the Task.
+			 </param>
+			 <exception cref="System.Exception">Thrown if the task is already running or waiting.
+			 </exception>
 			 */
 			public void DelayRealtime(IEnumerator enumerator, float seconds){
 				if (IsRunning)
@@ -115,91 +115,91 @@ namespace Izhitsa {
 				StartCoroutine(delayedRun(enumerator, seconds, true));
 			}
 			/**
-			 * <summary>
-			 * Forces the IEnumerator to cancel.
-			 * Usage of `<see cref="Cancel"/>` is preferred.
-			 * </summary>
+			 <summary>
+			 Forces the IEnumerator to cancel.
+			 Usage of `<see cref="Cancel"/>` is preferred.
+			 </summary>
 			 */
 			public void ForceCancel(){
 				forceCancel = true;
 			}
 			/**
-			 * <summary>
-			 * Connects an Action to run when the Task gets canceled.
-			 * </summary>
-			 * <param name="func">An Action to run when the Task gets canceled.
-			 * Gets called with a boolean which is true if the Task was force canceled.
-			 * </param>
+			 <summary>
+			 Connects an Action to run when the Task gets canceled.
+			 </summary>
+			 <param name="func">An Action to run when the Task gets canceled.
+			 Gets called with a boolean which is true if the Task was force canceled.
+			 </param>
 			 */
 			public Signal OnCancel(Action<bool> func)
 				=> onCancel.Connect(() => func(WasForceCanceled));
 			/**
-			 * <summary>
-			 * Connects an Action to run when the Task is completed.
-			 * </summary>
-			 * <param name="func">An Action to run when the task is completed.
-			 * </param>
+			 <summary>
+			 Connects an Action to run when the Task is completed.
+			 </summary>
+			 <param name="func">An Action to run when the task is completed.
+			 </param>
 			 */
 			public Signal OnComplete(Action func)
 				=> onComplete.Connect(() => func());
 			/**
-			 * <summary>
-			 * Connects an Action to run when the Task is completed.
-			 * </summary>
-			 * <param name="func">An Action to run when the task is completed.
-			 * Gets called with the result of the Task.
-			 * </param>
+			 <summary>
+			 Connects an Action to run when the Task is completed.
+			 </summary>
+			 <param name="func">An Action to run when the task is completed.
+			 Gets called with the result of the Task.
+			 </param>
 			 */
 			public Signal OnComplete(Action<object> func)
 				=> onComplete.Connect(() => func(Result));
 			/**
-			 * <summary>
-			 * Connects an Action to run when an exception is thrown in the Task.
-			 * </summary>
-			 * <param name="func">An Action to run when an exception is thrown.
-			 * Gets called with the Exception.
-			 * </param>
+			 <summary>
+			 Connects an Action to run when an exception is thrown in the Task.
+			 </summary>
+			 <param name="func">An Action to run when an exception is thrown.
+			 Gets called with the Exception.
+			 </param>
 			 */
 			public Signal OnError(Action<Exception> func)
 				=> onError.Connect(() => func(Exception));
 			/**
-			 * <summary>
-			 * Connects an Action to run on every Task iteration after the first.
-			 * </summary>
-			 * <param name="func">An Action to run on each iteration.
-			 * </param>
+			 <summary>
+			 Connects an Action to run on every Task iteration after the first.
+			 </summary>
+			 <param name="func">An Action to run on each iteration.
+			 </param>
 			 */
 			public Signal OnIteration(Action func)
 				=> onIteration.Connect(() => func());
 			/**
-			 * <summary>
-			 * Connects an Action to run on every Task iteration after the first.
-			 * </summary>
-			 * <param name="func">An Action to run on each iteration.
-			 * Gets called with the current result of the Task.
-			 * </param>
+			 <summary>
+			 Connects an Action to run on every Task iteration after the first.
+			 </summary>
+			 <param name="func">An Action to run on each iteration.
+			 Gets called with the current result of the Task.
+			 </param>
 			 */
 			public Signal OnIteration(Action<object> func)
 				=> onIteration.Connect(() => func(Result));
 			/**
-			 * <summary>
-			 * Connects an Action to run when the Task is ran.
-			 * </summary>
-			 * <param name="func">An Action to run when the task is ran.
-			 * </param>
+			 <summary>
+			 Connects an Action to run when the Task is ran.
+			 </summary>
+			 <param name="func">An Action to run when the task is ran.
+			 </param>
 			 */
 			public Signal OnRun(Action func)
 				=> onRun.Connect(() => func());
 			/**
-			 * <summary>
-			 * Runs the Task.
-			 * </summary>
-			 * <param name="enumerator">The IEnumerator to run the Task with.
-			 * </param>
-			 * <exception cref="System.Exception">Thrown if the task is already running or waiting.
-			 * Exceptions can also be thrown from running the Task, depending on the value of
-			 * `<see cref="SuppressExceptions"/>`.
-			 * </exception>
+			 <summary>
+			 Runs the Task.
+			 </summary>
+			 <param name="enumerator">The IEnumerator to run the Task with.
+			 </param>
+			 <exception cref="System.Exception">Thrown if the task is already running or waiting.
+			 Exceptions can also be thrown from running the Task, depending on the value of
+			 `<see cref="SuppressExceptions"/>`.
+			 </exception>
 			 */
 			public Coroutine Run(IEnumerator enumerator){
 				if (IsRunning)
@@ -209,30 +209,30 @@ namespace Izhitsa {
 				return StartCoroutine(run(enumerator));
 			}
 			/**
-			 * <summary>
-			 * Returns a TaskAwaiter which will wait until the task is not running.
-			 * </summary>
-			 * <example>
-			 * <code>
-			 * public IEnumerator DoAfterTask(Task task, Action action){
-			 * 	yield return task.Wait();
-			 * 	action();
-			 * }
-			 * </code>
-			 * </example>
+			 <summary>
+			 Returns a TaskAwaiter which will wait until the task is not running.
+			 </summary>
+			 <example>
+			 <code>
+			 public IEnumerator DoAfterTask(Task task, Action action){
+			 	yield return task.Wait();
+			 	action();
+			 }
+			 </code>
+			 </example>
 			 */
 			public TaskAwaiter Wait() => new TaskAwaiter(this);
 			
 			/**
-			 * <summary>
-			 * Waits and then runs the Task.
-			 * </summary>
-			 * <param name="enumerator">The IEnumerator to run.
-			 * </param>
-			 * <param name="seconds">The amount of seconds to wait before running.
-			 * </param>
-			 * <param name="realtime">Should the wait use realtime (as opposed to Time.time)?
-			 * </param>
+			 <summary>
+			 Waits and then runs the Task.
+			 </summary>
+			 <param name="enumerator">The IEnumerator to run.
+			 </param>
+			 <param name="seconds">The amount of seconds to wait before running.
+			 </param>
+			 <param name="realtime">Should the wait use realtime (as opposed to Time.time)?
+			 </param>
 			 */
 			protected IEnumerator delayedRun(IEnumerator enumerator, float seconds, bool realtime){
 				Status = TaskStatus.WaitingToRun;
@@ -244,11 +244,11 @@ namespace Izhitsa {
 				StartCoroutine(run(enumerator));
 			}
 			/**
-			 * <summary>
-			 * The internal IEnumerator handler.
-			 * </summary>
-			 * <param name="enumerator">The IEnumerator to run.
-			 * </param>
+			 <summary>
+			 The internal IEnumerator handler.
+			 </summary>
+			 <param name="enumerator">The IEnumerator to run.
+			 </param>
 			 */
 			protected virtual IEnumerator run(IEnumerator enumerator){
 				Status = TaskStatus.Running;

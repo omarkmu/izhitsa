@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace Events {
 		/**
-		 * <summary>Facilitates dynamic event creation and usage.</summary>
+		 <summary>Facilitates dynamic event creation and usage.</summary>
 		 */
 		public static class EventManager {
 			/// <summary>A container for all broadcasts.</summary>
@@ -16,81 +16,81 @@ namespace Izhitsa {
 			public static bool BroadcastExists(string name) => broadcasts.ContainsKey(name);
 
 			/**
-			 * <summary>
-			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to connect to. 
-			 * </param>
-			 * <param name="func">An Action to connect.
-			 * </param>
+			 <summary>
+			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="name">The name of the Broadcast to connect to. 
+			 </param>
+			 <param name="func">An Action to connect.
+			 </param>
 			 */
 			public static Signal Connect(string name, Action func)
 				=> getBroadcast(name).Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to connect to.
-			 * </param>
-			 * <param name="func">An Action to connect.
-			 * </param>
+			 <summary>
+			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="name">The name of the Broadcast to connect to.
+			 </param>
+			 <param name="func">An Action to connect.
+			 </param>
 			 */
 			public static Signal Connect(string name, Action<object[]> func)
 				=> getBroadcast(name).Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to connect to.
-			 * </param>
-			 * <param name="func">An Action to connect.
-			 * </param>
+			 <summary>
+			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="name">The name of the Broadcast to connect to.
+			 </param>
+			 <param name="func">An Action to connect.
+			 </param>
 			 */
 			public static Signal<T> Connect<T>(string name, Action<T> func)
 				=> getBroadcast<T>(name).Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to connect to.
-			 * </param>
-			 * <param name="func">An Action to connect.
-			 * </param>
+			 <summary>
+			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="name">The name of the Broadcast to connect to.
+			 </param>
+			 <param name="func">An Action to connect.
+			 </param>
 			 */
 			public static Signal<T, T2> Connect<T, T2>(string name, Action<T, T2> func)
 				=> getBroadcast<T, T2>(name).Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to connect to.
-			 * </param>
-			 * <param name="func">An Action to connect.
-			 * </param>
+			 <summary>
+			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="name">The name of the Broadcast to connect to.
+			 </param>
+			 <param name="func">An Action to connect.
+			 </param>
 			 */
 			public static Signal<T, T2, T3> Connect<T, T2, T3>(string name, Action<T, T2, T3> func)
 				=> getBroadcast<T, T2, T3>(name).Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to connect to.
-			 * </param>
-			 * <param name="func">An Action to connect.
-			 * </param>
+			 <summary>
+			 Connects an Action to a `<see cref="Broadcast"/>` and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="name">The name of the Broadcast to connect to.
+			 </param>
+			 <param name="func">An Action to connect.
+			 </param>
 			 */
 			public static Signal<T, T2, T3, T4> Connect<T, T2, T3, T4>(string name, Action<T, T2, T3, T4> func)
 				=> getBroadcast<T, T2, T3, T4>(name).Connect(func);
 			///
 
 			/**
-			 * <summary>
-			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to fire.
-			 * </param>
-			 * <param name="args">The arguments to fire the Broadcast with.
-			 * </param>
+			 <summary>
+			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 </summary>
+			 <param name="name">The name of the Broadcast to fire.
+			 </param>
+			 <param name="args">The arguments to fire the Broadcast with.
+			 </param>
 			 */
 			public static void Fire(string name, params object[] args){
 				Broadcast bc = GetBroadcast(name);
@@ -98,12 +98,12 @@ namespace Izhitsa {
 					bc.Fire(args);
 			}
 			/**
-			 * <summary>
-			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
-			 * All arguments after `name` are fired with the Broadcast.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to fire.
-			 * </param>
+			 <summary>
+			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 All arguments after `name` are fired with the Broadcast.
+			 </summary>
+			 <param name="name">The name of the Broadcast to fire.
+			 </param>
 			 */
 			public static void Fire<T>(string name, T arg){
 				Broadcast<T> bc = GetBroadcast<T>(name);
@@ -111,12 +111,12 @@ namespace Izhitsa {
 					bc.Fire(arg);
 			}
 			/**
-			 * <summary>
-			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
-			 * All arguments after `name` are fired with the Broadcast.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to fire.
-			 * </param>
+			 <summary>
+			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 All arguments after `name` are fired with the Broadcast.
+			 </summary>
+			 <param name="name">The name of the Broadcast to fire.
+			 </param>
 			 */
 			public static void Fire<T, T2>(string name, T arg0, T2 arg1){
 				Broadcast<T, T2> bc = GetBroadcast<T, T2>(name);
@@ -124,12 +124,12 @@ namespace Izhitsa {
 					bc.Fire(arg0, arg1);
 			}
 			/**
-			 * <summary>
-			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
-			 * All arguments after `name` are fired with the Broadcast.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to fire.
-			 * </param>
+			 <summary>
+			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 All arguments after `name` are fired with the Broadcast.
+			 </summary>
+			 <param name="name">The name of the Broadcast to fire.
+			 </param>
 			 */
 			public static void Fire<T, T2, T3>(string name, T arg0, T2 arg1, T3 arg2){
 				Broadcast<T, T2, T3> bc = GetBroadcast<T, T2, T3>(name);
@@ -137,12 +137,12 @@ namespace Izhitsa {
 					bc.Fire(arg0, arg1, arg2);
 			}
 			/**
-			 * <summary>
-			 * Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
-			 * All arguments after `name` are fired with the Broadcast.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to fire.
-			 * </param>
+			 <summary>
+			 Fires the `<see cref="Broadcast"/>` which matches the `<paramref name="name"/>`.
+			 All arguments after `name` are fired with the Broadcast.
+			 </summary>
+			 <param name="name">The name of the Broadcast to fire.
+			 </param>
 			 */
 			public static void Fire<T, T2, T3, T4>(string name, T arg0, T2 arg1, T3 arg2, T4 arg3){
 				Broadcast<T, T2, T3, T4> bc = GetBroadcast<T, T2, T3, T4>(name);
@@ -151,13 +151,13 @@ namespace Izhitsa {
 			}
 
 			/**
-			 * <summary>
-			 * Returns the `<see cref="Broadcast"/>` with the name
-			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
-			 * is the wrong type.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.
-			 * </param>
+			 <summary>
+			 Returns the `<see cref="Broadcast"/>` with the name
+			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 is the wrong type.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.
+			 </param>
 			 */
 			public static Broadcast GetBroadcast(string name){
 				if (broadcasts.ContainsKey(name)){
@@ -168,13 +168,13 @@ namespace Izhitsa {
 				return null;
 			}
 			/**
-			 * <summary>
-			 * Returns the `<see cref="Broadcast"/>` with the name
-			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
-			 * is the wrong type.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.
-			 * </param>
+			 <summary>
+			 Returns the `<see cref="Broadcast"/>` with the name
+			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 is the wrong type.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.
+			 </param>
 			 */
 			public static Broadcast<T> GetBroadcast<T>(string name){
 				if (broadcasts.ContainsKey(name)){
@@ -185,13 +185,13 @@ namespace Izhitsa {
 				return null;
 			}
 			/**
-			 * <summary>
-			 * Returns the `<see cref="Broadcast"/>` with the name
-			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
-			 * is the wrong type.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.
-			 * </param>
+			 <summary>
+			 Returns the `<see cref="Broadcast"/>` with the name
+			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 is the wrong type.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.
+			 </param>
 			 */
 			public static Broadcast<T, T2> GetBroadcast<T, T2>(string name){
 				if (broadcasts.ContainsKey(name)){
@@ -202,13 +202,13 @@ namespace Izhitsa {
 				return null;
 			}
 			/**
-			 * <summary>
-			 * Returns the `<see cref="Broadcast"/>` with the name
-			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
-			 * is the wrong type.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.
-			 * </param>
+			 <summary>
+			 Returns the `<see cref="Broadcast"/>` with the name
+			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 is the wrong type.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.
+			 </param>
 			 */
 			public static Broadcast<T, T2, T3> GetBroadcast<T, T2, T3>(string name){
 				if (broadcasts.ContainsKey(name)){
@@ -219,13 +219,13 @@ namespace Izhitsa {
 				return null;
 			}
 			/**
-			 * <summary>
-			 * Returns the `<see cref="Broadcast"/>` with the name
-			 * `<paramref name="name"/>`, or null if it doesn't exist or it 
-			 * is the wrong type.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.
-			 * </param>
+			 <summary>
+			 Returns the `<see cref="Broadcast"/>` with the name
+			 `<paramref name="name"/>`, or null if it doesn't exist or it 
+			 is the wrong type.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.
+			 </param>
 			 */
 			public static Broadcast<T, T2, T3, T4> GetBroadcast<T, T2, T3, T4>(string name){
 				if (broadcasts.ContainsKey(name)){
@@ -237,46 +237,46 @@ namespace Izhitsa {
 			}
 
 			/**
-			 * <summary>
-			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
-			 * </summary>
-			 * <param name="bc">The Broadcast to add.</param>
+			 <summary>
+			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 </summary>
+			 <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register(Broadcast bc) => broadcasts.Add(bc.Name, bc);
 			/**
-			 * <summary>
-			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
-			 * </summary>
-			 * <param name="bc">The Broadcast to add.</param>
+			 <summary>
+			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 </summary>
+			 <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T>(Broadcast<T> bc) => broadcasts.Add(bc.Name, bc);
 			/**
-			 * <summary>
-			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
-			 * </summary>
-			 * <param name="bc">The Broadcast to add.</param>
+			 <summary>
+			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 </summary>
+			 <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T, T2>(Broadcast<T, T2> bc) => broadcasts.Add(bc.Name, bc);
 			/**
-			 * <summary>
-			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
-			 * </summary>
-			 * <param name="bc">The Broadcast to add.</param>
+			 <summary>
+			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 </summary>
+			 <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T, T2, T3>(Broadcast<T, T2, T3> bc) => broadcasts.Add(bc.Name, bc);
 			/**
-			 * <summary>
-			 * Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
-			 * </summary>
-			 * <param name="bc">The Broadcast to add.</param>
+			 <summary>
+			 Registers a `<see cref="Broadcast"/>` (adds it to the dictionary).
+			 </summary>
+			 <param name="bc">The Broadcast to add.</param>
 			 */
 			internal static void register<T, T2, T3,T4>(Broadcast<T, T2, T3,T4> bc) => broadcasts.Add(bc.Name, bc);
 
 			/**
-			 * <summary>
-			 * Returns a `<see cref="Broadcast"/>` associated with `<paramref name="name"/>`, creating it if it does not exist.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.</param>
+			 <summary>
+			 Returns a `<see cref="Broadcast"/>` associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.</param>
 			 */
 			private static Broadcast getBroadcast(string name){
 				object bc = GetBroadcast(name);
@@ -290,10 +290,10 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.</param>
+			 <summary>
+			 Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.</param>
 			 */
 			private static Broadcast<T> getBroadcast<T>(string name){
 				object bc = GetBroadcast(name);
@@ -307,10 +307,10 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.</param>
+			 <summary>
+			 Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.</param>
 			 */
 			private static Broadcast<T, T2> getBroadcast<T, T2>(string name){
 				object bc = GetBroadcast(name);
@@ -324,10 +324,10 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.</param>
+			 <summary>
+			 Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.</param>
 			 */
 			private static Broadcast<T, T2, T3> getBroadcast<T, T2, T3>(string name){
 				object bc = GetBroadcast(name);
@@ -341,10 +341,10 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
-			 * </summary>
-			 * <param name="name">The name of the Broadcast to get.</param>
+			 <summary>
+			 Returns a Broadcast associated with `<paramref name="name"/>`, creating it if it does not exist.
+			 </summary>
+			 <param name="name">The name of the Broadcast to get.</param>
 			 */
 			private static Broadcast<T, T2, T3, T4> getBroadcast<T, T2, T3, T4>(string name){
 				object bc = GetBroadcast(name);

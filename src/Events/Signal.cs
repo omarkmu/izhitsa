@@ -3,20 +3,20 @@ using System;
 namespace Izhitsa {
 	namespace Events {
 		/**
-		 * <summary>
-		 * Contains a callback for use in `<see cref="Events.Broadcast"/>`.
-		 * </summary>
-		 * <seealso cref="EventManager.Broadcast"/>
+		 <summary>
+		 Contains a callback for use in `<see cref="Events.Broadcast"/>`.
+		 </summary>
+		 <seealso cref="EventManager.Broadcast"/>
 		 */
 		public class Signal {
 			/**
-			 * <summary>
-			 * The Broadcast that this Signal is connected to. (Read Only)
-			 * </summary>
-			 * <exception cref="MemberAccessException">
-			 * Thrown if an attempt to access the member is made
-			 * after the signal has been disconnected.
-			 * </exception>
+			 <summary>
+			 The Broadcast that this Signal is connected to. (Read Only)
+			 </summary>
+			 <exception cref="MemberAccessException">
+			 Thrown if an attempt to access the member is made
+			 after the signal has been disconnected.
+			 </exception>
 			 */
 			public Broadcast Broadcast {
 				get {
@@ -38,13 +38,13 @@ namespace Izhitsa {
 			
 			
 			/**
-			 * <summary>
-			 * Creates a Signal.
-			 * </summary>
-			 * <param name="func">A callback function to connect to the Signal.
-			 * </param>
-			 * <param name="bc">The Broadcast
-			 * that the Signal is being added to.</param>
+			 <summary>
+			 Creates a Signal.
+			 </summary>
+			 <param name="func">A callback function to connect to the Signal.
+			 </param>
+			 <param name="bc">The Broadcast
+			 that the Signal is being added to.</param>
 			 */
 			internal Signal(Action<object[]> func, Broadcast bc){
 				callback = func;
@@ -53,12 +53,12 @@ namespace Izhitsa {
 
 
 			/**
-			 * <summary>
-			 * Disconnects the Signal from its Broadcast.
-			 * </summary>
-			 * <exception cref="MethodAccessException">
-			 * Thrown if the Signal is already disconnected.
-			 * </exception>
+			 <summary>
+			 Disconnects the Signal from its Broadcast.
+			 </summary>
+			 <exception cref="MethodAccessException">
+			 Thrown if the Signal is already disconnected.
+			 </exception>
 			 */
 			public void Disconnect(){
 				if (Disconnected)
@@ -70,10 +70,10 @@ namespace Izhitsa {
 			}
 			
 			/**
-			 * <summary>
-			 * Calls the callback function.
-			 * </summary>
-			 * <param name="args">Arguments to fire the Signal with.</param>
+			 <summary>
+			 Calls the callback function.
+			 </summary>
+			 <param name="args">Arguments to fire the Signal with.</param>
 			 */
 			internal void call(params object[] args) {
 				if (callback == null) return;

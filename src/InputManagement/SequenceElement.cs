@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace InputManagement {
 		/**
-		 * <summary>
-		 * Represents an element in a Sequence.
-		 * </summary>
+		 <summary>
+		 Represents an element in a Sequence.
+		 </summary>
 		 */
 		public class SequenceElement {
 			/// <summary>InputModifiers to be checked while checking the sequence.</summary>
@@ -62,40 +62,40 @@ namespace Izhitsa {
 			
 
 			/**
-			 * <summary>
-			 * Creates a SequenceElement.
-			 * </summary>
-			 * <param name="key">The KeyCode to check.
-			 * </param>
-			 * <param name="type">The element's input type.
-			 * </param>
-			 * <param name="flags">Flags used to check if the sequence should be interrupted.
-			 * </param>
-			 * <param name="minDuration">The minimum duration of the keypress for the element to
-			 * be valid.
-			 * </param>
-			 * <param name="maxDuration">The maximum duration of the keypress before invalidity.
-			 * </param>
-			 * <param name="minMargin">The minimum time which has to pass since the last element
-			 * in the sequence for the element to be valid.
-			 * </param>
-			 * <param name="maxMargin">The maximum time which can pass since the last element in
-			 * the sequence before invalidity.
-			 * </param>
-			 * <param name="minXDelta">The minimum mouse X delta for the sequence to be valid.
-			 * </param>
-			 * <param name="maxXDelta">The maximum mouse X delta for the sequence to be valid.
-			 * </param>
-			 * <param name="minYDelta">The minimum mouse Y delta for the sequence to be valid.
-			 * </param>
-			 * <param name="minYDelta">The minimum mouse Y delta for the sequence to be valid.
-			 * </param>
-			 * <param name="modifiers">Keys to use as modifiers for the element.
-			 * </param>
-			 * <param name="inputModifiers">InputModifiers to use as modifiers for the element.
-			 * </param>
-			 * <param name="modifierType">The modifier type, for `<paramref name="inputModifiers"/>`.
-			 * </param>
+			 <summary>
+			 Creates a SequenceElement.
+			 </summary>
+			 <param name="key">The KeyCode to check.
+			 </param>
+			 <param name="type">The element's input type.
+			 </param>
+			 <param name="flags">Flags used to check if the sequence should be interrupted.
+			 </param>
+			 <param name="minDuration">The minimum duration of the keypress for the element to
+			 be valid.
+			 </param>
+			 <param name="maxDuration">The maximum duration of the keypress before invalidity.
+			 </param>
+			 <param name="minMargin">The minimum time which has to pass since the last element
+			 in the sequence for the element to be valid.
+			 </param>
+			 <param name="maxMargin">The maximum time which can pass since the last element in
+			 the sequence before invalidity.
+			 </param>
+			 <param name="minXDelta">The minimum mouse X delta for the sequence to be valid.
+			 </param>
+			 <param name="maxXDelta">The maximum mouse X delta for the sequence to be valid.
+			 </param>
+			 <param name="minYDelta">The minimum mouse Y delta for the sequence to be valid.
+			 </param>
+			 <param name="minYDelta">The minimum mouse Y delta for the sequence to be valid.
+			 </param>
+			 <param name="modifiers">Keys to use as modifiers for the element.
+			 </param>
+			 <param name="inputModifiers">InputModifiers to use as modifiers for the element.
+			 </param>
+			 <param name="modifierType">The modifier type, for `<paramref name="inputModifiers"/>`.
+			 </param>
 			 */
 			public SequenceElement(KeyCode key = KeyCode.None, InputEventType type = InputEventType.KeyDown,
 				InterruptFlags flags = InterruptFlags.DifferentKeyDown, float minDuration = 0.0f,

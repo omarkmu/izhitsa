@@ -4,19 +4,19 @@ namespace Izhitsa {
 	namespace Events {
 		namespace Generic {
 			/**
-			 * <summary>
-			 * Generic form of `<see cref="Signal"/>`.
-			 * </summary>
+			 <summary>
+			 Generic form of `<see cref="Signal"/>`.
+			 </summary>
 			 */
 			public class Signal<T> {
 				/**
-				 * <summary>
-				 * The Broadcast that this Signal is connected to. (Read Only)
-				 * </summary>
-				 * <exception cref="MemberAccessException">
-				 * Thrown if an attempt to access the member is made
-				 * after the signal has been disconnected.
-				 * </exception>
+				 <summary>
+				 The Broadcast that this Signal is connected to. (Read Only)
+				 </summary>
+				 <exception cref="MemberAccessException">
+				 Thrown if an attempt to access the member is made
+				 after the signal has been disconnected.
+				 </exception>
 				 */
 				public Broadcast<T> Broadcast {
 					get {
@@ -38,13 +38,13 @@ namespace Izhitsa {
 				
 				
 				/**
-				 * <summary>
-				 * Creates a Signal.
-				 * </summary>
-				 * <param name="func">A callback function to connect to the Signal.
-				 * </param>
-				 * <param name="bc">The Broadcast
-				 * that the Signal is being added to.</param>
+				 <summary>
+				 Creates a Signal.
+				 </summary>
+				 <param name="func">A callback function to connect to the Signal.
+				 </param>
+				 <param name="bc">The Broadcast
+				 that the Signal is being added to.</param>
 				 */
 				internal Signal(Action<T> func, Broadcast<T> bc){
 					callback = func;
@@ -53,12 +53,12 @@ namespace Izhitsa {
 
 
 				/**
-				 * <summary>
-				 * Disconnects the Signal from its Broadcast.
-				 * </summary>
-				 * <exception cref="MethodAccessException">
-				 * Thrown if the Signal is already disconnected.
-				 * </exception>
+				 <summary>
+				 Disconnects the Signal from its Broadcast.
+				 </summary>
+				 <exception cref="MethodAccessException">
+				 Thrown if the Signal is already disconnected.
+				 </exception>
 				 */
 				public void Disconnect(){
 					if (Disconnected)
@@ -70,10 +70,10 @@ namespace Izhitsa {
 				}
 				
 				/**
-				 * <summary>
-				 * Calls the callback function.
-				 * </summary>
-				 * <param name="args">Arguments to fire the Signal with.</param>
+				 <summary>
+				 Calls the callback function.
+				 </summary>
+				 <param name="args">Arguments to fire the Signal with.</param>
 				 */
 				internal void call(T arg) {
 					if (callback == null) return;
@@ -81,19 +81,19 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Generic form of `<see cref="Signal"/>`.
-			 * </summary>
+			 <summary>
+			 Generic form of `<see cref="Signal"/>`.
+			 </summary>
 			 */
 			public class Signal<T, T2> {
 				/**
-				 * <summary>
-				 * The Broadcast that this Signal is connected to. (Read Only)
-				 * </summary>
-				 * <exception cref="MemberAccessException">
-				 * Thrown if an attempt to access the member is made
-				 * after the signal has been disconnected.
-				 * </exception>
+				 <summary>
+				 The Broadcast that this Signal is connected to. (Read Only)
+				 </summary>
+				 <exception cref="MemberAccessException">
+				 Thrown if an attempt to access the member is made
+				 after the signal has been disconnected.
+				 </exception>
 				 */
 				public Broadcast<T, T2> Broadcast {
 					get {
@@ -115,13 +115,13 @@ namespace Izhitsa {
 				
 				
 				/**
-				 * <summary>
-				 * Creates a Signal.
-				 * </summary>
-				 * <param name="func">A callback function to connect to the Signal.
-				 * </param>
-				 * <param name="bc">The Broadcast
-				 * that the Signal is being added to.</param>
+				 <summary>
+				 Creates a Signal.
+				 </summary>
+				 <param name="func">A callback function to connect to the Signal.
+				 </param>
+				 <param name="bc">The Broadcast
+				 that the Signal is being added to.</param>
 				 */
 				internal Signal(Action<T, T2> func, Broadcast<T, T2> bc){
 					callback = func;
@@ -130,12 +130,12 @@ namespace Izhitsa {
 
 
 				/**
-				 * <summary>
-				 * Disconnects the Signal from its Broadcast.
-				 * </summary>
-				 * <exception cref="MethodAccessException">
-				 * Thrown if the Signal is already disconnected.
-				 * </exception>
+				 <summary>
+				 Disconnects the Signal from its Broadcast.
+				 </summary>
+				 <exception cref="MethodAccessException">
+				 Thrown if the Signal is already disconnected.
+				 </exception>
 				 */
 				public void Disconnect(){
 					if (Disconnected)
@@ -147,10 +147,10 @@ namespace Izhitsa {
 				}
 				
 				/**
-				 * <summary>
-				 * Calls the callback function.
-				 * </summary>
-				 * <param name="args">Arguments to fire the Signal with.</param>
+				 <summary>
+				 Calls the callback function.
+				 </summary>
+				 <param name="args">Arguments to fire the Signal with.</param>
 				 */
 				internal void call(T arg0, T2 arg1) {
 					if (callback == null) return;
@@ -158,19 +158,19 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Generic form of `<see cref="Signal"/>`.
-			 * </summary>
+			 <summary>
+			 Generic form of `<see cref="Signal"/>`.
+			 </summary>
 			 */
 			public class Signal<T, T2, T3> {
 				/**
-				 * <summary>
-				 * The Broadcast that this Signal is connected to. (Read Only)
-				 * </summary>
-				 * <exception cref="MemberAccessException">
-				 * Thrown if an attempt to access the member is made
-				 * after the signal has been disconnected.
-				 * </exception>
+				 <summary>
+				 The Broadcast that this Signal is connected to. (Read Only)
+				 </summary>
+				 <exception cref="MemberAccessException">
+				 Thrown if an attempt to access the member is made
+				 after the signal has been disconnected.
+				 </exception>
 				 */
 				public Broadcast<T, T2, T3> Broadcast {
 					get {
@@ -192,13 +192,13 @@ namespace Izhitsa {
 				
 				
 				/**
-				 * <summary>
-				 * Creates a Signal.
-				 * </summary>
-				 * <param name="func">A callback function to connect to the Signal.
-				 * </param>
-				 * <param name="bc">The Broadcast
-				 * that the Signal is being added to.</param>
+				 <summary>
+				 Creates a Signal.
+				 </summary>
+				 <param name="func">A callback function to connect to the Signal.
+				 </param>
+				 <param name="bc">The Broadcast
+				 that the Signal is being added to.</param>
 				 */
 				internal Signal(Action<T, T2, T3> func, Broadcast<T, T2, T3> bc){
 					callback = func;
@@ -207,12 +207,12 @@ namespace Izhitsa {
 
 
 				/**
-				 * <summary>
-				 * Disconnects the Signal from its Broadcast.
-				 * </summary>
-				 * <exception cref="MethodAccessException">
-				 * Thrown if the Signal is already disconnected.
-				 * </exception>
+				 <summary>
+				 Disconnects the Signal from its Broadcast.
+				 </summary>
+				 <exception cref="MethodAccessException">
+				 Thrown if the Signal is already disconnected.
+				 </exception>
 				 */
 				public void Disconnect(){
 					if (Disconnected)
@@ -224,10 +224,10 @@ namespace Izhitsa {
 				}
 				
 				/**
-				 * <summary>
-				 * Calls the callback function.
-				 * </summary>
-				 * <param name="args">Arguments to fire the Signal with.</param>
+				 <summary>
+				 Calls the callback function.
+				 </summary>
+				 <param name="args">Arguments to fire the Signal with.</param>
 				 */
 				internal void call(T arg0, T2 arg1, T3 arg2) {
 					if (callback == null) return;
@@ -235,19 +235,19 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Generic form of `<see cref="Signal"/>`.
-			 * </summary>
+			 <summary>
+			 Generic form of `<see cref="Signal"/>`.
+			 </summary>
 			 */
 			public class Signal<T, T2, T3, T4> {
 				/**
-				 * <summary>
-				 * The Broadcast that this Signal is connected to. (Read Only)
-				 * </summary>
-				 * <exception cref="MemberAccessException">
-				 * Thrown if an attempt to access the member is made
-				 * after the signal has been disconnected.
-				 * </exception>
+				 <summary>
+				 The Broadcast that this Signal is connected to. (Read Only)
+				 </summary>
+				 <exception cref="MemberAccessException">
+				 Thrown if an attempt to access the member is made
+				 after the signal has been disconnected.
+				 </exception>
 				 */
 				public Broadcast<T, T2, T3, T4> Broadcast {
 					get {
@@ -269,13 +269,13 @@ namespace Izhitsa {
 				
 				
 				/**
-				 * <summary>
-				 * Creates a Signal.
-				 * </summary>
-				 * <param name="func">A callback function to connect to the Signal.
-				 * </param>
-				 * <param name="bc">The Broadcast
-				 * that the Signal is being added to.</param>
+				 <summary>
+				 Creates a Signal.
+				 </summary>
+				 <param name="func">A callback function to connect to the Signal.
+				 </param>
+				 <param name="bc">The Broadcast
+				 that the Signal is being added to.</param>
 				 */
 				internal Signal(Action<T, T2, T3, T4> func, Broadcast<T, T2, T3, T4> bc){
 					callback = func;
@@ -284,12 +284,12 @@ namespace Izhitsa {
 
 
 				/**
-				 * <summary>
-				 * Disconnects the Signal from its Broadcast.
-				 * </summary>
-				 * <exception cref="MethodAccessException">
-				 * Thrown if the Signal is already disconnected.
-				 * </exception>
+				 <summary>
+				 Disconnects the Signal from its Broadcast.
+				 </summary>
+				 <exception cref="MethodAccessException">
+				 Thrown if the Signal is already disconnected.
+				 </exception>
 				 */
 				public void Disconnect(){
 					if (Disconnected)
@@ -301,10 +301,10 @@ namespace Izhitsa {
 				}
 				
 				/**
-				 * <summary>
-				 * Calls the callback function.
-				 * </summary>
-				 * <param name="args">Arguments to fire the Signal with.</param>
+				 <summary>
+				 Calls the callback function.
+				 </summary>
+				 <param name="args">Arguments to fire the Signal with.</param>
 				 */
 				internal void call(T arg0, T2 arg1, T3 arg2, T4 arg3) {
 					if (callback == null) return;

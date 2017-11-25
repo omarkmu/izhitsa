@@ -25,9 +25,9 @@ namespace Izhitsa {
 
 
 				/**
-				 * <summary>
-				 * Creates an InputEvent.
-				 * </summary>
+				 <summary>
+				 Creates an InputEvent.
+				 </summary>
 				 */
 				public InputEvent(int button, float heldDuration, KeyCode key,
 					InputEventType type, Vector2 delta, Vector2 position,
@@ -45,9 +45,9 @@ namespace Izhitsa {
 
 
 				/**
-				 * <summary>
-				 * Returns the InputEvent in a displayable format.
-				 * <summary>
+				 <summary>
+				 Returns the InputEvent in a displayable format.
+				 <summary>
 				 */
 				public override string ToString(){
 					string ret = $"Type: {Type}";

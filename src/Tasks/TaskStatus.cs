@@ -1,9 +1,9 @@
 namespace Izhitsa {
 	namespace Tasks {
 		/**
-		 * <summary>
-		 * Represents the current stage in the lifecycle of a `<see cref="Task"/>`.
-		 * </summary>
+		 <summary>
+		 Represents the current stage in the lifecycle of a `<see cref="Task"/>`.
+		 </summary>
 		 */
 		public enum TaskStatus {
 			/// <summary>The Task acknowledged a cancellation request by throwing a `<see cref="TaskCanceledException"/>`.</summary>

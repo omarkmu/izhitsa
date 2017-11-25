@@ -6,9 +6,9 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace InputManagement {
 		/**
-		 * <summary>
-		 * Represents an ordered sequence of input events.
-		 * </summary>
+		 <summary>
+		 Represents an ordered sequence of input events.
+		 </summary>
 		 */
 		public class Sequence {
 			/// <summary>The current SequenceElement. (Read Only)</summary>
@@ -43,19 +43,19 @@ namespace Izhitsa {
 
 
 			/**
-			 * <summary>
-			 * Creates a new Sequence using `<see cref="SequenceElement"/>`s.
-			 * </summary>
-			 * <param name="args">The SequenceElements to create a Sequence out of.</param>
+			 <summary>
+			 Creates a new Sequence using `<see cref="SequenceElement"/>`s.
+			 </summary>
+			 <param name="args">The SequenceElements to create a Sequence out of.</param>
 			 */
 			public Sequence(params SequenceElement[] args){
 				elements = args;
 			}
 			/**
-			 * <summary>
-			 * Creates a new Sequence out of `<see cref="KeyCode"/>`s.
-			 * </summary>
-			 * <param name="args">The KeyCodes to create a Sequence out of.</param>
+			 <summary>
+			 Creates a new Sequence out of `<see cref="KeyCode"/>`s.
+			 </summary>
+			 <param name="args">The KeyCodes to create a Sequence out of.</param>
 			 */
 			public Sequence(params KeyCode[] args){
 				SequenceElement[] elems = new SequenceElement[args.Length];
@@ -69,15 +69,15 @@ namespace Izhitsa {
 
 
 			/**
-			 * <summary>
-			 * Sequence indexer, for getting/setting `<see cref="SequenceElement"/>`s.
-			 * </summary>
-			 * <param name="index">The integer to index the array with.
-			 * Must be between `0` and `<see cref="MaxStep"/>`.
-			 * </param>
-			 * <exception cref="ArgumentOutOfRangeException">Thrown if `<paramref name="index"/>`
-			 * is not between `0` and `<see cref="MaxStep"/>` or there are no `<see cref="SequenceElement"/>`s in the Sequence.
-			 * </exception>
+			 <summary>
+			 Sequence indexer, for getting/setting `<see cref="SequenceElement"/>`s.
+			 </summary>
+			 <param name="index">The integer to index the array with.
+			 Must be between `0` and `<see cref="MaxStep"/>`.
+			 </param>
+			 <exception cref="ArgumentOutOfRangeException">Thrown if `<paramref name="index"/>`
+			 is not between `0` and `<see cref="MaxStep"/>` or there are no `<see cref="SequenceElement"/>`s in the Sequence.
+			 </exception>
 			 */
 			public SequenceElement this[int index]{
 				get {
@@ -94,24 +94,24 @@ namespace Izhitsa {
 
 
 			/**
-			 * <summary>
-			 * Resets the sequence.
-			 * </summary>
+			 <summary>
+			 Resets the sequence.
+			 </summary>
 			 */
 			public void Reset(){
 				CurrentStep = 0;
 			}
 			/**
-			 * <summary>
-			 * Sets `<paramref name="propName"/>` property to `<paramref name="value"/>` in
-			 * all of the sequence's `<see cref="SequenceElement"/>`s, and returns the sequence.
-			 * </summary>
-			 * <param name="propName">A `<see cref="SequenceElement"/>` float property name.
-			 * </param>
-			 * <param name="value">The value to assign to the property.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="propName"/>` is `null`.
-			 * </exception>
+			 <summary>
+			 Sets `<paramref name="propName"/>` property to `<paramref name="value"/>` in
+			 all of the sequence's `<see cref="SequenceElement"/>`s, and returns the sequence.
+			 </summary>
+			 <param name="propName">A `<see cref="SequenceElement"/>` float property name.
+			 </param>
+			 <param name="value">The value to assign to the property.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="propName"/>` is `null`.
+			 </exception>
 			 */
 			public Sequence Set(string propName, float value){
 				if (propName == null) throw new ArgumentNullException("propName");
@@ -155,44 +155,44 @@ namespace Izhitsa {
 				return this;
 			}
 			/**
-			 * <summary>
-			 * Sets InterruptFlags to `<paramref name="value"/>` in all of the sequence's
-			 * `<see cref="SequenceElement"/>`s, and returns the sequence.
-			 * </summary>
-			 * <param name="value">The value to assign to the property.</param>
+			 <summary>
+			 Sets InterruptFlags to `<paramref name="value"/>` in all of the sequence's
+			 `<see cref="SequenceElement"/>`s, and returns the sequence.
+			 </summary>
+			 <param name="value">The value to assign to the property.</param>
 			 */
 			public Sequence Set(InterruptFlags value){
 				foreach (SequenceElement elem in elements) elem.InterruptFlags = value;
 				return this;
 			}
 			/**
-			 * <summary>
-			 * Sets Key to `<paramref name="value"/>` in all of the sequence's
-			 * `<see cref="SequenceElement"/>`s, and returns the sequence.
-			 * </summary>
-			 * <param name="value">The value to assign to the property.</param>
+			 <summary>
+			 Sets Key to `<paramref name="value"/>` in all of the sequence's
+			 `<see cref="SequenceElement"/>`s, and returns the sequence.
+			 </summary>
+			 <param name="value">The value to assign to the property.</param>
 			 */
 			public Sequence Set(KeyCode value){
 				foreach (SequenceElement elem in elements) elem.Key = value;
 				return this;
 			}
 			/**
-			 * <summary>
-			 * Sets Type to `<paramref name="value"/>` in all of the sequence's
-			 * `<see cref="SequenceElement"/>`s, and returns the sequence.
-			 * </summary>
-			 * <param name="value">The value to assign to the property.</param>
+			 <summary>
+			 Sets Type to `<paramref name="value"/>` in all of the sequence's
+			 `<see cref="SequenceElement"/>`s, and returns the sequence.
+			 </summary>
+			 <param name="value">The value to assign to the property.</param>
 			 */
 			public Sequence Set(InputEventType value){
 				foreach (SequenceElement elem in elements) elem.Type = value;
 				return this;
 			}
 			/**
-			 * <summary>
-			 * Sets Modifiers to `<paramref name="value"/>` in all of the sequence's
-			 * `<see cref="SequenceElement"/>`s, and returns the sequence.
-			 * </summary>
-			 * <param name="value">The value to assign to the property.</param>
+			 <summary>
+			 Sets Modifiers to `<paramref name="value"/>` in all of the sequence's
+			 `<see cref="SequenceElement"/>`s, and returns the sequence.
+			 </summary>
+			 <param name="value">The value to assign to the property.</param>
 			 * 
 			 */
 			public Sequence Set(List<KeyCode> value){

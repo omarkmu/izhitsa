@@ -52,25 +52,25 @@ namespace Izhitsa {
 
 
 			/**
-			 * <summary>
-			 * Connects `<paramref name="func"/>` to an event which fires on any input.
-			 * </summary>
-			 * <param name="param0">An InputEvent representing the input.
-			 * </param>
+			 <summary>
+			 Connects `<paramref name="func"/>` to an event which fires on any input.
+			 </summary>
+			 <param name="param0">An InputEvent representing the input.
+			 </param>
 			 */
 			public static Signal<InputEvent> OnInput(Action<InputEvent> func)
 				=> input.Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when `<paramref name="action"/>` is bound
-			 * to a key, and returns a Signal.
-			 * </summary>
-			 * <param name="action">The name of the bound key to connect to.
-			 * </param>
-			 * <param name="func">The Action to connect.
-			 * </param>
-			 * <param name="param0">The KeyCode which was bound.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when `<paramref name="action"/>` is bound
+			 to a key, and returns a Signal.
+			 </summary>
+			 <param name="action">The name of the bound key to connect to.
+			 </param>
+			 <param name="func">The Action to connect.
+			 </param>
+			 <param name="param0">The KeyCode which was bound.
+			 </param>
 			 */
 			public static Signal<KeyCode> OnKeyBound(string action, Action<KeyCode> func){
 				if (!keyBoundEvents.ContainsKey(action))
@@ -79,27 +79,27 @@ namespace Izhitsa {
 				return bc.Connect(func);
 			}
 			/**
-			 * <summary>
-			 * Connects `<paramref name="func"/>` to an event which fires when a key is bound.
-			 * </summary>
-			 * <param name="param0">The name of the key that was bound.
-			 * </param>
-			 * <param name="param1">The KeyCode which was bound.
-			 * </param>
+			 <summary>
+			 Connects `<paramref name="func"/>` to an event which fires when a key is bound.
+			 </summary>
+			 <param name="param0">The name of the key that was bound.
+			 </param>
+			 <param name="param1">The KeyCode which was bound.
+			 </param>
 			 */
 			public static Signal<string, KeyCode> OnKeyBound(Action<string, KeyCode> func)
 				=> keyBound.Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when a key event happens on
-			 * `<paramref name="key"/>`, and returns a Signal.
-			 * </summary>
-			 * <param name="key">The key to listen for.
-			 * </param>
-			 * <param name="func">The Action to connect.
-			 * </param>
-			 * <param name="param0">An InputEvent representing the input.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when a key event happens on
+			 `<paramref name="key"/>`, and returns a Signal.
+			 </summary>
+			 <param name="key">The key to listen for.
+			 </param>
+			 <param name="func">The Action to connect.
+			 </param>
+			 <param name="param0">An InputEvent representing the input.
+			 </param>
 			 */
 			public static Signal<InputEvent> OnKeyEvent(KeyCode key, Action<InputEvent> func){
 				if (!keyEvents.ContainsKey(key))
@@ -108,26 +108,26 @@ namespace Izhitsa {
 				return bc.Connect(func);
 			}
 			/**
-			 * <summary>
-			 * Connects `<paramref name="func"/>` to an event which fires on any key input.
-			 * </summary>
-			 * <param name="param0">An InputEvent representing the input.
-			 * </param>
+			 <summary>
+			 Connects `<paramref name="func"/>` to an event which fires on any key input.
+			 </summary>
+			 <param name="param0">An InputEvent representing the input.
+			 </param>
 			 */
 			public static Signal<InputEvent> OnKeyEvent(Action<InputEvent> func)
 				=> keyEvent.Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when `<paramref name="action"/>` is bound
-			 * to a key, and returns a Signal.
-			 * </summary>
-			 * <param name="action">The name of the bound key to connect to.
-			 * </param>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
-			 * <param name="param0">The KeyCode that was bound previously.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when `<paramref name="action"/>` is bound
+			 to a key, and returns a Signal.
+			 </summary>
+			 <param name="action">The name of the bound key to connect to.
+			 </param>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
+			 <param name="param0">The KeyCode that was bound previously.
+			 </param>
 			 */
 			public static Signal<KeyCode> OnKeyUnbound(string action, Action<KeyCode> func){
 				if (!keyUnboundEvents.ContainsKey(action))
@@ -136,32 +136,32 @@ namespace Izhitsa {
 				return bc.Connect(func);
 			}
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when an action is bound
-			 * to a key, and returns a Signal.
-			 * </summary>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
-			 * <param name="param0">The name of the key action which was unbound.
-			 * </param>
-			 * <param name="param1">The KeyCode that was bound previously.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when an action is bound
+			 to a key, and returns a Signal.
+			 </summary>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
+			 <param name="param0">The name of the key action which was unbound.
+			 </param>
+			 <param name="param1">The KeyCode that was bound previously.
+			 </param>
 			 */
 			public static Signal<string, KeyCode> OnKeyUnbound(Action<string, KeyCode> func)
 				=> keyUnbound.Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when mouse button
-			 * `<paramref name="button"/>` is interacted with, and returns a Signal.
-			 * </summary>
-			 * <param name="button">The mouse button.
-			 * </param>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
-			 * <param name="param0">An InputEvent representing the input.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when mouse button
+			 `<paramref name="button"/>` is interacted with, and returns a Signal.
+			 </summary>
+			 <param name="button">The mouse button.
+			 </param>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
+			 <param name="param0">An InputEvent representing the input.
+			 </param>
 			 */
 			public static Signal<InputEvent> OnMouse(int button, Action<InputEvent> func){
 				if (!mouseEvents.ContainsKey(button))
@@ -170,55 +170,55 @@ namespace Izhitsa {
 				return bc.Connect(func);
 			}
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when a mouse button
-			 * is interacted with, and returns a Signal.
-			 * </summary>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
-			 * <param name="param0">An InputEvent representing the input.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when a mouse button
+			 is interacted with, and returns a Signal.
+			 </summary>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
+			 <param name="param0">An InputEvent representing the input.
+			 </param>
 			 */
 			public static Signal<InputEvent> OnMouse(Action<InputEvent> func)
 				=> mouseEvent.Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when the
-			 * mouse is moved, and returns a Signal.
-			 * </summary>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
-			 * <param name="param0">An InputEvent representing the input.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when the
+			 mouse is moved, and returns a Signal.
+			 </summary>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
+			 <param name="param0">An InputEvent representing the input.
+			 </param>
 			 */
 			public static Signal<InputEvent> OnMouseMove(Action<InputEvent> func)
 				=> mouseMove.Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when the mouse scroll wheel
-			 * is interacted with, and returns a Signal.
-			 * </summary>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
-			 * <param name="param0">An InputEvent representing the input.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when the mouse scroll wheel
+			 is interacted with, and returns a Signal.
+			 </summary>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
+			 <param name="param0">An InputEvent representing the input.
+			 </param>
 			 */
 			public static Signal<InputEvent> OnScroll(Action<InputEvent> func)
 				=> scrollEvent.Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 * bound to the name `seqName` is completed successfully, and returns
-			 * a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="seqName">The name of the sequence.
-			 * </param>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
+			 bound to the name `seqName` is completed successfully, and returns
+			 a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="seqName">The name of the sequence.
+			 </param>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
 			 */
 			public static Signal OnSequence(string seqName, Action func){
 				if (!seqEvents.ContainsKey(seqName))
@@ -227,15 +227,15 @@ namespace Izhitsa {
 				return bc.Connect(func);
 			}
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 * is bound to the name `seqName`, and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="seqName">The name to listen for.
-			 * </param>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
+			 is bound to the name `seqName`, and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="seqName">The name to listen for.
+			 </param>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
 			 */
 			public static Signal<Sequence> OnSequenceBound(string seqName, Action<Sequence> func){
 				if (!seqBoundEvents.ContainsKey(seqName))
@@ -244,30 +244,30 @@ namespace Izhitsa {
 				return bc.Connect(func);
 			}
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 * is bound, and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
-			 * <param name="param0">The name of the sequence.
-			 * </param>
-			 * <param name="param1">The new Sequence.</param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
+			 is bound, and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
+			 <param name="param0">The name of the sequence.
+			 </param>
+			 <param name="param1">The new Sequence.</param>
 			 */
 			public static Signal<string, Sequence> OnSequenceBound(Action<string, Sequence> func)
 				=> seqBound.Connect(func);
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 * is unbound from the name `seqName`, and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="seqName">The name to listen for.
-			 * </param>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
-			 * <param name="param0">The Sequence that was previously bound.</param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
+			 is unbound from the name `seqName`, and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="seqName">The name to listen for.
+			 </param>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
+			 <param name="param0">The Sequence that was previously bound.</param>
 			 */
 			public static Signal<Sequence> OnSequenceUnbound(string seqName, Action<Sequence> func){
 				if (!seqUnboundEvents.ContainsKey(seqName))
@@ -276,16 +276,16 @@ namespace Izhitsa {
 				return bc.Connect(func);
 			}
 			/**
-			 * <summary>
-			 * Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
-			 * is unbound, and returns a `<see cref="Signal"/>`.
-			 * </summary>
-			 * <param name="func">
-			 * The Action to connect.
-			 * </param>
-			 * <param name="param0">The name of the sequence.
-			 * </param>
-			 * <param name="param1">TheSequence that was previously bound.</param>
+			 <summary>
+			 Connects an Action to a Broadcast which fires when a `<see cref="InputManager.Sequence"/>`
+			 is unbound, and returns a `<see cref="Signal"/>`.
+			 </summary>
+			 <param name="func">
+			 The Action to connect.
+			 </param>
+			 <param name="param0">The name of the sequence.
+			 </param>
+			 <param name="param1">TheSequence that was previously bound.</param>
 			 */
 			public static Signal<string, Sequence> OnSequenceUnbound(Action<string, Sequence> func)
 				=> seqUnbound.Connect(func);

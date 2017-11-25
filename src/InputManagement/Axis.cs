@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace InputManagement {
 		/**
-		 * <summary>Represents an input axis.</summary>
+		 <summary>Represents an input axis.</summary>
 		 */
 		public class Axis {
 			/// <summary>If true, the raw value of the input can factor in multiple positive and negative key values.</summary>
@@ -30,36 +30,36 @@ namespace Izhitsa {
 
 
 			/**
-			 * <summary>Creates an Axis using a negative and positive KeyCode.
-			 * </summary>
-			 * <param name="negative">The negative KeyCode.
-			 * </param>
-			 * <param name="positive">The positive KeyCode.
-			 * </param>
+			 <summary>Creates an Axis using a negative and positive KeyCode.
+			 </summary>
+			 <param name="negative">The negative KeyCode.
+			 </param>
+			 <param name="positive">The positive KeyCode.
+			 </param>
 			 */
 			public Axis(KeyCode negative, KeyCode positive){
 				NegativeKeys = new List<KeyCode>(){ negative };
 				PositiveKeys = new List<KeyCode>(){ positive };
 			}
 			/**
-			 * <summary>Creates an Axis using a negative and positive KeyCode arrays.
-			 * </summary>
-			 * <param name="negatives">The negative KeyCode array.
-			 * </param>
-			 * <param name="positives">The positive KeyCode array.
-			 * </param>
+			 <summary>Creates an Axis using a negative and positive KeyCode arrays.
+			 </summary>
+			 <param name="negatives">The negative KeyCode array.
+			 </param>
+			 <param name="positives">The positive KeyCode array.
+			 </param>
 			 */
 			public Axis(KeyCode[] negatives, KeyCode[] positives){
 				NegativeKeys = new List<KeyCode>(negatives);
 				PositiveKeys = new List<KeyCode>(positives);
 			}
 			/**
-			 * <summary>Creates an Axis using a negative and positive KeyCode Lists.
-			 * </summary>
-			 * <param name="negatives">The negative KeyCode List.
-			 * </param>
-			 * <param name="positives">The positive KeyCode List.
-			 * </param>
+			 <summary>Creates an Axis using a negative and positive KeyCode Lists.
+			 </summary>
+			 <param name="negatives">The negative KeyCode List.
+			 </param>
+			 <param name="positives">The positive KeyCode List.
+			 </param>
 			 */
 			public Axis(List<KeyCode> negatives, List<KeyCode> positives){
 				NegativeKeys = new List<KeyCode>(negatives);
@@ -68,10 +68,10 @@ namespace Izhitsa {
 
 
 			/**
-			 * <summary>Returns the smoothed value of the Axis.
-			 * </summary>
-			 * <param name="ignorePause">Should the `<see cref="InputManager.Paused"/>`
-			 * state be ignored?</param>
+			 <summary>Returns the smoothed value of the Axis.
+			 </summary>
+			 <param name="ignorePause">Should the `<see cref="InputManager.Paused"/>`
+			 state be ignored?</param>
 			 */
 			public float GetValue(bool ignorePause = false){
 				if (InputManager.Paused && !ignorePause) return 0;
@@ -85,10 +85,10 @@ namespace Izhitsa {
 				return (Mathf.Abs(value) > Dead) ? value : 0f;
 			}
 			/**
-			 * <summary>Returns the raw value of the Axis.
-			 * </summary>
-			 * <param name="ignorePause">Should the `<see cref="InputManager.Paused"/>`
-			 * state be ignored?</param>
+			 <summary>Returns the raw value of the Axis.
+			 </summary>
+			 <param name="ignorePause">Should the `<see cref="InputManager.Paused"/>`
+			 state be ignored?</param>
 			 */
 			public float GetRawValue(bool ignorePause = false){
 				if (InputManager.Paused && !ignorePause) return 0;

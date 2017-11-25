@@ -4,9 +4,9 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace Utility {
 		/**
-		 * <summary>
-		 * Provides asset-related utilities.
-		 * </summary>
+		 <summary>
+		 Provides asset-related utilities.
+		 </summary>
 		 */
 		public static class Assets {
 			/// <summary>The asset cache.</summary>
@@ -14,14 +14,14 @@ namespace Izhitsa {
 				= new Dictionary<string, UnityEngine.Object>();
 			
 			/**
-			 * <summary>
-			 * Loads a resource and caches it.
-			 * </summary>
-			 * <param name="path">The path to the resource.
-			 * </param>
-			 * <param name="forceReload">If this is true, the resource is reloaded
-			 * even if it exists in the cache.
-			 * </param>
+			 <summary>
+			 Loads a resource and caches it.
+			 </summary>
+			 <param name="path">The path to the resource.
+			 </param>
+			 <param name="forceReload">If this is true, the resource is reloaded
+			 even if it exists in the cache.
+			 </param>
 			 */
 			public static T Load<T>(string path, bool forceReload = false)
 			where T : UnityEngine.Object {
@@ -31,13 +31,13 @@ namespace Izhitsa {
 				return resource;
 			}
 			/**
-			 * <summary>
-			 * Loads all assets in a folder or file at path in a Resource folder.
-			 * </summary>
-			 * <param name="path">The path to the folder or file.
-			 * </param>
-			 * <returns>A List of type T, containing the assets.
-			 * </returns>
+			 <summary>
+			 Loads all assets in a folder or file at path in a Resource folder.
+			 </summary>
+			 <param name="path">The path to the folder or file.
+			 </param>
+			 <returns>A List of type T, containing the assets.
+			 </returns>
 			 */
 			public static List<T> LoadAll<T>(string path)
 			where T : UnityEngine.Object {

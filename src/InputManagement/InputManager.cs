@@ -6,7 +6,7 @@ using UnityEngine;
 namespace Izhitsa {
 	namespace InputManagement {
 		/**
-		 * <summary>Facilitates input handling.</summary>
+		 <summary>Facilitates input handling.</summary>
 		 */
 		public static partial class InputManager {
 			/// <summary>A boolean representing whether or not either alt key is down.</summary>
@@ -42,18 +42,18 @@ namespace Izhitsa {
 
 
 			/**
-			 * <summary>
-			 * Binds an action string to a `KeyCode`.
-			 * </summary>
-			 * <param name="action">The action to bind to a key.
-			 * </param>
-			 * <param name="keyCode">The `KeyCode` to bind.
-			 * </param>
-			 * <param name="clear">If true, any previously bound keys to this action
-			 * will be removed.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
+			 <summary>
+			 Binds an action string to a `KeyCode`.
+			 </summary>
+			 <param name="action">The action to bind to a key.
+			 </param>
+			 <param name="keyCode">The `KeyCode` to bind.
+			 </param>
+			 <param name="clear">If true, any previously bound keys to this action
+			 will be removed.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
 			 */
 			public static void BindKey(string action, KeyCode keyCode, bool clear = false){
 				if (action == null)
@@ -80,15 +80,15 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Binds an action string to `KeyCode`s.
-			 * </summary>
-			 * <param name="action">The action to bind to the keys.
-			 * </param>
-			 * <param name="keyCodes">The `KeyCode`s to bind.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
+			 <summary>
+			 Binds an action string to `KeyCode`s.
+			 </summary>
+			 <param name="action">The action to bind to the keys.
+			 </param>
+			 <param name="keyCodes">The `KeyCode`s to bind.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
 			 */
 			public static void BindKey(string action, params KeyCode[] keyCodes){
 				if (action == null)
@@ -96,13 +96,13 @@ namespace Izhitsa {
 				foreach (KeyCode key in keyCodes) BindKey(action, key, false);
 			}
 			/**
-			 * <summary>
-			 * Binds a name to a `Sequence`.
-			 * </summary>
-			 * <param name="seqName">The name to bind to the sequence.
-			 * </param>
-			 * <param name="seq">The `Sequence` to bind.
-			 * </param>
+			 <summary>
+			 Binds a name to a `Sequence`.
+			 </summary>
+			 <param name="seqName">The name to bind to the sequence.
+			 </param>
+			 <param name="seq">The `Sequence` to bind.
+			 </param>
 			 */
 			public static Sequence BindSequence(string seqName, Sequence seq){
 				if (boundSeqs.ContainsKey(seqName)){
@@ -124,41 +124,41 @@ namespace Izhitsa {
 				return seq;
 			}
 			/**
-			 * <summary>
-			 * Binds a name to a `Sequence`.
-			 * </summary>
-			 * <param name="seqName">The name to bind to the sequence.
-			 * </param>
-			 * <param name="args">The `SequenceElement`s to convert into a sequence.
-			 * </param>
+			 <summary>
+			 Binds a name to a `Sequence`.
+			 </summary>
+			 <param name="seqName">The name to bind to the sequence.
+			 </param>
+			 <param name="args">The `SequenceElement`s to convert into a sequence.
+			 </param>
 			 */
 			public static Sequence BindSequence(string seqName, params SequenceElement[] args){
 				return BindSequence(seqName, new Sequence(args));
 			}
 			/**
-			 * <summary>
-			 * Binds a name to a `Sequence`.
-			 * </summary>
-			 * <param name="seqName">The name to bind to the sequence.
-			 * </param>
-			 * <param name="args">The `KeyCode`s to convert into a sequence.
-			 * </param>
+			 <summary>
+			 Binds a name to a `Sequence`.
+			 </summary>
+			 <param name="seqName">The name to bind to the sequence.
+			 </param>
+			 <param name="args">The `KeyCode`s to convert into a sequence.
+			 </param>
 			 */
 			public static Sequence BindSequence(string seqName, params KeyCode[] args){
 				return BindSequence(seqName, new Sequence(args));
 			}
 			/**
-			 * <summary>
-			 * Associates an input axis with the name `<paramref name="name"/>`.
-			 * </summary>
-			 * <param name="name">The name to bind to the Axis.
-			 * </param>
-			 * <param name="axis">The Axis object to bind.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` already exists.
-			 * </exception>
+			 <summary>
+			 Associates an input axis with the name `<paramref name="name"/>`.
+			 </summary>
+			 <param name="name">The name to bind to the Axis.
+			 </param>
+			 <param name="axis">The Axis object to bind.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` already exists.
+			 </exception>
 			 */
 			public static Axis CreateAxis(string name, Axis axis){
 				if (name == null)
@@ -169,20 +169,20 @@ namespace Izhitsa {
 				return axis;
 			}
 			/**
-			 * <summary>
-			 * Creates an input axis associated with the name `<paramref name="name"/>` using
-			 * a negative and positive KeyCode.
-			 * </summary>
-			 * <param name="name">The name to bind to the Axis.
-			 * </param>
-			 * <param name="negative">The negative KeyCode.
-			 * </param>
-			 * <param name="positive">The positive KeyCode.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` already exists.
-			 * </exception>
+			 <summary>
+			 Creates an input axis associated with the name `<paramref name="name"/>` using
+			 a negative and positive KeyCode.
+			 </summary>
+			 <param name="name">The name to bind to the Axis.
+			 </param>
+			 <param name="negative">The negative KeyCode.
+			 </param>
+			 <param name="positive">The positive KeyCode.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` already exists.
+			 </exception>
 			 */
 			public static Axis CreateAxis(string name, KeyCode negative, KeyCode positive){
 				if (name == null)
@@ -194,20 +194,20 @@ namespace Izhitsa {
 				return axis;
 			}
 			/**
-			 * <summary>
-			 * Creates an input axis associated with the name `<paramref name="name"/>` using
-			 * a negative and positive KeyCode.
-			 * </summary>
-			 * <param name="name">The name to bind to the Axis.
-			 * </param>
-			 * <param name="negatives">The list of negative KeyCodes.
-			 * </param>
-			 * <param name="positives">The list of positive KeyCodes.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` already exists.
-			 * </exception>
+			 <summary>
+			 Creates an input axis associated with the name `<paramref name="name"/>` using
+			 a negative and positive KeyCode.
+			 </summary>
+			 <param name="name">The name to bind to the Axis.
+			 </param>
+			 <param name="negatives">The list of negative KeyCodes.
+			 </param>
+			 <param name="positives">The list of positive KeyCodes.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` already exists.
+			 </exception>
 			 */
 			public static Axis CreateAxis(string name, List<KeyCode> negatives, List<KeyCode> positives){
 				if (name == null)
@@ -219,26 +219,26 @@ namespace Izhitsa {
 				return axis;
 			}
 			/**
-			 * <summary>
-			 * Returns a `Dictionary<string, List<KeyCode>>` containing all key bindings.
-			 * </summary>
+			 <summary>
+			 Returns a `Dictionary<string, List<KeyCode>>` containing all key bindings.
+			 </summary>
 			 */
 			public static Dictionary<string, List<KeyCode>> GetAllBoundKeys(){
 				return new Dictionary<string, List<KeyCode>>(boundKeys);
 			}
 			/**
-			 * <summary>
-			 * Returns the input value from an Axis.
-			 * </summary>
-			 * <param name="name">The name of the Axis object to check.
-			 * </param>
-			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is null.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` is not associated
-			 * with an Axis.
-			 * </exception>
+			 <summary>
+			 Returns the input value from an Axis.
+			 </summary>
+			 <param name="name">The name of the Axis object to check.
+			 </param>
+			 <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is null.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` is not associated
+			 with an Axis.
+			 </exception>
 			 */
 			public static float GetAxis(string name, bool ignorePause = false){
 				if (name == null)
@@ -249,13 +249,13 @@ namespace Izhitsa {
 				return axes[name].GetValue(true);
 			}
 			/**
-			 * <summary>
-			 * Returns the Axis object associated with a name.
-			 * </summary>
-			 * <param name="name">The name associated with the Axis object.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
-			 * </exception>
+			 <summary>
+			 Returns the Axis object associated with a name.
+			 </summary>
+			 <param name="name">The name associated with the Axis object.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
+			 </exception>
 			 */
 			public static Axis GetAxisObject(string name){
 				if (name == null)
@@ -263,18 +263,18 @@ namespace Izhitsa {
 				return (axes.ContainsKey(name)) ? axes[name] : null;
 			}
 			/**
-			 * <summary>
-			 * Returns the raw input value from an Axis.
-			 * </summary>
-			 * <param name="name">The name of the Axis object to check.
-			 * </param>
-			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` is not associated
-			 * with an Axis.
-			 * </exception>
+			 <summary>
+			 Returns the raw input value from an Axis.
+			 </summary>
+			 <param name="name">The name of the Axis object to check.
+			 </param>
+			 <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="name"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if an axis named `<paramref name="name"/>` is not associated
+			 with an Axis.
+			 </exception>
 			 */
 			public static float GetAxisRaw(string name, bool ignorePause = false){
 				if (name == null)
@@ -285,15 +285,15 @@ namespace Izhitsa {
 				return axes[name].GetRawValue(true);
 			}
 			/**
-			 * <summary>
-			 * Returns the nth key bound to `<paramref name="action"/>`, returning 
-			 * KeyCode.None if out of bounds or if a key isn't bound to the action.
-			 * </summary>
-			 * <param name="action">
-			 * The name of the key to check.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
+			 <summary>
+			 Returns the nth key bound to `<paramref name="action"/>`, returning 
+			 KeyCode.None if out of bounds or if a key isn't bound to the action.
+			 </summary>
+			 <param name="action">
+			 The name of the key to check.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
 			 */
 			public static KeyCode GetBoundKey(string action, int index = 0){
 				if (action == null)
@@ -303,14 +303,14 @@ namespace Izhitsa {
 				return keys[index];
 			}
 			/**
-			 * <summary>
-			 * Returns the keys bound to a string.
-			 * </summary>
-			 * <param name="action">
-			 * The name of the key to check.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
+			 <summary>
+			 Returns the keys bound to a string.
+			 </summary>
+			 <param name="action">
+			 The name of the key to check.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
 			 */
 			public static List<KeyCode> GetBoundKeys(string action){
 				if (action == null)
@@ -320,17 +320,17 @@ namespace Izhitsa {
 				return new List<KeyCode>(boundKeys[action]);
 			}
 			/**
-			 * <summary>
-			 * Returns true while any of the keys bound to `<paramref name="action"/>` are held down.
-			 * </summary>
-			 * <param name="action">The name of the key to check.
-			 * </param>
-			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
-			 * </exception>
+			 <summary>
+			 Returns true while any of the keys bound to `<paramref name="action"/>` are held down.
+			 </summary>
+			 <param name="action">The name of the key to check.
+			 </param>
+			 <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+			 </exception>
 			 */
 			public static bool GetKey(string action, bool ignorePause = false){
 				if (action == null)
@@ -343,22 +343,22 @@ namespace Izhitsa {
 				return false;
 			}
 			/**
-			 * <summary>
-			 * Returns true while the key is held down.
-			 * </summary>
-			 * <param name="key">The KeyCode to check.
-			 * </param>
-			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
-			 * </param>
+			 <summary>
+			 Returns true while the key is held down.
+			 </summary>
+			 <param name="key">The KeyCode to check.
+			 </param>
+			 <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 </param>
 			 */
 			public static bool GetKey(KeyCode key, bool ignorePause){
 				if (Paused && !ignorePause) return false;
 				return Input.GetKey(key);
 			}
 			/**
-			 * <summary>
-			 * Returns a list of currently held down keys.
-			 * </summary>
+			 <summary>
+			 Returns a list of currently held down keys.
+			 </summary>
 			 */
 			public static List<KeyCode> GetKeysDown(){
 				List<KeyCode> keys = new List<KeyCode>();
@@ -366,30 +366,30 @@ namespace Izhitsa {
 				return keys;
 			}
 			/**
-			 * <summary>
-			 * Returns the amount of time the key has been held down,
-			 * or -1 if the key is not currently pressed.
-			 * </summary>
+			 <summary>
+			 Returns the amount of time the key has been held down,
+			 or -1 if the key is not currently pressed.
+			 </summary>
 			 */
 			public static float GetKeyDuration(KeyCode key){
 				if (heldKeys.ContainsKey(key)) return Time.time - heldKeys[key];
 				return -1;
 			}
 			/**
-			 * <summary>
-			 * Returns true if any of the keys bound to `<paramref name="action"/>`
-			 * were pressed during the current frame.
-			 * </summary>
-			 * <param name="action">The name of the key to check.
-			 * </param>
-			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
-			 * </param>
-			 * <returns>A boolean representing whether or not the key was pressed.
-			 * </returns>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
-			 * </exception>
+			 <summary>
+			 Returns true if any of the keys bound to `<paramref name="action"/>`
+			 were pressed during the current frame.
+			 </summary>
+			 <param name="action">The name of the key to check.
+			 </param>
+			 <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 </param>
+			 <returns>A boolean representing whether or not the key was pressed.
+			 </returns>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+			 </exception>
 			 */
 			public static bool KeyDown(string action, bool ignorePause = false){
 				if (action == null)
@@ -402,32 +402,32 @@ namespace Izhitsa {
 				return false;
 			}
 			/**
-			 * <summary>
-			 * Returns true if the key was pressed during the current frame.
-			 * </summary>
-			 * <param name="key">The KeyCode to check.
-			 * </param>
-			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
-			 * </param>
+			 <summary>
+			 Returns true if the key was pressed during the current frame.
+			 </summary>
+			 <param name="key">The KeyCode to check.
+			 </param>
+			 <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 </param>
 			 */
 			public static bool KeyDown(KeyCode key, bool ignorePause = false){
 				if (Paused && !ignorePause) return false;
 				return Input.GetKeyDown(key);
 			}
 			/**
-			 * <summary>
-			 * Checks if any of the keys bound to `<paramref name="action"/>` were released during the frame.
-			 * </summary>
-			 * <param name="action">The name of the key to check.
-			 * </param>
-			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
-			 * </param>
-			 * <returns>A boolean representing whether or not the key was released.
-			 * </returns>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
-			 * </exception>
+			 <summary>
+			 Checks if any of the keys bound to `<paramref name="action"/>` were released during the frame.
+			 </summary>
+			 <param name="action">The name of the key to check.
+			 </param>
+			 <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 </param>
+			 <returns>A boolean representing whether or not the key was released.
+			 </returns>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+			 </exception>
 			 */
 			public static bool KeyUp(string action, bool ignorePause = false){
 				if (action == null)
@@ -440,26 +440,26 @@ namespace Izhitsa {
 				return false;
 			}
 			/**
-			 * <summary>
-			 * Returns true if the key was released during the current frame.
-			 * </summary>
-			 * <param name="key">The KeyCode to check.
-			 * </param>
-			 * <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
-			 * </param>
+			 <summary>
+			 Returns true if the key was released during the current frame.
+			 </summary>
+			 <param name="key">The KeyCode to check.
+			 </param>
+			 <param name="ignorePause">Should `<see cref="InputManager.Paused"/>` be ignored?
+			 </param>
 			 */
 			public static bool KeyUp(KeyCode key, bool ignorePause = false){
 				if (Paused && !ignorePause) return false;
 				return Input.GetKeyUp(key);
 			}
 			/**
-			 * <summary>
-			 * Returns true if `<paramref name="seq"/>` was completed during the current frame.
-			 * </summary>
-			 * <param name="seq">A sequence to check.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="seq"/>` is `null`.
-			 * </exception>
+			 <summary>
+			 Returns true if `<paramref name="seq"/>` was completed during the current frame.
+			 </summary>
+			 <param name="seq">A sequence to check.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="seq"/>` is `null`.
+			 </exception>
 			 */
 			public static bool SequenceCompleted(Sequence seq){
 				if (seq == null)
@@ -467,16 +467,16 @@ namespace Izhitsa {
 				return (seq.completionFrame == Time.frameCount);
 			}
 			/**
-			 * <summary>
-			 * Returns true if the sequence bound to `<paramref name="action"/>` was completed during
-			 * the current frame.
-			 * </summary>
-			 * <param name="action">The action to check.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to a Sequence.
-			 * </exception>
+			 <summary>
+			 Returns true if the sequence bound to `<paramref name="action"/>` was completed during
+			 the current frame.
+			 </summary>
+			 <param name="action">The action to check.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to a Sequence.
+			 </exception>
 			 */
 			public static bool SequenceCompleted(string action){
 				if (action == null)
@@ -486,17 +486,17 @@ namespace Izhitsa {
 				return (boundSeqs[action].completionFrame == Time.frameCount);
 			}
 			/**
-			 * <summary>
-			 * Unbinds a key.
-			 * </summary>
-			 * <param name="action">The action to unbind from.
-			 * </param>
-			 * <param name="keyToUnbind">The KeyCode to unbind.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
-			 * </exception>
+			 <summary>
+			 Unbinds a key.
+			 </summary>
+			 <param name="action">The action to unbind from.
+			 </param>
+			 <param name="keyToUnbind">The KeyCode to unbind.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+			 </exception>
 			 */
 			public static void UnbindKey(string action, KeyCode keyToUnbind){
 				if (action == null)
@@ -511,15 +511,15 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Unbinds a key.
-			 * </summary>
-			 * <param name="action">The action to unbind from.
-			 * </param>
-			 * <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
-			 * </exception>
-			 * <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
-			 * </exception>
+			 <summary>
+			 Unbinds a key.
+			 </summary>
+			 <param name="action">The action to unbind from.
+			 </param>
+			 <exception cref="ArgumentNullException">Thrown if `<paramref name="action"/>` is `null`.
+			 </exception>
+			 <exception cref="ArgumentException">Thrown if `<paramref name="action"/>` is not bound to any keys.
+			 </exception>
 			 */
 			public static void UnbindKeys(string action){
 				if (action == null)
@@ -536,12 +536,12 @@ namespace Izhitsa {
 			
 
 			/**
-			 * <summary>
-			 * Handles events, converts them into `InputEvent`s,
-			 * and registers them for `Sequence` checking and other input-related
-			 * jobs.
-			 * </summary>
-			 * <param name="ev">The `Event` to convert and handle.</param>
+			 <summary>
+			 Handles events, converts them into `InputEvent`s,
+			 and registers them for `Sequence` checking and other input-related
+			 jobs.
+			 </summary>
+			 <param name="ev">The `Event` to convert and handle.</param>
 			 */
 			internal static void handleEvent(Event ev){
 				if (Paused) return;
@@ -687,14 +687,14 @@ namespace Izhitsa {
 				}
 			}
 			/**
-			 * <summary>
-			 * Returns the `InterruptFlags` which are true for the
-			 * event-element pair.
-			 * </summary>
-			 * <param name="ev">The `InputEvent`.
-			 * </param>
-			 * <param name="elem">The `SequenceElement`.
-			 * </param>
+			 <summary>
+			 Returns the `InterruptFlags` which are true for the
+			 event-element pair.
+			 </summary>
+			 <param name="ev">The `InputEvent`.
+			 </param>
+			 <param name="elem">The `SequenceElement`.
+			 </param>
 			 */
 			private static InterruptFlags getInterruptFlags(InputEvent ev, SequenceElement elem, ref bool isModifier){
 				InterruptFlags flags = InterruptFlags.None;
@@ -853,10 +853,10 @@ namespace Izhitsa {
 				return false;
 			}
 			/**
-			 * <summary>
-			 * Registers an `InputEvent` with valid `Sequence`s.
-			 * </summary>
-			 * <param name="ev">The `InputEvent` to register.</param>
+			 <summary>
+			 Registers an `InputEvent` with valid `Sequence`s.
+			 </summary>
+			 <param name="ev">The `InputEvent` to register.</param>
 			 */
 			private static void registerEvent(InputEvent ev){
 				foreach (KeyValuePair<string, Sequence> pair in boundSeqs){

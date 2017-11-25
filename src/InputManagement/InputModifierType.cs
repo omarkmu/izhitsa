@@ -1,7 +1,7 @@
 namespace Izhitsa {
 	namespace InputManagement {
 		/**
-		 * <summary>Describes how input modifiers should be handled.</summary>
+		 <summary>Describes how input modifiers should be handled.</summary>
 		 */
 		public enum InputModifierType {
 			/// <summary>All modifier keys must be held down.</summary>
