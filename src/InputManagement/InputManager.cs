@@ -220,7 +220,7 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Returns a `Dictionary<string, List<KeyCode>>` containing all key bindings.
+			 Returns a `Dictionary&lt;string, List&lt;KeyCode&gt;&gt;` containing all key bindings.
 			 </summary>
 			 */
 			public static Dictionary<string, List<KeyCode>> GetAllBoundKeys(){

@@ -13,7 +13,7 @@ namespace Izhitsa {
 			public float Dead { get; set; } = 0.001f;
 			/// <summary>How fast the input will recenter.</summary>
 			public float Gravity { get; set; } = 3f;
-			/// <summary>If true, negative keys send positive values and vice versa.</summarY>
+			/// <summary>If true, negative keys send positive values and vice versa.</summary>
 			public bool Invert { get; set; } = false;
 			/// <summary>The keys to use as negative inputs.</summary>
 			public List<KeyCode> NegativeKeys { get; set; }

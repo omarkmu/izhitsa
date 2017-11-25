@@ -47,7 +47,7 @@ namespace Izhitsa {
 				/**
 				 <summary>
 				 Returns the InputEvent in a displayable format.
-				 <summary>
+				 </summary>
 				 */
 				public override string ToString(){
 					string ret = $"Type: {Type}";
