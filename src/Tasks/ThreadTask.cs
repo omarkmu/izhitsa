@@ -23,6 +23,9 @@ namespace Izhitsa {
 					result = value;
 				}
 			}
+			/// <summary>The amount of time, in milliseconds, to sleep while waiting
+			/// for a Request.</summary>
+			public int RequestSleepTime { get; set; } = 1;
 			/// <summary>ThreadTasks always suppress exceptions. (Read Only)</summary>
 			public new bool SuppressExceptions { get; } = true;
 
@@ -217,7 +220,7 @@ namespace Izhitsa {
 				});
 				lock (_lock_requests) requests.Enqueue(request);
 				
-				while (!request.Answered && !async) Sleep(1);
+				while (!request.Answered && !async) Sleep(RequestSleepTime);
 				return request;
 			}
 			/**
@@ -240,7 +243,7 @@ namespace Izhitsa {
 				Request request = new Request(func);
 				lock (_lock_requests) requests.Enqueue(request);
 				
-				while (!request.Answered && !async) Sleep(1);
+				while (!request.Answered && !async) Sleep(RequestSleepTime);
 				return request;
 			}
 			/**
