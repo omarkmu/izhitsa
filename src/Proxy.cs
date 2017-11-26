@@ -1,4 +1,5 @@
 ﻿using Izhitsa.InputManagement;
+using Izhitsa.Tasks;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -56,6 +57,7 @@ namespace Izhitsa {
 			obj = this;
 			DontDestroyOnLoad(this);
 			useGUILayout = false;
+			Tasks.TaskUtils.main = System.Threading.Thread.CurrentThread;
 		}
 		/**
 		 <summary>
@@ -85,6 +87,7 @@ namespace Izhitsa {
 			e.type = EventType.MouseMove;
 			e.mousePosition = Input.mousePosition;
 			InputManager.handleEvent(e);
+			ThreadTask.answerRequests();
 		}
 		/**
 		 <summary>
@@ -117,6 +120,7 @@ namespace Izhitsa {
 		 */
 		void OnApplicationQuit(){
 			quitting = true;
+			ThreadTask.terminate();
 		}
 
 

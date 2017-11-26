@@ -1,4 +1,8 @@
+using Izhitsa.Tasks;
+using Izhitsa.Tasks.Generic;
+using System;
 using System.Collections;
+using System.Threading;
 using UnityEngine;
 
 namespace Izhitsa {
@@ -9,6 +13,22 @@ namespace Izhitsa {
 		 </summary>
 		 */
 		public static class TaskUtils {
+			/// <summary> A reference of the main thread.</summary>
+			internal static Thread main { get; set; }
+			
+			/**
+			 <summary>
+			 Returns true if the calling method is running
+			 on the main thread.
+			 </summary>
+			 */
+			public static bool IsMainThread(){
+				if (main == null){
+					Proxy.Activate();
+					return true;
+				}
+				return main == Thread.CurrentThread;
+			}
 			/**
 			 <summary>
 			 Starts a Coroutine.

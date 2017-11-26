@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using Izhitsa.Events;
+using Izhitsa.Events.Generic;
 
 namespace Izhitsa {
 	namespace Tasks {
@@ -17,6 +18,8 @@ namespace Izhitsa {
 				public new TResult Result { get; protected set; }
 				/// <summary>The type of the Task.</summary>
 				public override Type Type => typeof(TResult);
+
+				private object _lock = new object();
 
 				/// <summary>Creates an empty Task which can be run later.</summary>
 				public Task(){}
@@ -39,11 +42,12 @@ namespace Izhitsa {
 				 Connects an Action to run when the Task is completed.
 				 </summary>
 				 <param name="func">An Action to run when the task is completed.
-				 Gets called with the result of the Task.
+				 Gets called with a boolean representing whether or not the task completed successfully,
+				 and the result of the Task.
 				 </param>
 				 */
-				public Signal OnComplete(Action<TResult> func)
-					=> onComplete.Connect(() => func(Result));
+				public Signal<bool> OnComplete(Action<bool, TResult> func)
+					=> onComplete.Connect(success => func(success, Result));
 				/**
 				 <summary>
 				 Connects an Action to run on every Task iteration after the first.
@@ -63,51 +67,57 @@ namespace Izhitsa {
 				 </param>
 				 */
 				protected override IEnumerator run(IEnumerator enumerator){
-					Status = TaskStatus.Running;
-					IsNull = true;
-					WasForceCanceled = false;
-					CancelRequested = false;
-					forceCancel = false;
-					onRun.Fire();
-					
-					while (true){
-						if (forceCancel){
-							Status = TaskStatus.Canceled;
-							WasForceCanceled = true;
-							onCancel.Fire();
-							yield break;
+					lock (_lock){
+						Status = TaskStatus.Running;
+						IsNull = true;
+						WasForceCanceled = false;
+						CancelRequested = false;
+						forceCancel = false;
+						onRun.Fire();
+						
+						while (true){
+							if (forceCancel){
+								Status = TaskStatus.Canceled;
+								WasForceCanceled = true;
+								onCancel.Fire();
+								onComplete.Fire(false);
+								yield break;
+							}
+							try {
+								if (!enumerator.MoveNext()) break;
+								object current = enumerator.Current;
+								IsNull = (current == null);
+								Result = (TResult)current;
+								onIteration.Fire();
+							} catch (OperationCanceledException){
+								Status = TaskStatus.Canceled;
+								onCancel.Fire();
+								onComplete.Fire(false);
+								yield break;
+							} catch (InvalidCastException){
+								Status = TaskStatus.Faulted;
+								string message = (enumerator.Current == null) ?
+									$"Failed cast from null, type {Type.Name} is not nullable; consider using the Nullable type." :
+									$"Failed cast from {enumerator.Current.GetType().Name} to {Type.Name}.";
+								Exception = new InvalidCastException(message);
+								onError.Fire();
+								onComplete.Fire(false);
+								if (SuppressExceptions) yield break;
+								throw Exception;
+							} catch (Exception e){
+								Status = TaskStatus.Faulted;
+								Exception = e;
+								onError.Fire();
+								onComplete.Fire(false);
+								if (SuppressExceptions) yield break;
+								throw Exception;
+							}
+							yield return Result;
 						}
-						try {
-							if (!enumerator.MoveNext()) break;
-							object current = enumerator.Current;
-							IsNull = (current == null);
-							Result = (TResult)current;
-							onIteration.Fire();
-						} catch (OperationCanceledException){
-							Status = TaskStatus.Canceled;
-							onCancel.Fire();
-							yield break;
-						} catch (InvalidCastException){
-							Status = TaskStatus.Faulted;
-							string message = (enumerator.Current == null) ?
-								$"Failed cast from null, type {Type.Name} is not nullable; consider using the Nullable type." :
-								$"Failed cast from {enumerator.Current.GetType().Name} to {Type.Name}.";
-							Exception = new InvalidCastException(message);
-							onError.Fire();
-							if (SuppressExceptions) yield break;
-							throw Exception;
-						} catch (Exception e){
-							Status = TaskStatus.Faulted;
-							Exception = e;
-							onError.Fire();
-							if (SuppressExceptions) yield break;
-							throw Exception;
-						}
-						yield return Result;
-					}
 
-					Status = TaskStatus.Completed;
-					onComplete.Fire();
+						Status = TaskStatus.Completed;
+						onComplete.Fire(true);
+					}
 				}
 			}
 		}

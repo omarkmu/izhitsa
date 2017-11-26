@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using Izhitsa.Events;
+using Izhitsa.Events.Generic;
 using static Izhitsa.Tasks.TaskUtils;
 
 namespace Izhitsa {
@@ -26,8 +27,10 @@ namespace Izhitsa {
 			public bool IsNull { get; protected set; } = true;
 			/// <summary>Is the current status <see cref="TaskStatus.Running"/>?</summary>
 			public bool IsRunning => Status == TaskStatus.Running;
+			/// <summary>Is the current status <see cref="TaskStatus.WaitingToRun"/>?</summary>
+			public bool IsWaiting => Status == TaskStatus.WaitingToRun;
 			/// <summary>The return value of the IEnumerator.</summary>
-			public object Result { get; protected set; }
+			public virtual object Result { get; protected set; }
 			/// <summary>The current status of the Task.</summary>
 			public TaskStatus Status { get; protected set; } = TaskStatus.Created;
 			/// <summary>If exceptions are suppressed, <see cref="Run"/> will never throw exceptions.</summary>
@@ -42,13 +45,15 @@ namespace Izhitsa {
 			/// <summary>Event which fires when the Task is canceled.</summary>
 			protected Broadcast onCancel = new Broadcast();
 			/// <summary>Event which fires when the Task is completed.</summary>
-			protected Broadcast onComplete = new Broadcast();
+			protected Broadcast<bool> onComplete = new Broadcast<bool>();
 			/// <summary>Event which fires when the Task errors.</summary>
 			protected Broadcast onError = new Broadcast();
 			/// <summary>Event which fires on every iteration after the first in the Task.</summary>
 			protected Broadcast onIteration = new Broadcast();
 			/// <summary>Event which fires when the Task is ran.</summary>
 			protected Broadcast onRun = new Broadcast();
+
+			private object _lock = new object();
 
 
 			/// <summary>Creates an empty Task which can be run later.</summary>
@@ -88,10 +93,10 @@ namespace Izhitsa {
 			 <exception cref="System.Exception">Thrown if the task is already running or waiting.
 			 </exception>
 			 */
-			public void Delay(IEnumerator enumerator, float seconds){
+			public virtual void Delay(IEnumerator enumerator, float seconds){
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
-				if (Status == TaskStatus.WaitingToRun)
+				if (IsWaiting)
 					throw new Exception("The Task is currently waiting.");
 				StartCoroutine(delayedRun(enumerator, seconds, false));
 			}
@@ -107,10 +112,10 @@ namespace Izhitsa {
 			 <exception cref="System.Exception">Thrown if the task is already running or waiting.
 			 </exception>
 			 */
-			public void DelayRealtime(IEnumerator enumerator, float seconds){
+			public virtual void DelayRealtime(IEnumerator enumerator, float seconds){
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
-				if (Status == TaskStatus.WaitingToRun)
+				if (IsWaiting)
 					throw new Exception("The Task is currently waiting.");
 				StartCoroutine(delayedRun(enumerator, seconds, true));
 			}
@@ -120,7 +125,7 @@ namespace Izhitsa {
 			 Usage of <see cref="Cancel"/> is preferred.
 			 </summary>
 			 */
-			public void ForceCancel(){
+			public virtual void ForceCancel(){
 				forceCancel = true;
 			}
 			/**
@@ -138,20 +143,23 @@ namespace Izhitsa {
 			 Connects an Action to run when the Task is completed.
 			 </summary>
 			 <param name="func">An Action to run when the task is completed.
+			 Gets called with a boolean representing if the 
+			 task completed successfully.
 			 </param>
 			 */
-			public Signal OnComplete(Action func)
-				=> onComplete.Connect(() => func());
+			public Signal<bool> OnComplete(Action<bool> func)
+				=> onComplete.Connect(func);
 			/**
 			 <summary>
 			 Connects an Action to run when the Task is completed.
 			 </summary>
 			 <param name="func">An Action to run when the task is completed.
-			 Gets called with the result of the Task.
+			 Gets called with a boolean representing if the 
+			 task completed successfully, and the result of the Task.
 			 </param>
 			 */
-			public Signal OnComplete(Action<object> func)
-				=> onComplete.Connect(() => func(Result));
+			public Signal<bool> OnComplete(Action<bool, object> func)
+				=> onComplete.Connect(success => func(success, Result));
 			/**
 			 <summary>
 			 Connects an Action to run when an exception is thrown in the Task.
@@ -169,7 +177,7 @@ namespace Izhitsa {
 			 <param name="func">An Action to run on each iteration.
 			 </param>
 			 */
-			public Signal OnIteration(Action func)
+			public virtual Signal OnIteration(Action func)
 				=> onIteration.Connect(() => func());
 			/**
 			 <summary>
@@ -179,7 +187,7 @@ namespace Izhitsa {
 			 Gets called with the current result of the Task.
 			 </param>
 			 */
-			public Signal OnIteration(Action<object> func)
+			public virtual Signal OnIteration(Action<object> func)
 				=> onIteration.Connect(() => func(Result));
 			/**
 			 <summary>
@@ -201,10 +209,10 @@ namespace Izhitsa {
 			 <see cref="SuppressExceptions"/>.
 			 </exception>
 			 */
-			public Coroutine Run(IEnumerator enumerator){
+			public virtual Coroutine Run(IEnumerator enumerator){
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
-				if (Status == TaskStatus.WaitingToRun)
+				if (IsWaiting)
 					throw new Exception("The Task is currently waiting.");
 				return StartCoroutine(run(enumerator));
 			}
@@ -251,41 +259,47 @@ namespace Izhitsa {
 			 </param>
 			 */
 			protected virtual IEnumerator run(IEnumerator enumerator){
-				Status = TaskStatus.Running;
-				IsNull = true;
-				WasForceCanceled = false;
-				CancelRequested = false;
-				forceCancel = false;
-				onRun.Fire();
+				lock (_lock){
+					Status = TaskStatus.Running;
+					Result = null;
+					IsNull = true;
+					WasForceCanceled = false;
+					CancelRequested = false;
+					forceCancel = false;
+					onRun.Fire();
 
-				while (true){
-					if (forceCancel){
-						Status = TaskStatus.Canceled;
-						WasForceCanceled = true;
-						onCancel.Fire();
-						yield break;
+					while (true){
+						if (forceCancel){
+							Status = TaskStatus.Canceled;
+							WasForceCanceled = true;
+							onCancel.Fire();
+							onComplete.Fire(false);
+							yield break;
+						}
+						try {
+							if (!enumerator.MoveNext()) break;
+							Result = enumerator.Current;
+							IsNull = (Result == null);
+							onIteration.Fire();
+						} catch (OperationCanceledException){
+							Status = TaskStatus.Canceled;
+							onCancel.Fire();
+							onComplete.Fire(false);
+							yield break;
+						} catch (Exception e){
+							Status = TaskStatus.Faulted;
+							Exception = e;
+							onError.Fire();
+							onComplete.Fire(false);
+							if (SuppressExceptions) yield break;
+							throw Exception;
+						}
+						yield return Result;
 					}
-					try {
-						if (!enumerator.MoveNext()) break;
-						Result = enumerator.Current;
-						IsNull = (Result == null);
-						onIteration.Fire();
-					} catch (OperationCanceledException){
-						Status = TaskStatus.Canceled;
-						onCancel.Fire();
-						yield break;
-					} catch (Exception e){
-						Status = TaskStatus.Faulted;
-						Exception = e;
-						onError.Fire();
-						if (SuppressExceptions) yield break;
-						throw Exception;
-					}
-					yield return Result;
+
+					Status = TaskStatus.Completed;
+					onComplete.Fire(true);
 				}
-
-				Status = TaskStatus.Completed;
-				onComplete.Fire();
 			}
 		}
 	}

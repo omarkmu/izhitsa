@@ -193,7 +193,6 @@ namespace Izhitsa {
 			 <see cref="SequenceElement"/>s, and returns the sequence.
 			 </summary>
 			 <param name="value">The value to assign to the property.</param>
-			 * 
 			 */
 			public Sequence Set(List<KeyCode> value){
 				foreach (SequenceElement elem in elements) elem.Modifiers = value;

@@ -9,7 +9,8 @@ namespace Izhitsa {
 		 </summary>
 		 */
 		public class TaskAwaiter : CustomYieldInstruction {
-			public override bool keepWaiting => task.IsRunning;
+			public override bool keepWaiting
+				=> task.IsRunning || task.IsWaiting;
 
 			private Task task;
 

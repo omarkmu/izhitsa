@@ -118,8 +118,8 @@ namespace Izhitsa {
 				=> keyEvent.Connect(func);
 			/**
 			 <summary>
-			 Connects an Action to a Broadcast which fires when <paramref name="action"/> is bound
-			 to a key, and returns a Signal.
+			 Connects an Action to a Broadcast which fires when <paramref name="action"/> is unbound
+			 from a key, and returns a Signal.
 			 </summary>
 			 <param name="action">The name of the bound key to connect to.
 			 </param>
@@ -137,8 +137,8 @@ namespace Izhitsa {
 			}
 			/**
 			 <summary>
-			 Connects an Action to a Broadcast which fires when an action is bound
-			 to a key, and returns a Signal.
+			 Connects an Action to a Broadcast which fires when an action is unbound
+			 from a key, and returns a Signal.
 			 </summary>
 			 <param name="func">
 			 The Action to connect.
