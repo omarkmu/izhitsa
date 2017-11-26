@@ -1,7 +1,7 @@
 ## Izhitsa
 Izhitsa is a small collection of utility scripts designed to make development in Unity a bit simpler. I'm designing it mostly for myself and using github for version control, but it's up for anyone else who might want it as well. It's currently in initial development phase `0.0.0`.
 
-Izhitsa's development is primarily a test; there are plenty of pre-scripts made for Unity out there which could be used. I'm also creating this because I would prefer to have everything in one collection rather than having various dependencies.
+Izhitsa's development is primarily a test; there are plenty of scripts for Unity out there which could be used. However, I'm also creating this because I would prefer to have everything in one collection rather than having various dependencies.
 
 ### Installation
 I'm not entirely sure why anyone would want to use this in its current state. If you're interested anyway, you can add Izhitsa the [quick](#quick-installation) way or the [slightly less quick](#slightly-less-quick-installation) way:
