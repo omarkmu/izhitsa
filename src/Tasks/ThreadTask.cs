@@ -16,13 +16,7 @@ namespace Izhitsa {
 		 */
 		public class ThreadTask : Task {
 			/// <summary>The return value of the task.</summary>
-			public new object Result {
-				get { return result; }
-				set {
-					IsNull = (value == null);
-					result = value;
-				}
-			}
+			public new object Result { get; set; }
 			/// <summary>The amount of time, in milliseconds, to sleep while waiting
 			/// for a Request.</summary>
 			public int RequestSleepTime { get; set; } = 1;
@@ -342,7 +336,6 @@ namespace Izhitsa {
 			protected IEnumerator run(Func<ThreadTask, object> func){
 				Status = TaskStatus.WaitingToRun;
 				Result = null;
-				IsNull = true;
 				WasForceCanceled = false;
 				CancelRequested = false;
 				forceCancel = false;
@@ -383,12 +376,14 @@ namespace Izhitsa {
 			 <summary>Attempts to force cancel all running (non-main) threads.</summary>
 			 */
 			internal static void terminate(){
-				int i = 0;
-				ThreadTask[] tasks = new ThreadTask[threads.Count];
-				foreach (ThreadTask task in threads.Values)
-					tasks[i++] = task;
-				foreach (ThreadTask task in tasks)
-					task.ForceCancel();
+				lock (_lock){
+					int i = 0;
+					ThreadTask[] tasks = new ThreadTask[threads.Count];
+					foreach (ThreadTask task in threads.Values)
+						tasks[i++] = task;
+					foreach (ThreadTask task in tasks)
+						task.ForceCancel();
+				}
 			}
 			
 			/**
@@ -399,34 +394,36 @@ namespace Izhitsa {
 			 */
 			private ThreadStart wrapper(Func<ThreadTask, object> func){
 				return () => {
+					bool completed = false;
 					try {
 						object ret;
 						Status = TaskStatus.Running;
 						Request(()=> onRun.Fire(), true);
 						
 						ret = func(this);
-						IsNull = (ret == null);
 						Result = ret;
+						completed = true;
 					} catch (OperationCanceledException){
 						Status = TaskStatus.Canceled;
 						Request(()=> onComplete.Fire(false), true);
 						Request(()=> onCancel.Fire(), true);
-						return;
 					} catch (Exception e){
 						Status = TaskStatus.Faulted;
 						Exception = e;
 						Request(()=> onComplete.Fire(false), true);
 						Request(()=> onError.Fire(), true);
-						return;
 					}
+
+					if (completed)
+						Status = TaskStatus.Completed;
+					Request(()=> onComplete.Fire(completed), true);
+					
 					lock (_lock){
 						if (thread != null){
 							threads.Remove(thread);
 							thread = null;
 						}
 					}
-					Status = TaskStatus.Completed;
-					Request(()=> onComplete.Fire(true), true);
 				};
 			}
 

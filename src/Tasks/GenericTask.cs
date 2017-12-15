@@ -14,6 +14,8 @@ namespace Izhitsa {
 			 </summary>
 			 */
 			public class Task<TResult> : Task {
+				/// <summary>Is the value of <see cref="Result"/> null?</summary>
+				public new bool IsNull { get; protected set; }
 				/// <summary>The return value of the IEnumerator.</summary>
 				public new TResult Result { get; protected set; }
 				/// <summary>The type of the Task.</summary>
@@ -79,6 +81,7 @@ namespace Izhitsa {
 				protected override IEnumerator run(IEnumerator enumerator){
 					lock (_lock){
 						Status = TaskStatus.Running;
+						Result = default(TResult);
 						IsNull = true;
 						WasForceCanceled = false;
 						CancelRequested = false;

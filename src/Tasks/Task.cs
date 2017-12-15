@@ -24,21 +24,13 @@ namespace Izhitsa {
 			/// <summary>Is the current status <see cref="TaskStatus.Faulted"/>?</summary>
 			public bool IsFaulted => Status == TaskStatus.Faulted;
 			/// <summary>Is the value of <see cref="Result"/> null?</summary>
-			public bool IsNull { get; protected set; } = true;
+			public bool IsNull => (Result == null);
 			/// <summary>Is the current status <see cref="TaskStatus.Running"/>?</summary>
 			public bool IsRunning => Status == TaskStatus.Running;
 			/// <summary>Is the current status <see cref="TaskStatus.WaitingToRun"/>?</summary>
 			public bool IsWaiting => Status == TaskStatus.WaitingToRun;
 			/// <summary>The return value of the IEnumerator.</summary>
-			public virtual object Result {
-				get {
-					return result;
-				}
-				protected set {
-					IsNull = (value == null);
-					result = value;
-				}
-			}
+			public virtual object Result { get; protected set; }
 			/// <summary>The current status of the Task.</summary>
 			public TaskStatus Status { get; protected set; } = TaskStatus.Created;
 			/// <summary>If exceptions are suppressed, <see cref="Run"/> will never throw exceptions.</summary>
@@ -61,7 +53,6 @@ namespace Izhitsa {
 			/// <summary>Event which fires when the Task is ran.</summary>
 			protected Broadcast onRun = new Broadcast();
 
-			private object result;
 			private object _lock = new object();
 
 
