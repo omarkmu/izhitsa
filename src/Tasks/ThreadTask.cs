@@ -46,6 +46,7 @@ namespace Izhitsa {
 				set {
 					if (value < 1)
 						throw new ArgumentException("MaxThreads must be at least 1.", "value");
+					maxThreads = value;
 				}
 			}
 
