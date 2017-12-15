@@ -61,6 +61,16 @@ namespace Izhitsa {
 
 				/**
 				 <summary>
+				Creates, runs, and returns a Task.
+				</summary>
+				<param name="enumerator">The IEnumerator to run.
+				</param>
+				*/
+				public static new Task<TResult> Start(IEnumerator enumerator)
+					=> new Task<TResult>(enumerator);
+
+				/**
+				 <summary>
 				 The internal IEnumerator handler.
 				 </summary>
 				 <param name="enumerator">The IEnumerator to run.

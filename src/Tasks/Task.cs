@@ -30,7 +30,15 @@ namespace Izhitsa {
 			/// <summary>Is the current status <see cref="TaskStatus.WaitingToRun"/>?</summary>
 			public bool IsWaiting => Status == TaskStatus.WaitingToRun;
 			/// <summary>The return value of the IEnumerator.</summary>
-			public virtual object Result { get; protected set; }
+			public virtual object Result {
+				get {
+					return result;
+				}
+				protected set {
+					IsNull = (value == null);
+					result = value;
+				}
+			}
 			/// <summary>The current status of the Task.</summary>
 			public TaskStatus Status { get; protected set; } = TaskStatus.Created;
 			/// <summary>If exceptions are suppressed, <see cref="Run"/> will never throw exceptions.</summary>
@@ -53,6 +61,7 @@ namespace Izhitsa {
 			/// <summary>Event which fires when the Task is ran.</summary>
 			protected Broadcast onRun = new Broadcast();
 
+			private object result;
 			private object _lock = new object();
 
 
@@ -230,6 +239,16 @@ namespace Izhitsa {
 			 </example>
 			 */
 			public TaskAwaiter Wait() => new TaskAwaiter(this);
+
+			/**
+			 <summary>
+			 Creates, runs, and returns a Task.
+			 </summary>
+			 <param name="enumerator">The IEnumerator to run.
+			 </param>
+			 */
+			public static Task Start(IEnumerator enumerator)
+				=> new Task(enumerator);
 			
 			/**
 			 <summary>
@@ -262,7 +281,6 @@ namespace Izhitsa {
 				lock (_lock){
 					Status = TaskStatus.Running;
 					Result = null;
-					IsNull = true;
 					WasForceCanceled = false;
 					CancelRequested = false;
 					forceCancel = false;
@@ -279,7 +297,6 @@ namespace Izhitsa {
 						try {
 							if (!enumerator.MoveNext()) break;
 							Result = enumerator.Current;
-							IsNull = (Result == null);
 							onIteration.Fire();
 						} catch (OperationCanceledException){
 							Status = TaskStatus.Canceled;

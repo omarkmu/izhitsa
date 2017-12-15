@@ -304,6 +304,16 @@ namespace Izhitsa {
 
 			/**
 			 <summary>
+			 Creates, runs, and returns a ThreadTask.
+			 </summary>
+			 <param name="func">The Action to run.
+			 </param>
+			 */
+			public static ThreadTask Start(Action<ThreadTask> func)
+				=> new ThreadTask(func);
+
+			/**
+			 <summary>
 			 Waits and then runs the Task.
 			 </summary>
 			 <param name="func">The Func to run.
