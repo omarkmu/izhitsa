@@ -1,4 +1,5 @@
 using Izhitsa.Events;
+using Izhitsa.Tasks.Generic;
 using static Izhitsa.Tasks.TaskUtils;
 using System;
 using System.Collections;
@@ -223,7 +224,7 @@ namespace Izhitsa {
 			 The <see cref="Tasks.Request.Result"/> property
 			 will be set to the return value of this Func.
 			 </param>
-			 <param name="async">Should the thread sleep until the request is answered?
+			 <param name="async">If this is false, the thread will sleep until the request is answered.
 			 </param>
 			 <exception cref="Exception">Thrown if an attempt to make a request from the
 			 main thread is made.</exception>
@@ -232,6 +233,29 @@ namespace Izhitsa {
 				if (IsMainThread())
 					throw new Exception("Cannot make a request from the main thread.");
 				Request request = new Request(func);
+				lock (requests) requests.Enqueue(request);
+				
+				while (!request.Answered && !async) Sleep(RequestSleepTime);
+				return request;
+			}
+			/**
+			 <summary>
+			 Makes a request for a Func to be called on the main thread.
+			 Returns a <see cref="Tasks.Request"/>.
+			 </summary>
+			 <param name="func">The Func to be called.
+			 The <see cref="Tasks.Request.Result"/> property
+			 will be set to the return value of this Func.
+			 </param>
+			 <param name="async">If this is false, the thread will sleep until the request is answered.
+			 </param>
+			 <exception cref="Exception">Thrown if an attempt to make a request from the
+			 main thread is made.</exception>
+			 */
+			public Request<T> Request<T>(Func<T> func, bool async = false){
+				if (IsMainThread())
+					throw new Exception("Cannot make a request from the main thread.");
+				Request<T> request = new Request<T>(func);
 				lock (requests) requests.Enqueue(request);
 				
 				while (!request.Answered && !async) Sleep(RequestSleepTime);
@@ -358,11 +382,7 @@ namespace Izhitsa {
 				int answered = 0;
 				lock (requests){
 					while (requests.Count > 0){
-						Exception e;
-						Request request = requests.Dequeue();
-						request.Result = safeRun(request.Func, out e);
-						request.Exception = e;
-						request.Answered = true;
+						requests.Dequeue().Answer();
 						if (++answered >= MaxRequests) break;
 					}
 				}
@@ -420,25 +440,6 @@ namespace Izhitsa {
 						}
 					}
 				};
-			}
-
-			/**
-			 <summary>
-			 Runs a Func safely and returns its result.
-			 </summary>
-			 <param name="func">The Func to run.
-			 </param>
-			 <param name="exc">An exception raised while running the Func,
-			 if any.</param>
-			 */
-			private static object safeRun(Func<object> func, out Exception exc){
-				try {
-					exc = null;
-					return func();
-				} catch (Exception e){
-					exc = e;
-					return null;
-				}
 			}
 
 
