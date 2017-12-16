@@ -106,9 +106,16 @@ namespace Izhitsa {
 			 </param>
 			 */
 			public static void Fire<T>(string name, T arg){
-				Broadcast<T> bc = GetBroadcast<T>(name);
-				if (bc != null)
+				Broadcast<T> bc = null;
+				if (broadcasts.ContainsKey(name)){
+					object b = broadcasts[name];
+					if (b is Broadcast<T>) bc = (Broadcast<T>)b;
+				}
+				if (bc != null){
 					bc.Fire(arg);
+				} else {
+					Fire(name, new object[] { arg });
+				}
 			}
 			/**
 			 <summary>
@@ -119,9 +126,16 @@ namespace Izhitsa {
 			 </param>
 			 */
 			public static void Fire<T, T2>(string name, T arg0, T2 arg1){
-				Broadcast<T, T2> bc = GetBroadcast<T, T2>(name);
-				if (bc != null)
+				Broadcast<T, T2> bc = null;
+				if (broadcasts.ContainsKey(name)){
+					object b = broadcasts[name];
+					if (b is Broadcast<T, T2>) bc = (Broadcast<T, T2>)b;
+				}
+				if (bc != null){
 					bc.Fire(arg0, arg1);
+				} else {
+					Fire(name, new object[] { arg0, arg1 });
+				}
 			}
 			/**
 			 <summary>
@@ -132,9 +146,16 @@ namespace Izhitsa {
 			 </param>
 			 */
 			public static void Fire<T, T2, T3>(string name, T arg0, T2 arg1, T3 arg2){
-				Broadcast<T, T2, T3> bc = GetBroadcast<T, T2, T3>(name);
-				if (bc != null)
+				Broadcast<T, T2, T3> bc = null;
+				if (broadcasts.ContainsKey(name)){
+					object b = broadcasts[name];
+					if (b is Broadcast<T, T2, T3>) bc = (Broadcast<T, T2, T3>)b;
+				}
+				if (bc != null){
 					bc.Fire(arg0, arg1, arg2);
+				} else {
+					Fire(name, new object[] { arg0, arg1, arg2 });
+				}
 			}
 			/**
 			 <summary>
@@ -145,9 +166,16 @@ namespace Izhitsa {
 			 </param>
 			 */
 			public static void Fire<T, T2, T3, T4>(string name, T arg0, T2 arg1, T3 arg2, T4 arg3){
-				Broadcast<T, T2, T3, T4> bc = GetBroadcast<T, T2, T3, T4>(name);
-				if (bc != null)
+				Broadcast<T, T2, T3, T4> bc = null;
+				if (broadcasts.ContainsKey(name)){
+					object b = broadcasts[name];
+					if (b is Broadcast<T, T2, T3, T4>) bc = (Broadcast<T, T2, T3, T4>)b;
+				}
+				if (bc != null){
 					bc.Fire(arg0, arg1, arg2, arg3);
+				} else {
+					Fire(name, new object[] { arg0, arg1, arg2, arg3 });
+				}
 			}
 
 			/**
@@ -163,7 +191,6 @@ namespace Izhitsa {
 				if (broadcasts.ContainsKey(name)){
 					object bc = broadcasts[name];
 					if (bc is Broadcast) return (Broadcast)bc;
-					Debug.LogWarning("GetBroadcast called with name pointing to incorrect type.");
 				}
 				return null;
 			}
