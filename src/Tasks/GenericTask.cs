@@ -92,7 +92,7 @@ namespace Izhitsa {
 							if (forceCancel){
 								Status = TaskStatus.Canceled;
 								WasForceCanceled = true;
-								onCancel.Fire();
+								onCancel.Fire(true);
 								onComplete.Fire(false);
 								yield break;
 							}
@@ -104,7 +104,7 @@ namespace Izhitsa {
 								onIteration.Fire();
 							} catch (OperationCanceledException){
 								Status = TaskStatus.Canceled;
-								onCancel.Fire();
+								onCancel.Fire(false);
 								onComplete.Fire(false);
 								yield break;
 							} catch (InvalidCastException){
@@ -113,14 +113,14 @@ namespace Izhitsa {
 									$"Failed cast from null, type {Type.Name} is not nullable; consider using the Nullable type." :
 									$"Failed cast from {enumerator.Current.GetType().Name} to {Type.Name}.";
 								Exception = new InvalidCastException(message);
-								onError.Fire();
+								onError.Fire(Exception);
 								onComplete.Fire(false);
 								if (SuppressExceptions) yield break;
 								throw Exception;
 							} catch (Exception e){
 								Status = TaskStatus.Faulted;
 								Exception = e;
-								onError.Fire();
+								onError.Fire(e);
 								onComplete.Fire(false);
 								if (SuppressExceptions) yield break;
 								throw Exception;

@@ -3,7 +3,6 @@ using static Izhitsa.Tasks.TaskUtils;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Security.Permissions;
 using System.Threading;
 using UnityEngine;
 
@@ -45,16 +44,13 @@ namespace Izhitsa {
 			}
 
 			/// <summary>Contains all of the threads currently managed.</summary>
-			protected static Dictionary<Thread, ThreadTask> threads { get; }
+			private static Dictionary<Thread, ThreadTask> threads { get; }
 				= new Dictionary<Thread, ThreadTask>();
 			/// <summary>A queue of main thread requests.</summary>
-			protected static Queue<Request> requests { get; }
+			private static Queue<Request> requests { get; }
 				= new Queue<Request>();
 			///
 
-			private static object _lock = new object();
-			private static object _lock_requests = new object();
-			private static object _lock_threads = new object();
 			private static int maxThreads = 10;
 			
 
@@ -173,7 +169,7 @@ namespace Izhitsa {
 			 </summary>
 			 */
 			public override void ForceCancel(){
-				lock (_lock){
+				lock (threads){
 					if (thread != null){
 						if (threads.ContainsKey(thread)){
 							threads.Remove(thread);
@@ -184,10 +180,10 @@ namespace Izhitsa {
 					Status = TaskStatus.Canceled;
 					WasForceCanceled = true;
 					if (IsMainThread()){
-						onCancel.Fire();
+						onCancel.Fire(true);
 						onComplete.Fire(false);	
 					} else {
-						Request(()=> onCancel.Fire(), true);
+						Request(()=> onCancel.Fire(true), true);
 						Request(()=> onComplete.Fire(false), true);
 					}
 				}
@@ -213,7 +209,7 @@ namespace Izhitsa {
 					action();
 					return null;
 				});
-				lock (_lock_requests) requests.Enqueue(request);
+				lock (requests) requests.Enqueue(request);
 				
 				while (!request.Answered && !async) Sleep(RequestSleepTime);
 				return request;
@@ -236,7 +232,7 @@ namespace Izhitsa {
 				if (IsMainThread())
 					throw new Exception("Cannot make a request from the main thread.");
 				Request request = new Request(func);
-				lock (_lock_requests) requests.Enqueue(request);
+				lock (requests) requests.Enqueue(request);
 				
 				while (!request.Answered && !async) Sleep(RequestSleepTime);
 				return request;
@@ -279,14 +275,12 @@ namespace Izhitsa {
 			public void Run(Func<ThreadTask, object> func){
 				if (!IsMainThread())
 					throw new Exception("Run can only be called from the main thread.");
-				lock (_lock){
-					if (IsRunning)
-						throw new Exception("The Task is already running.");
-					if (IsWaiting)
-						throw new Exception("The Task is currently waiting.");
-					
-					StartCoroutine(run(func));
-				}
+				if (IsRunning)
+					throw new Exception("The Task is already running.");
+				if (IsWaiting)
+					throw new Exception("The Task is currently waiting.");
+				
+				StartCoroutine(run(func));
 			}
 			/**
 			 <summary>
@@ -294,7 +288,7 @@ namespace Izhitsa {
 			 </summary>
 			 <param name="milliseconds">The amount of milliseconds to sleep for.</param>
 			 */
-			public void Sleep(int milliseconds) => Thread.Sleep(milliseconds);
+			public void Sleep(int milliseconds = 1) => Thread.Sleep(milliseconds);
 
 			/**
 			 <summary>
@@ -342,10 +336,11 @@ namespace Izhitsa {
 
 				Proxy.Activate();
 				while (true){
-					if (threads.Count >= MaxThreads)
-						yield return null;
-					lock (_lock_threads){
-						if (threads.Count >= MaxThreads) continue; 
+					lock (threads){
+						if (threads.Count >= MaxThreads){
+							yield return null;
+							continue;
+						}
 						ThreadStart threadStart = wrapper(func);
 						thread = new Thread(threadStart);
 						
@@ -361,8 +356,8 @@ namespace Izhitsa {
 			 */
 			internal static void answerRequests(){
 				int answered = 0;
-				while (requests.Count > 0){
-					lock (_lock_requests){
+				lock (requests){
+					while (requests.Count > 0){
 						Exception e;
 						Request request = requests.Dequeue();
 						request.Result = safeRun(request.Func, out e);
@@ -376,7 +371,7 @@ namespace Izhitsa {
 			 <summary>Attempts to force cancel all running (non-main) threads.</summary>
 			 */
 			internal static void terminate(){
-				lock (_lock){
+				lock (threads){
 					int i = 0;
 					ThreadTask[] tasks = new ThreadTask[threads.Count];
 					foreach (ThreadTask task in threads.Values)
@@ -406,19 +401,19 @@ namespace Izhitsa {
 					} catch (OperationCanceledException){
 						Status = TaskStatus.Canceled;
 						Request(()=> onComplete.Fire(false), true);
-						Request(()=> onCancel.Fire(), true);
+						Request(()=> onCancel.Fire(false), true);
 					} catch (Exception e){
 						Status = TaskStatus.Faulted;
 						Exception = e;
 						Request(()=> onComplete.Fire(false), true);
-						Request(()=> onError.Fire(), true);
+						Request(()=> onError.Fire(e), true);
 					}
 
 					if (completed)
 						Status = TaskStatus.Completed;
 					Request(()=> onComplete.Fire(completed), true);
 					
-					lock (_lock){
+					lock (threads){
 						if (thread != null){
 							threads.Remove(thread);
 							thread = null;

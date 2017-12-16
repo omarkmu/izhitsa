@@ -43,15 +43,15 @@ namespace Izhitsa {
 			/// <summary>True if <see cref="ForceCancel"/> was called.</summary>
 			protected bool forceCancel = false;
 			/// <summary>Event which fires when the Task is canceled.</summary>
-			protected Broadcast onCancel = new Broadcast();
+			protected virtual Broadcast<bool> onCancel { get; } = new Broadcast<bool>();
 			/// <summary>Event which fires when the Task is completed.</summary>
-			protected Broadcast<bool> onComplete = new Broadcast<bool>();
+			protected virtual Broadcast<bool> onComplete { get; } = new Broadcast<bool>();
 			/// <summary>Event which fires when the Task errors.</summary>
-			protected Broadcast onError = new Broadcast();
+			protected virtual Broadcast<Exception> onError { get; } = new Broadcast<Exception>();
 			/// <summary>Event which fires on every iteration after the first in the Task.</summary>
-			protected Broadcast onIteration = new Broadcast();
+			protected virtual Broadcast onIteration { get; } = new Broadcast();
 			/// <summary>Event which fires when the Task is ran.</summary>
-			protected Broadcast onRun = new Broadcast();
+			protected virtual Broadcast onRun { get; } = new Broadcast();
 
 			private object _lock = new object();
 
@@ -136,8 +136,8 @@ namespace Izhitsa {
 			 Gets called with a boolean which is true if the Task was force canceled.
 			 </param>
 			 */
-			public Signal OnCancel(Action<bool> func)
-				=> onCancel.Connect(() => func(WasForceCanceled));
+			public Signal<bool> OnCancel(Action<bool> func)
+				=> onCancel.Connect(func);
 			/**
 			 <summary>
 			 Connects an Action to run when the Task is completed.
@@ -168,8 +168,8 @@ namespace Izhitsa {
 			 Gets called with the Exception.
 			 </param>
 			 */
-			public Signal OnError(Action<Exception> func)
-				=> onError.Connect(() => func(Exception));
+			public Signal<Exception> OnError(Action<Exception> func)
+				=> onError.Connect(func);
 			/**
 			 <summary>
 			 Connects an Action to run on every Task iteration after the first.
@@ -281,7 +281,7 @@ namespace Izhitsa {
 						if (forceCancel){
 							Status = TaskStatus.Canceled;
 							WasForceCanceled = true;
-							onCancel.Fire();
+							onCancel.Fire(true);
 							onComplete.Fire(false);
 							yield break;
 						}
@@ -291,13 +291,13 @@ namespace Izhitsa {
 							onIteration.Fire();
 						} catch (OperationCanceledException){
 							Status = TaskStatus.Canceled;
-							onCancel.Fire();
+							onCancel.Fire(false);
 							onComplete.Fire(false);
 							yield break;
 						} catch (Exception e){
 							Status = TaskStatus.Faulted;
 							Exception = e;
-							onError.Fire();
+							onError.Fire(Exception);
 							onComplete.Fire(false);
 							if (SuppressExceptions) yield break;
 							throw Exception;

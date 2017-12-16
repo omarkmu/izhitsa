@@ -23,7 +23,7 @@ namespace Izhitsa {
 				get {
 					return result;
 				}
-				set {
+				internal set {
 					IsNull = (value == null);
 					result = value;
 				}
