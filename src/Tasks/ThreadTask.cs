@@ -81,7 +81,7 @@ namespace Izhitsa {
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
 				if (IsWaiting)
-					throw new Exception("The Task is currently waiting.");
+					throw new Exception("The Task is currently waiting to run.");
 				StartCoroutine(delayedRun(task => {
 					func(task);
 					return null;
@@ -109,7 +109,7 @@ namespace Izhitsa {
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
 				if (IsWaiting)
-					throw new Exception("The Task is currently waiting.");
+					throw new Exception("The Task is currently waiting to run.");
 				StartCoroutine(delayedRun(func, seconds, false));
 			}
 			/**
@@ -131,7 +131,7 @@ namespace Izhitsa {
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
 				if (IsWaiting)
-					throw new Exception("The Task is currently waiting.");
+					throw new Exception("The Task is currently waiting to run.");
 				StartCoroutine(delayedRun(task => {
 					func(task);
 					return null;
@@ -159,7 +159,7 @@ namespace Izhitsa {
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
 				if (IsWaiting)
-					throw new Exception("The Task is currently waiting.");
+					throw new Exception("The Task is currently waiting to run.");
 				StartCoroutine(delayedRun(func, seconds, true));
 			}
 			/**
@@ -253,7 +253,7 @@ namespace Izhitsa {
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
 				if (IsWaiting)
-					throw new Exception("The Task is currently waiting.");
+					throw new Exception("The Task is currently waiting to run.");
 				StartCoroutine(run(task => {
 					func(task);
 					return null;
@@ -278,7 +278,7 @@ namespace Izhitsa {
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
 				if (IsWaiting)
-					throw new Exception("The Task is currently waiting.");
+					throw new Exception("The Task is currently waiting to run.");
 				
 				StartCoroutine(run(func));
 			}

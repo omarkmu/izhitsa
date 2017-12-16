@@ -49,7 +49,7 @@ namespace Izhitsa {
 			 */
 			public static GameObject Clone(this GameObject go, GameObject parent = null){
 				if (go == null) throw new ArgumentNullException("go");
-				return UnityEngine.Object.Instantiate(go, parent?.transform);
+				return Instantiate(go, parent);
 			}
 			/**
 			 <summary>
@@ -229,6 +229,81 @@ namespace Izhitsa {
 			public static int GetSiblingIndex(this GameObject go){
 				if (go == null) throw new ArgumentNullException("go");
 				return go.transform.GetSiblingIndex();
+			}
+			/**
+			 <summary>
+			 Clones the object <paramref name="original"/> and returns the clone.
+			 </summary>
+			 <param name="original">An existing object to make a copy of.
+			 </param>
+			 */
+			public static T Instantiate<T>(this T original)
+			where T : UnityEngine.Object {
+				return GameObject.Instantiate<T>(original);
+			}
+			/**
+			 <summary>
+			 Clones the object <paramref name="original"/> and returns the clone.
+			 </summary>
+			 <param name="original">An existing object to make a copy of.
+			 </param>
+			 <param name="parent">Parent that will be assigned to the new object.
+			 </param>
+			 */
+			public static T Instantiate<T>(this T original, GameObject parent)
+			where T : UnityEngine.Object {
+				return GameObject.Instantiate<T>(original, parent?.transform);
+			}
+			/**
+			 <summary>
+			 Clones the object <paramref name="original"/> and returns the clone.
+			 </summary>
+			 <param name="original">An existing object to make a copy of.
+			 </param>
+			 <param name="parent">Parent that will be assigned to the new object.
+			 </param>
+			 <param name="instantiateInWorldSpace">Pass true when assigning a parent Object to maintain the world position of the Object,
+			 instead of setting its position relative to the new parent. Pass false to set the Object's position relative to its new parent.
+			 </param>
+			 */
+			public static T Instantiate<T>(this T original, GameObject parent,
+				bool instantiateInWorldSpace)
+			where T : UnityEngine.Object {
+				return GameObject.Instantiate<T>(original, parent?.transform, instantiateInWorldSpace);
+			}
+			/**
+			 <summary>
+			 Clones the object <paramref name="original"/> and returns the clone.
+			 </summary>
+			 <param name="original">An existing object to make a copy of.
+			 </param>
+			 <param name="position">Position for the new object.
+			 </param>
+			 <param name="rotation">Orientation of the new object.
+			 </param>
+			 */
+			public static T Instantiate<T>(this T original, Vector3 position,
+				Quaternion rotation)
+			where T : UnityEngine.Object {
+				return GameObject.Instantiate<T>(original, position, rotation);
+			}
+			/**
+			 <summary>
+			 Clones the object <paramref name="original"/> and returns the clone.
+			 </summary>
+			 <param name="original">An existing object to make a copy of.
+			 </param>
+			 <param name="position">Position for the new object.
+			 </param>
+			 <param name="rotation">Orientation of the new object.
+			 </param>
+			 <param name="parent">Parent that will be assigned to the new object.
+			 </param>
+			 */
+			public static T Instantiate<T>(this T original, Vector3 position,
+				Quaternion rotation, GameObject parent)
+			where T : UnityEngine.Object {
+				return GameObject.Instantiate<T>(original, position, rotation, parent?.transform);
 			}
 			/**
 			 <summary>

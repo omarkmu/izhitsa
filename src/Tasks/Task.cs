@@ -97,7 +97,7 @@ namespace Izhitsa {
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
 				if (IsWaiting)
-					throw new Exception("The Task is currently waiting.");
+					throw new Exception("The Task is currently waiting to run.");
 				StartCoroutine(delayedRun(enumerator, seconds, false));
 			}
 			/**
@@ -116,7 +116,7 @@ namespace Izhitsa {
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
 				if (IsWaiting)
-					throw new Exception("The Task is currently waiting.");
+					throw new Exception("The Task is currently waiting to run.");
 				StartCoroutine(delayedRun(enumerator, seconds, true));
 			}
 			/**
@@ -178,7 +178,7 @@ namespace Izhitsa {
 			 </param>
 			 */
 			public virtual Signal OnIteration(Action func)
-				=> onIteration.Connect(() => func());
+				=> onIteration.Connect(func);
 			/**
 			 <summary>
 			 Connects an Action to run on every Task iteration after the first.
@@ -197,7 +197,7 @@ namespace Izhitsa {
 			 </param>
 			 */
 			public Signal OnRun(Action func)
-				=> onRun.Connect(() => func());
+				=> onRun.Connect(func);
 			/**
 			 <summary>
 			 Runs the Task.
@@ -213,7 +213,7 @@ namespace Izhitsa {
 				if (IsRunning)
 					throw new Exception("The Task is already running.");
 				if (IsWaiting)
-					throw new Exception("The Task is currently waiting.");
+					throw new Exception("The Task is currently waiting to run.");
 				return StartCoroutine(run(enumerator));
 			}
 			/**
