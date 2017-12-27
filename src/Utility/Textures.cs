@@ -5,9 +5,9 @@ using UnityEngine;
 namespace Izhitsa.Utility {
 	/**
 	 <summary>
-		Provides various operations for Texture2Ds.
-		</summary>
-		*/
+	 Provides various operations for Texture2Ds.
+	 </summary>
+	 */
 	public static class Textures {
 		/// <summary>Image data associated with a texture.</summary>
 		private static Dictionary<Texture2D, TextureData> data { get; set; }
