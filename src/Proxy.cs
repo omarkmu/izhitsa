@@ -65,28 +65,27 @@ namespace Izhitsa {
 		 </summary>
 		 */
 		void Update(){
-			Event e;
 			List<Event> events = new List<Event>();
 			foreach(KeyCode key in unregistered){
 				if (Input.GetKey(key)){
-					e = new Event();
-					e.type = EventType.KeyDown;
-					e.keyCode = key;
-					events.Add(e);
+					events.Add(new Event {
+						type = EventType.KeyDown,
+						keyCode = key
+					});
 				}
 				if (Input.GetKeyUp(key)){
-					e = new Event();
-					e.type = EventType.KeyUp;
-					e.keyCode = key;
-					events.Add(e);
+					events.Add(new Event {
+						type = EventType.KeyUp,
+						keyCode = key
+					});
 				}
 			}
 			foreach (Event ev in events) InputManager.handleEvent(ev);
 
-			e = new Event();
-			e.type = EventType.MouseMove;
-			e.mousePosition = Input.mousePosition;
-			InputManager.handleEvent(e);
+			InputManager.handleEvent(new Event {
+				type = EventType.MouseMove,
+				mousePosition = Input.mousePosition
+			});
 			ThreadTask.answerRequests();
 		}
 		/**
