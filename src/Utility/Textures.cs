@@ -61,23 +61,28 @@ namespace Izhitsa.Utility {
 			if (img2 == null) throw new ArgumentNullException("img2");
 
 			Texture2D dest = img1.Clone();
-			Action<int, int> perform = (x, y)=>{
+			int w = img1.width;
+			int h = img1.height;
+			int w2 = img2.width;
+			int h2 = img2.height;
+			Action<int, int> perform = (x, y) => {
+				if (x >= w || y >= h || x >= w2 || y >= h2)
+					return;
 				Color src = img1.GetPixel(x, y);
 				Color other = img2.GetPixel(x, y);
 				Color final = Color.Lerp(src, other, other.a / 1.0f);
-
 				dest.SetPixel(x, y, final);
 			};
 			if (!img1.DataExists()) UpdateTextureData(img1);
 			if (!img2.DataExists()) UpdateTextureData(img2);
 
-			Dictionary<Vector2, bool> check = new Dictionary<Vector2, bool>();
+			List<Vector2> check = new List<Vector2>();
 			foreach (Vector2 p in data[img1].VisiblePoints){
 				perform((int)p.x, (int)p.y);
-				check[p] = true;
+				check.Add(p);
 			}
 			foreach (Vector2 p in data[img2].VisiblePoints){
-				if (!check.ContainsKey(p)) perform((int)p.x, (int)p.y);
+				if (!check.Contains(p)) perform((int)p.x, (int)p.y);
 			}
 			dest.Apply();
 			return dest;
