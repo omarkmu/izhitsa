@@ -48,6 +48,8 @@ namespace Izhitsa.Utility {
 		 </param>
 		 */
 		public Database(string name, string path = null){
+			if (name == null)
+				name = "Data";
 			this.name = name;
 			Path = path;
 			data = new Dictionary<string, object>();
@@ -269,6 +271,8 @@ namespace Izhitsa.Utility {
 		 </param>
 		 */
 		public static Database Create(string name, string path = null){
+			if (name == null)
+				name = "Data";
 			if (databases.ContainsKey(name))
 				throw new ArgumentException($"The database \"{name}\" already exists.", "name");
 			Database db = new Database(name, path);
