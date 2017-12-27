@@ -1,3 +1,5 @@
+using Izhitsa.Events;
+using Izhitsa.Tasks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,8 +14,35 @@ namespace Izhitsa.Utility {
 	 */
 	[Serializable]
 	public class Database : IEnumerable<KeyValuePair<string, object>> {
+		/// <summary>Should the Database autosave?</summary>
+		public bool Autosave {
+			get { return autosave; }
+			set {
+				if (autosave == value) return;
+				autosave = value;
+				autoTask?.Cancel();
+				if (autosave){
+					autoTask = new Task();
+					autoTask.Run(auto(autoTask));
+				}
+			}
+		}
+		/// <summary>Should the data be compressed while autosaving?</summary>
+		public bool AutosaveCompress {
+			get { return autosaveCompress; }
+			set { autosaveCompress = value; }
+		}
+		/// <summary>The time to wait between autosaves, in seconds.</summary>
+		public float AutosaveInterval {
+			get { return autosaveInterval; }
+			set { autosaveInterval = value; }
+		}
 		/// <summary>The name of the Database.</summary>
 		public string Name => name;
+		/// <summary>A broadcast which fires when an autosave begins.</summary>
+		public Broadcast OnAutosaveStart { get; } = new Broadcast();
+		/// <summary>A broadcast which fires when an autosave ends.</summary>
+		public Broadcast OnAutosaveEnd { get; } = new Broadcast();
 		/// <summary>The path to save to and load from.</summary>
 		public string Path {
 			get {
@@ -24,6 +53,15 @@ namespace Izhitsa.Utility {
 			}
 		}
 
+
+		/// <summary>Should the Database autosave?</summary>
+		private bool autosave = false;
+		/// <summary>Should the data be compressed while autosaving?</summary>
+		private bool autosaveCompress = true;
+		/// <summary>The time to wait between autosaves, in seconds.</summary>
+		private float autosaveInterval = 300;
+		/// <summary>The task which handles autosaving.</summary>
+		private Task autoTask;
 		/// <summary>The name of the Database.</summary>
 		private string name;
 		/// <summary>The dictionary in which data is stored.</summary>
@@ -297,6 +335,23 @@ namespace Izhitsa.Utility {
 			return new Dictionary<string, Database>(databases);
 		}
 
+		/**
+		 <summary>
+		 Handles autosaving.
+		 </summary>
+		 <param name="task">The autosavng task.
+		 </param>
+		 */
+		private IEnumerator auto(Task task){
+			while (true){
+				yield return new WaitForSecondsRealtime(AutosaveInterval);
+				if (task.CancelRequested)
+					throw new TaskCanceledException();
+				OnAutosaveStart.Fire();
+				TrySave(null, autosaveCompress);
+				OnAutosaveEnd.Fire();
+			}
+		}
 		/**
 		 <summary>
 		 Attempts to load the database from a file located at
