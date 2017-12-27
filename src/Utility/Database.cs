@@ -179,7 +179,7 @@ namespace Izhitsa.Utility {
 		 */
 		public void Set<T>(string key, T value){
 			if (!typeof(T).IsSerializable)
-				throw new ArgumentException("Value must be serializable.");
+				throw new ArgumentException("Value must be serializable.", "value");
 			data[key] = value;
 		}
 		/**
@@ -270,7 +270,7 @@ namespace Izhitsa.Utility {
 		 */
 		public static Database Create(string name, string path = null){
 			if (databases.ContainsKey(name))
-				throw new ArgumentException($"The database \"{name}\" already exists.");
+				throw new ArgumentException($"The database \"{name}\" already exists.", "name");
 			Database db = new Database(name, path);
 			databases.Add(name, db);
 			return db;
