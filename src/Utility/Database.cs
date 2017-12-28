@@ -6,6 +6,8 @@ using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System.Xml.Serialization;
 using UnityEngine;
 
 namespace Izhitsa.Utility {
@@ -13,7 +15,7 @@ namespace Izhitsa.Utility {
 	 <summary>Facilitates data storage and retrieval.</summary>
 	 */
 	[Serializable]
-	public class Database : IEnumerable<KeyValuePair<string, object>> {
+	public partial class Database : IEnumerable<KeyValuePair<string, object>> {
 		/// <summary>Should the Database autosave?</summary>
 		public bool Autosave {
 			get { return autosave; }
@@ -153,9 +155,35 @@ namespace Izhitsa.Utility {
 		public T Get<T>(string key){
 			if (key == null)
 				throw new ArgumentNullException("key");
-			if (data.ContainsKey(key) && data[key] is T)
-				return (T)data[key];
-			return default(T);
+			T ret = default(T);
+			if (data.ContainsKey(key)){
+				if (data[key] is T){
+					ret = (T)data[key];
+				} else if (data[key] is XmlData){
+					try {
+						XmlData xData = (XmlData)data[key];
+						object obj = XmlDeserialize(xData.Value, typeof(T));
+						if (obj is T){
+							ret = (T)obj;
+						}
+					} catch (Exception){}
+				}
+			}
+			return ret;
+		}
+		/**
+		 <summary>
+		 Returns the object of type T associated with the
+		 <paramref name="key"/>, or the null if the key
+		 does not exist.
+		 </summary>
+		 <param name="key">The key to get.
+		 </param>
+		 */
+		public object Get(string key){
+			if (data.ContainsKey(key))
+				return data[key];
+			return null;
 		}
 		/**
 		 <summary>
@@ -218,9 +246,17 @@ namespace Izhitsa.Utility {
 		 is not serializable.</exception>
 		 */
 		public void Set<T>(string key, T value){
-			if (!typeof(T).IsSerializable)
-				throw new ArgumentException("Value must be serializable.", "value");
-			data[key] = value;
+			object obj = value;
+			if (!typeof(T).IsSerializable){
+				string xml;
+				try {
+					xml = XmlSerialize(value);
+					obj = new XmlData(xml);
+				} catch (Exception){
+					throw new ArgumentException("Value must be serializable.", "value");
+				}
+			}
+			data[key] = obj;
 		}
 		/**
 		 <summary>
@@ -237,12 +273,13 @@ namespace Izhitsa.Utility {
 		 </exception>
 		 */
 		public bool TryGet<T>(string key, out T value){
-			if (data.ContainsKey(key) && data[key] is T){
-				value = (T)data[key];
-				return true;
-			}
 			value = default(T);
-			return false;
+			try {
+				value = Get<T>(key);
+			} catch (Exception){
+				return false;
+			}
+			return true;
 		}
 		/**
 		 <summary>
@@ -292,9 +329,11 @@ namespace Izhitsa.Utility {
 		 </param>
 		 */
 		public bool TrySet<T>(string key, T value){
-			if (!typeof(T).IsSerializable)
+			try {
+				Set(key, value);
+			} catch (Exception){
 				return false;
-			data[key] = value;
+			}
 			return true;
 		}
 
@@ -323,16 +362,52 @@ namespace Izhitsa.Utility {
 		 with that name has not been registered.
 		 </summary>
 		 */
-		public static Database GetDatabase(string name){
-			return (databases.ContainsKey(name)) ? databases[name] : null;
-		}
+		public static Database GetDatabase(string name)
+			=> (databases.ContainsKey(name)) ? databases[name] : null;
 		/**
 		 <summary>
 		 Returns a dictionary containing all registered Databases.
 		 </summary>
 		 */
-		public static Dictionary<string, Database> GetAllDatabases(){
-			return new Dictionary<string, Database>(databases);
+		public static Dictionary<string, Database> GetAllDatabases()
+			=> new Dictionary<string, Database>(databases);
+		/**
+		 <summary>
+		 Attempts to serialize <paramref name="obj"/> into XML.
+		 </summary>
+		 <param name="obj">The object to serialize.
+		 </param>
+		 <exception cref="InvalidOperationException">Thrown if
+		 <paramref name="obj"/> cannot be serialized.
+		 </exception>
+		 */
+		public static string XmlSerialize(object obj){
+			StringBuilder sb = new StringBuilder();
+			using (TextWriter writer = new StringWriter(sb)){
+				XmlSerializer serializer = new XmlSerializer(obj.GetType());
+				serializer.Serialize(writer, obj);
+			}
+			return sb.ToString();
+		}
+		/**
+		 <summary>
+		 Attempts to deserialize <paramref name="data"/> from XML into
+		 a <paramref name="type"/> object.
+		 </summary>
+		 <param name="data">The string to deserialize.
+		 </param>
+		 <param name="type">The type of the object to deserialize to.
+		 </param>
+		 <exception cref="XmlException">Thrown if the XML is invalid.
+		 </exception>
+		 */
+		public static object XmlDeserialize(string data, Type type){
+			object res;
+			using (TextReader reader = new StringReader(data)){
+				XmlSerializer serializer = new XmlSerializer(type);
+				res = serializer.Deserialize(reader);
+			}
+			return res;
 		}
 
 		/**
@@ -417,7 +492,7 @@ namespace Izhitsa.Utility {
 			}
 		}
 
-
+		
 		#region IEnumerable
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator(){
 			return data.GetEnumerator();
