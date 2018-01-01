@@ -79,7 +79,6 @@ namespace Izhitsa.Utility {
 
 		public object this[string key] {
 			get { return Get(key); }
-			set { Set(key, value); }
 		}
 
 
