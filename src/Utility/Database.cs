@@ -256,7 +256,7 @@ namespace Izhitsa.Utility {
 				string xml;
 				try {
 					xml = XmlSerialize(value);
-					obj = new XmlData(xml);
+					obj = new XmlData(xml, typeof(T));
 				} catch (Exception){
 					throw new ArgumentException("Value must be serializable.", "value");
 				}
@@ -500,7 +500,16 @@ namespace Izhitsa.Utility {
 		
 		#region IEnumerable
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator(){
-			return data.GetEnumerator();
+			object value;
+			foreach(KeyValuePair<string, object> pair in data){
+				value = pair.Value;
+				if (value is XmlData){
+					value = ((XmlData)value).GetValue();
+					yield return new KeyValuePair<string, object>(pair.Key, value);
+				} else {
+					yield return pair;
+				}
+			}
 		}
 		IEnumerator IEnumerable.GetEnumerator(){
 			return this.GetEnumerator();
