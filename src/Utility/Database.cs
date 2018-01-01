@@ -77,6 +77,12 @@ namespace Izhitsa.Utility {
 		//
 
 
+		public object this[string key] {
+			get { return Get(key); }
+			set { Set(key, value); }
+		}
+
+
 		/**
 		 <summary>
 		 Creates a database with the name <paramref name="name"/> and the path
