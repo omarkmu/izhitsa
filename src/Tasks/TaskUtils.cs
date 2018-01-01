@@ -22,11 +22,9 @@ namespace Izhitsa.Tasks {
 		 </summary>
 		 */
 		public static bool IsMainThread(){
-			if (main == null){
-				Proxy.Activate();
+			if (main == null)
 				return true;
-			}
-			return main == Thread.CurrentThread;
+			return main.ManagedThreadId == Thread.CurrentThread.ManagedThreadId;
 		}
 		/**
 		 <summary>

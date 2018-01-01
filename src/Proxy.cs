@@ -35,17 +35,7 @@ namespace Izhitsa {
 
 		/**
 		 <summary>
-		 Static constructor which creates the proxy.
-		 </summary>
-		 */
-		static Proxy() {
-			createProxy();
-		}
-
-
-		/**
-		 <summary>
-		 Sets up Singleton and deletes any Main components which aren't
+		 Sets up Singleton and deletes any Proxy GameObjects which aren't
 		 the Singleton. Also adds the object to DontDestroyOnLoad.
 		 </summary>
 		 */
@@ -125,13 +115,6 @@ namespace Izhitsa {
 
 		/**
 		 <summary>
-		 Used to call the static constructor manually, if necessary.
-		 </summary>
-		 */
-		public static void Activate(){}
-
-		/**
-		 <summary>
 		 Starts a Coroutine using the proxy object.
 		 </summary>
 		 <param name="e">An IEnumerator to start the Coroutine with.
@@ -144,6 +127,7 @@ namespace Izhitsa {
 		 Creates a GameObject and attaches a Proxy script to it.
 		 </summary>
 		 */
+		[RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
 		private static void createProxy(){
 			obj = null;
 			GameObject go = new GameObject("IzhitsaProxy");

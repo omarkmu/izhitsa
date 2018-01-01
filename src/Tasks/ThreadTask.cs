@@ -357,7 +357,6 @@ namespace Izhitsa.Tasks {
 			CancelRequested = false;
 			forceCancel = false;
 
-			Proxy.Activate();
 			while (true){
 				lock (threads){
 					if (threads.Count >= MaxThreads){
