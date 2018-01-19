@@ -49,7 +49,7 @@ namespace Izhitsa.Tasks.Generic {
 			=> onComplete.Connect(success => func(success, Result));
 		/**
 		 <summary>
-		 Connects an Action to run on every Task iteration after the first.
+		 Connects an Action to run on every Task iteration.
 		 </summary>
 		 <param name="func">An Action to run on each iteration.
 		 Gets called with the current result of the Task.
@@ -94,11 +94,11 @@ namespace Izhitsa.Tasks.Generic {
 						yield break;
 					}
 					try {
+						onIteration.Fire();
 						if (!enumerator.MoveNext()) break;
 						object current = enumerator.Current;
 						IsNull = (current == null);
 						Result = (TResult)current;
-						onIteration.Fire();
 					} catch (OperationCanceledException){
 						Status = TaskStatus.Canceled;
 						onCancel.Fire(false);
@@ -122,7 +122,7 @@ namespace Izhitsa.Tasks.Generic {
 						if (SuppressExceptions) yield break;
 						throw Exception;
 					}
-					yield return Result;
+					yield return null;
 				}
 
 				Status = TaskStatus.Completed;

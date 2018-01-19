@@ -170,7 +170,7 @@ namespace Izhitsa.Tasks {
 			=> onError.Connect(func);
 		/**
 		 <summary>
-		 Connects an Action to run on every Task iteration after the first.
+		 Connects an Action to run on every Task iteration.
 		 </summary>
 		 <param name="func">An Action to run on each iteration.
 		 </param>
@@ -179,7 +179,7 @@ namespace Izhitsa.Tasks {
 			=> onIteration.Connect(func);
 		/**
 		 <summary>
-		 Connects an Action to run on every Task iteration after the first.
+		 Connects an Action to run on every Task iteration.
 		 </summary>
 		 <param name="func">An Action to run on each iteration.
 		 Gets called with the current result of the Task.
@@ -285,9 +285,9 @@ namespace Izhitsa.Tasks {
 						yield break;
 					}
 					try {
+						onIteration.Fire();
 						if (!enumerator.MoveNext()) break;
 						Result = enumerator.Current;
-						onIteration.Fire();
 					} catch (OperationCanceledException){
 						Status = TaskStatus.Canceled;
 						onCancel.Fire(false);
@@ -301,7 +301,7 @@ namespace Izhitsa.Tasks {
 						if (SuppressExceptions) yield break;
 						throw Exception;
 					}
-					yield return Result;
+					yield return null;
 				}
 
 				Status = TaskStatus.Completed;
