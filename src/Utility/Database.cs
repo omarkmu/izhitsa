@@ -153,11 +153,17 @@ namespace Izhitsa.Utility {
 		 </summary>
 		 <param name="key">The key to get.
 		 </param>
+		 <param name="canThrow">Should the method throw an exception if
+		 there's a problem retrieving the value?
+		 </param>
+		 <exception cref="Exception">Thrown if there's a problem retrieving
+		 the value.
+		 </exception>
 		 <exception cref="ArgumentNullException">Thrown if
 		 <paramref name="key"/> is null.
 		 </exception>
 		 */
-		public T Get<T>(string key){
+		public T Get<T>(string key, bool canThrow = false){
 			if (key == null)
 				throw new ArgumentNullException("key");
 			T ret = default(T);
@@ -170,15 +176,23 @@ namespace Izhitsa.Utility {
 						object obj = XmlDeserialize(xData.Value, typeof(T));
 						if (obj is T){
 							ret = (T)obj;
+						} else if (canThrow){
+							throw new Exception($"Type does not match XML type.");
 						}
-					} catch (Exception){}
+					} catch (Exception){
+						if (canThrow) throw;
+					}
+				} else if (canThrow){
+					throw new Exception($"Type does not match value type.");
 				}
+			} else if (canThrow){
+				throw new Exception($"{key} does not exist in the Database.");
 			}
 			return ret;
 		}
 		/**
 		 <summary>
-		 Returns the object of type T associated with the
+		 Returns the object associated with the
 		 <paramref name="key"/>, or the null if the key
 		 does not exist.
 		 </summary>
@@ -280,7 +294,7 @@ namespace Izhitsa.Utility {
 		public bool TryGet<T>(string key, out T value){
 			value = default(T);
 			try {
-				value = Get<T>(key);
+				value = Get<T>(key, true);
 			} catch (Exception){
 				return false;
 			}
@@ -419,7 +433,7 @@ namespace Izhitsa.Utility {
 		 <summary>
 		 Handles autosaving.
 		 </summary>
-		 <param name="task">The autosavng task.
+		 <param name="task">The autosaving task.
 		 </param>
 		 */
 		private IEnumerator auto(Task task){
@@ -440,7 +454,7 @@ namespace Izhitsa.Utility {
 		 <param name="path">The path to load from. <see cref="Path"/>
 		 by default.
 		 </param>
-		 <param name="isCompressed">Was the file compressed?
+		 <param name="isCompressed">Is the file compressed?
 		 </param>
 		 */
 		private int tryLoad(string path, bool isCompressed, out Exception ex){
