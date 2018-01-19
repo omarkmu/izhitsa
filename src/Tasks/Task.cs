@@ -12,44 +12,44 @@ namespace Izhitsa.Tasks {
 	 </summary>
 	 */
 	public class Task {
-		/// <summary>Was <see cref="Cancel"/> called?</summary>
+		/// <summary>Was <see cref="Cancel"/> called? (Read Only)</summary>
 		public bool CancelRequested { get; protected set; }
-		/// <summary>The Exception that was thrown.</summary>
+		/// <summary>The Exception that was thrown. (Read Only)</summary>
 		public Exception Exception { get; protected set; }
-		/// <summary>Is the current status <see cref="TaskStatus.Canceled"/>?</summary>
+		/// <summary>Is the current status <see cref="TaskStatus.Canceled"/>? (Read Only)</summary>
 		public bool IsCanceled => Status == TaskStatus.Canceled;
-		/// <summary>Is the current status <see cref="TaskStatus.Completed"/>?</summary>
+		/// <summary>Is the current status <see cref="TaskStatus.Completed"/>? (Read Only)</summary>
 		public bool IsCompleted => Status == TaskStatus.Completed;
-		/// <summary>Is the current status <see cref="TaskStatus.Faulted"/>?</summary>
+		/// <summary>Is the current status <see cref="TaskStatus.Faulted"/>? (Read Only)</summary>
 		public bool IsFaulted => Status == TaskStatus.Faulted;
-		/// <summary>Is the value of <see cref="Result"/> null?</summary>
-		public bool IsNull => (Result == null);
-		/// <summary>Is the current status <see cref="TaskStatus.Running"/>?</summary>
+		/// <summary>Is the value of <see cref="Result"/> null? (Read Only)</summary>
+		public bool IsNull => Result == null;
+		/// <summary>Is the current status <see cref="TaskStatus.Running"/>? (Read Only)</summary>
 		public bool IsRunning => Status == TaskStatus.Running;
-		/// <summary>Is the current status <see cref="TaskStatus.WaitingToRun"/>?</summary>
+		/// <summary>Is the current status <see cref="TaskStatus.WaitingToRun"/>? (Read Only)</summary>
 		public bool IsWaiting => Status == TaskStatus.WaitingToRun;
-		/// <summary>The return value of the IEnumerator.</summary>
+		/// <summary>The return value of the IEnumerator. (Read Only)</summary>
 		public virtual object Result { get; protected set; }
-		/// <summary>The current status of the Task.</summary>
+		/// <summary>The current status of the Task. (Read Only)</summary>
 		public TaskStatus Status { get; protected set; } = TaskStatus.Created;
 		/// <summary>If exceptions are suppressed, <see cref="Run"/> will never throw exceptions.</summary>
 		public bool SuppressExceptions { get; set; } = false;
-		/// <summary>The type of the Task.</summary>
-		public virtual Type Type => null;
-		/// <summary>Was the Task force canceled?</summary>
+		/// <summary>The type of the Task. (Read Only)</summary>
+		public virtual Type Type => typeof(object);
+		/// <summary>Was the Task force canceled? (Read Only)</summary>
 		public bool WasForceCanceled { get; protected set; }
 
 		/// <summary>True if <see cref="ForceCancel"/> was called.</summary>
 		protected bool forceCancel = false;
-		/// <summary>Event which fires when the Task is canceled.</summary>
+		/// <summary>Event which fires when the Task is canceled. (Read Only)</summary>
 		protected virtual Broadcast<bool> onCancel { get; } = new Broadcast<bool>();
-		/// <summary>Event which fires when the Task is completed.</summary>
+		/// <summary>Event which fires when the Task is completed. (Read Only)</summary>
 		protected virtual Broadcast<bool> onComplete { get; } = new Broadcast<bool>();
-		/// <summary>Event which fires when the Task errors.</summary>
+		/// <summary>Event which fires when the Task errors. (Read Only)</summary>
 		protected virtual Broadcast<Exception> onError { get; } = new Broadcast<Exception>();
-		/// <summary>Event which fires on every iteration after the first in the Task.</summary>
+		/// <summary>Event which fires on every iteration after the first in the Task. (Read Only)</summary>
 		protected virtual Broadcast onIteration { get; } = new Broadcast();
-		/// <summary>Event which fires when the Task is ran.</summary>
+		/// <summary>Event which fires when the Task is run. (Read Only)</summary>
 		protected virtual Broadcast onRun { get; } = new Broadcast();
 
 		private object _lock = new object();
@@ -63,9 +63,8 @@ namespace Izhitsa.Tasks {
 		 </summary>
 		 <param name="enumerator">The IEnumerator to run the Task with.
 		 </param>
-		 <exception cref="System.Exception">Thrown if the task is already running or waiting.
-		 Exceptions can also be thrown from running the Task, depending on the value of
-		 <see cref="SuppressExceptions"/>.
+		 <exception cref="System.Exception">Exceptions can be thrown from running the Task,
+		 depending on the value of <see cref="SuppressExceptions"/>.
 		 </exception>
 		 */
 		public Task(IEnumerator enumerator){ Run(enumerator); }
@@ -73,7 +72,7 @@ namespace Izhitsa.Tasks {
 
 		/**
 		 <summary>
-		 Requests task cancellation in the running IEnumerator.
+		 Requests task cancellation for the Task.
 		 The IEnumerator is not guaranteed to respect a cancel request.
 		 </summary>
 		 */
@@ -82,7 +81,7 @@ namespace Izhitsa.Tasks {
 		}
 		/**
 		 <summary>
-		 Runs the Task after <paramref name="seconds"/> seconds have passed.
+		 Runs the Task after a delay.
 		 Uses scaled time.
 		 </summary>
 		 <param name="enumerator">The IEnumerator to run the Task with.
@@ -101,7 +100,7 @@ namespace Izhitsa.Tasks {
 		}
 		/**
 		 <summary>
-		 Runs the Task after <paramref name="seconds"/> seconds have passed.
+		 Runs the Task after a delay.
 		 Uses unscaled time.
 		 </summary>
 		 <param name="enumerator">The IEnumerator to run the Task with.
@@ -217,7 +216,7 @@ namespace Izhitsa.Tasks {
 		}
 		/**
 		 <summary>
-		 Returns a TaskAwaiter which will wait until the task is not running.
+		 Returns a YieldInstruction which will wait until the task is not running.
 		 </summary>
 		 <example>
 		 <code>
@@ -239,6 +238,7 @@ namespace Izhitsa.Tasks {
 		 */
 		public static Task Start(IEnumerator enumerator)
 			=> new Task(enumerator);
+		//
 		
 		/**
 		 <summary>

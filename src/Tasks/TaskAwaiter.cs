@@ -13,15 +13,16 @@ namespace Izhitsa.Tasks {
 
 		private Task task;
 
+		
 		/**
 		 <summary>
 		 Creates a TaskAwaiter which will wait for a Task to stop running.
 		 </summary>
-		 <param name="t">The Task this TaskAwaiter should wait for.
+		 <param name="task">The Task this TaskAwaiter should wait for.
 		 </param>
 		 */
-		public TaskAwaiter(Task t){
-			task = t;
+		internal TaskAwaiter(Task task){
+			this.task = task;
 		}
 	}
 }

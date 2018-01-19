@@ -344,7 +344,7 @@ namespace Izhitsa.Utility {
 
 		/**
 		 <summary>
-		 Creates a database with the name <paramref name="name"/> and the path
+		 Creates a database named <paramref name="name"/> at
 		 <paramref name="path"/>, and registers it.
 		 </summary>
 		 <param name="name">The name of the Database.
@@ -363,7 +363,7 @@ namespace Izhitsa.Utility {
 		}
 		/**
 		 <summary>
-		 Returns the registered Database with the name <paramref name="name"/>, or null if a Database
+		 Returns the registered Database named <paramref name="name"/>, or null if a Database
 		 with that name has not been registered.
 		 </summary>
 		 */

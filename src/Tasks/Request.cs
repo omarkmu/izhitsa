@@ -8,12 +8,12 @@ namespace Izhitsa.Tasks {
 	 */
 	public class Request {
 		/// <summary>Has the request been answered? (Read Only)</summary>
-		public bool Answered { get; protected set; } = false;
+		public virtual bool Answered { get; protected set; } = false;
 		/// <summary>An exception that was thrown while calling Func.
 		/// null if Func executed successfully. (Read Only)</summary>
-		public Exception Exception { get; protected set; }
+		public virtual Exception Exception { get; protected set; }
 		/// <summary>Is the result of the request null? (Read Only)</summary>
-		public virtual bool IsNull => (Result == null);
+		public virtual bool IsNull => Result == null;
 		/// <summary>The Func to run. (Read Only)</summary>
 		public virtual Func<object> Func { get; protected set; }
 		/// <summary>The result of calling <see cref="Func"/>. (Read Only)</summary>
@@ -61,12 +61,9 @@ namespace Izhitsa.Tasks {
 		 if any.</param>
 		 */
 		private static object safeRun(Func<object> func, out Exception exc){
-			if (func == null){
-				exc = null;
-				return null;
-			}
+			exc = null;
+			if (func == null) return null;
 			try {
-				exc = null;
 				return func();
 			} catch (Exception e){
 				exc = e;

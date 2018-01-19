@@ -8,7 +8,7 @@ namespace Izhitsa.Tasks {
 	 </summary>
 	 */
 	public class TaskCanceledException : OperationCanceledException {
-		/// <summary>The Task that was canceled.</summary>
+		/// <summary>The Task that was canceled. (Read Only)</summary>
 		public Task Task { get; }
 
 		/// <summary>Creates an empty TaskCanceledException.</summary>

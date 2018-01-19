@@ -14,8 +14,8 @@ namespace Izhitsa.Tasks {
 	 </summary>
 	 */
 	public class ThreadTask : Task {
-		/// <summary>The return value of the task.</summary>
-		public new object Result { get; set; }
+		/// <summary>The return value of the task. (Read Only)</summary>
+		public new object Result { get; protected set; }
 		/// <summary>The amount of time, in milliseconds, to sleep while waiting
 		/// for a Request.</summary>
 		public int RequestSleepTime { get; set; } = 1;
@@ -43,7 +43,7 @@ namespace Izhitsa.Tasks {
 			}
 		}
 
-		/// <summary>Contains all of the threads currently managed.</summary>
+		/// <summary>Contains all of the currently managed threads.</summary>
 		private static Dictionary<Thread, ThreadTask> threads { get; }
 			= new Dictionary<Thread, ThreadTask>();
 		/// <summary>A queue of main thread requests.</summary>

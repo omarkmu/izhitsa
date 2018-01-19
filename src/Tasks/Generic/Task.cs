@@ -12,11 +12,11 @@ namespace Izhitsa.Tasks.Generic {
 	 </summary>
 	 */
 	public class Task<TResult> : Task {
-		/// <summary>Is the value of <see cref="Result"/> null?</summary>
+		/// <summary>Is the value of <see cref="Result"/> null or default? (Read Only)</summary>
 		public new bool IsNull { get; protected set; }
-		/// <summary>The return value of the IEnumerator.</summary>
+		/// <summary>The return value of the IEnumerator. (Read Only)</summary>
 		public new TResult Result { get; protected set; }
-		/// <summary>The type of the Task.</summary>
+		/// <summary>The type of the Task. (Read Only)</summary>
 		public override Type Type => typeof(TResult);
 
 		private object _lock = new object();
@@ -29,12 +29,11 @@ namespace Izhitsa.Tasks.Generic {
 		 </summary>
 		 <param name="enumerator">The IEnumerator to run the Task with.
 		 </param>
-		 <exception cref="System.Exception">Thrown if the task is already running or waiting.
-		 Exceptions can also be thrown from running the Task, depending on the value of
-		 <see cref="Izhitsa.Tasks.Task.SuppressExceptions"/>.
+		 <exception cref="System.Exception">Exceptions can be thrown from running the Task,
+		 depending on the value of <see cref="Izhitsa.Tasks.Task.SuppressExceptions"/>.
 		 </exception>
 		 */
-		public Task(IEnumerator enumerator) : base(enumerator) {}
+		public Task(IEnumerator enumerator) : base(enumerator){}
 
 
 		/**

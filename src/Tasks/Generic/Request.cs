@@ -28,8 +28,7 @@ namespace Izhitsa.Tasks.Generic {
 		 </summary>
 		 */
 		public override void Answer(){
-			if (Answered)
-				return;
+			if (Answered) return;
 			safeRun(this);
 			Answered = true;
 		}
@@ -48,12 +47,13 @@ namespace Izhitsa.Tasks.Generic {
 				req.IsNull = true;
 				req.Result = default(T);
 				req.Exception = null;
+				return;
 			}
 			req.IsNull = true;
 			req.Result = default(T);
 			try {
 				req.Result = req.Func();
-				req.IsNull = (req.Result == null);
+				req.IsNull = req.Result == null;
 			} catch (Exception e){
 				req.Exception = e;
 				return;
