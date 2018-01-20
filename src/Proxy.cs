@@ -6,9 +6,9 @@ using System.Reflection;
 using UnityEngine;
 
 [assembly: AssemblyProduct("Izhitsa")]
-[assembly: AssemblyTitle("Utility scripts for Unity.")]
-[assembly: AssemblyCopyright("(c) 2017 Omar M")]
-[assembly: AssemblyVersion("0.0.0")]
+[assembly: AssemblyTitle("Izhitsa")]
+[assembly: AssemblyCopyright("Copyright © Omar M 2018")]
+[assembly: AssemblyVersion("0.0.1")]
 namespace Izhitsa {
 	/**
 	 <summary>
