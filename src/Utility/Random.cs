@@ -1,5 +1,6 @@
-using UnityEngine;
+using System;
 using System.Collections.Generic;
+using UnityEngine;
 
 namespace Izhitsa.Utility {
 	/**
@@ -31,14 +32,19 @@ namespace Izhitsa.Utility {
 		/// <summary>Returns a random number between 0.0 [inclusive] and 1.0 [inclusive]. (Read Only)</summary>
 		public static float Value => UnityEngine.Random.value;
 
+
 		/**
 		 <summary>
 		 Picks and returns a random argument.
 		 </summary>
-		 <param name="args">Arguments to choose from.</param>
+		 <param name="args">Arguments to choose from.
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="args"/> is null.
+		 </exception>
 		 */
 		public static T Pick<T>(params T[] args){
-			if (args.Length < 1) return default(T);
+			if (args == null) throw new ArgumentNullException("args");
+			if (args.Length == 0) return default(T);
 			if (args.Length == 1) return args[0];
 			return args[Rand(0, args.Length - 1)];
 		}
@@ -127,12 +133,14 @@ namespace Izhitsa.Utility {
 		 </summary>
 		 <param name="list">A list to choose from.
 		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="list"/> is null.
+		 </exception>
 		 */
 		public static T Rand<T>(List<T> list){
-			if (list.Count > 1)
-				return list[Rand(0, list.Count - 1)];
+			if (list == null) throw new ArgumentNullException("list");
+			if (list.Count == 0) return default(T);
 			if (list.Count == 1) return list[0];
-			return default(T);
+			return list[Rand(0, list.Count - 1)];
 		}
 		/**
 		 <summary>
