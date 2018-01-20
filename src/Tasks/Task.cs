@@ -275,6 +275,7 @@ namespace Izhitsa.Tasks {
 				CancelRequested = false;
 				forceCancel = false;
 				onRun.Fire();
+				bool hasLooped = false;
 
 				while (true){
 					if (forceCancel){
@@ -285,7 +286,7 @@ namespace Izhitsa.Tasks {
 						yield break;
 					}
 					try {
-						onIteration.Fire();
+						if (hasLooped) onIteration.Fire();
 						if (!enumerator.MoveNext()) break;
 						Result = enumerator.Current;
 					} catch (OperationCanceledException){
@@ -301,6 +302,8 @@ namespace Izhitsa.Tasks {
 						if (SuppressExceptions) yield break;
 						throw Exception;
 					}
+
+					hasLooped = true;
 					yield return null;
 				}
 

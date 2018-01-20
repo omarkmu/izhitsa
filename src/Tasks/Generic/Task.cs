@@ -84,6 +84,7 @@ namespace Izhitsa.Tasks.Generic {
 				CancelRequested = false;
 				forceCancel = false;
 				onRun.Fire();
+				bool hasLooped = false;
 				
 				while (true){
 					if (forceCancel){
@@ -94,7 +95,7 @@ namespace Izhitsa.Tasks.Generic {
 						yield break;
 					}
 					try {
-						onIteration.Fire();
+						if (hasLooped) onIteration.Fire();
 						if (!enumerator.MoveNext()) break;
 						object current = enumerator.Current;
 						IsNull = (current == null);
@@ -122,6 +123,7 @@ namespace Izhitsa.Tasks.Generic {
 						if (SuppressExceptions) yield break;
 						throw Exception;
 					}
+					hasLooped = true;
 					yield return null;
 				}
 
