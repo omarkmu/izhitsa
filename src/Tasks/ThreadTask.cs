@@ -22,7 +22,6 @@ namespace Izhitsa.Tasks {
 		/// <summary>ThreadTasks always suppress exceptions. (Read Only)</summary>
 		public new bool SuppressExceptions { get; } = true;
 
-		private object result;
 		private Thread thread;
 
 
