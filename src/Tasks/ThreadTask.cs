@@ -25,7 +25,7 @@ namespace Izhitsa.Tasks {
 		private Thread thread;
 
 
-		/// <summary>The maximum amount of <see cref="Request"/>s to answer each frame.</summary>
+		/// <summary>The maximum amount of <see cref="Tasks.Request"/>s to answer each frame.</summary>
 		public static int MaxRequests { get; set; } = 15;
 		/**
 		 <summary>

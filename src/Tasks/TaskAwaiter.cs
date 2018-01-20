@@ -8,6 +8,7 @@ namespace Izhitsa.Tasks {
 	 </summary>
 	 */
 	public class TaskAwaiter : CustomYieldInstruction {
+		/// <summary>Used by Unity to continue waiting.</summary>
 		public override bool keepWaiting
 			=> task.IsRunning || task.IsWaiting;
 

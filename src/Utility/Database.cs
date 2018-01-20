@@ -77,6 +77,7 @@ namespace Izhitsa.Utility {
 		//
 
 
+		/// <summary>Calls <see cref="Get"/> with <paramref name="key"/>.</summary>
 		public object this[string key] {
 			get { return Get(key); }
 		}
@@ -110,7 +111,7 @@ namespace Izhitsa.Utility {
 		 </summary>
 		 <param name="key">The key to check for.
 		 </param>
-		 <exception cref="ArgumentNullExcepton">Thrown if <paramref name="key"/>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="key"/>
 		 is null.</exception>
 		 */
 		public bool Contains(string key){
@@ -417,7 +418,7 @@ namespace Izhitsa.Utility {
 		 </param>
 		 <param name="type">The type of the object to deserialize to.
 		 </param>
-		 <exception cref="XmlException">Thrown if the XML is invalid.
+		 <exception cref="System.Xml.XmlException">Thrown if the XML is invalid.
 		 </exception>
 		 */
 		public static object XmlDeserialize(string data, Type type){
@@ -456,6 +457,8 @@ namespace Izhitsa.Utility {
 		 </param>
 		 <param name="isCompressed">Is the file compressed?
 		 </param>
+		 <param name="ex">An Exception that was thrown while trying to load the Database.
+		 </param>
 		 */
 		private int tryLoad(string path, bool isCompressed, out Exception ex){
 			ex = null;
@@ -490,6 +493,8 @@ namespace Izhitsa.Utility {
 		 </param>
 		 <param name="compress">Should the file be compressed?
 		 </param>
+		 <param name="ex">An Exception that was thrown while trying to save the Database.
+		 </param>
 		 */
 		private bool trySave(string path, bool compress, out Exception ex){
 			ex = null;
@@ -513,6 +518,11 @@ namespace Izhitsa.Utility {
 
 		
 		#region IEnumerable
+		/**
+		 <summary>
+		 Returns an IEnumerator which will iterate through the members of the Database.
+		 </summary>
+		 */
 		public IEnumerator<KeyValuePair<string, object>> GetEnumerator(){
 			object value;
 			foreach(KeyValuePair<string, object> pair in data){

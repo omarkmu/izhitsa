@@ -103,6 +103,8 @@ namespace Izhitsa.Events {
 		 </summary>
 		 <param name="name">The name of the Broadcast to fire.
 		 </param>
+		 <param name="arg">The argument to fire the Broadcast with.
+		 </param>
 		 */
 		public static void Fire<T>(string name, T arg){
 			Broadcast<T> bc = null;
@@ -122,6 +124,10 @@ namespace Izhitsa.Events {
 		 All arguments after <paramref name="name"/> are fired with the Broadcast.
 		 </summary>
 		 <param name="name">The name of the Broadcast to fire.
+		 </param>
+		 <param name="arg0">The first argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg1">The second argument to fire the Broadcast with.
 		 </param>
 		 */
 		public static void Fire<T, T2>(string name, T arg0, T2 arg1){
@@ -143,6 +149,12 @@ namespace Izhitsa.Events {
 		 </summary>
 		 <param name="name">The name of the Broadcast to fire.
 		 </param>
+		 <param name="arg0">The first argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg1">The second argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg2">The third argument to fire the Broadcast with.
+		 </param>
 		 */
 		public static void Fire<T, T2, T3>(string name, T arg0, T2 arg1, T3 arg2){
 			Broadcast<T, T2, T3> bc = null;
@@ -162,6 +174,14 @@ namespace Izhitsa.Events {
 		 All arguments after <paramref name="name"/> are fired with the Broadcast.
 		 </summary>
 		 <param name="name">The name of the Broadcast to fire.
+		 </param>
+		 <param name="arg0">The first argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg1">The second argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg2">The third argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg3">The fourth argument to fire the Broadcast with.
 		 </param>
 		 */
 		public static void Fire<T, T2, T3, T4>(string name, T arg0, T2 arg1, T3 arg2, T4 arg3){

@@ -161,7 +161,7 @@ namespace Izhitsa.Utility {
 		 <paramref name="go"/> is null.
 		 </exception>
 		 <exception cref="ArgumentOutOfRangeException">Thrown if <paramref name="index"/> is
-		 smaller than 0 or bigger than/equal to <see cref="GameObject.transform.childCount"/>
+		 smaller than 0 or bigger than/equal to <see cref="Transform.childCount"/>
 		 </exception>
 		 */
 		public static GameObject GetChild(this GameObject go, int index){
@@ -308,6 +308,8 @@ namespace Izhitsa.Utility {
 		 <summary>
 		 Is this GameObject a child of <paramref name="parent"/>?
 		 </summary>
+		 <param name="go">The GameObject to check.
+		 </param>
 		 <param name="parent">The parent to check.
 		 </param>
 		 <exception cref="ArgumentNullException">Thrown if

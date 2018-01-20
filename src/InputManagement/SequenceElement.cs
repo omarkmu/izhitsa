@@ -87,7 +87,7 @@ namespace Izhitsa.InputManagement {
 		 </param>
 		 <param name="minYDelta">The minimum mouse Y delta for the sequence to be valid.
 		 </param>
-		 <param name="minYDelta">The minimum mouse Y delta for the sequence to be valid.
+		 <param name="maxYDelta">The maximum mouse Y delta for the sequence to be valid.
 		 </param>
 		 <param name="modifiers">Keys to use as modifiers for the element.
 		 </param>

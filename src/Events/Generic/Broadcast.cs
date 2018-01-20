@@ -44,6 +44,8 @@ namespace Izhitsa.Events.Generic {
 		 <summary>
 		 Fires the Broadcast.
 		 </summary>
+		 <param name="arg0">The argument to fire the Broadcast with.
+		 </param>
 		 */
 		public void Fire(T arg0){
 			for (int i = 0; i < signals.Count; i++)
@@ -114,6 +116,10 @@ namespace Izhitsa.Events.Generic {
 		 <summary>
 		 Fires the Broadcast.
 		 </summary>
+		 <param name="arg0">The first argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg1">The second argument to fire the Broadcast with.
+		 </param>
 		 */
 		public void Fire(T arg0, T2 arg1){
 			for (int i = 0; i < signals.Count; i++)
@@ -183,6 +189,12 @@ namespace Izhitsa.Events.Generic {
 		 <summary>
 		 Fires the Broadcast.
 		 </summary>
+		 <param name="arg0">The first argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg1">The second argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg2">The third argument to fire the Broadcast with.
+		 </param>
 		 */
 		public void Fire(T arg0, T2 arg1, T3 arg2){
 			for (int i = 0; i < signals.Count; i++)
@@ -253,6 +265,14 @@ namespace Izhitsa.Events.Generic {
 		 <summary>
 		 Fires the Broadcast.
 		 </summary>
+		 <param name="arg0">The first argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg1">The second argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg2">The third argument to fire the Broadcast with.
+		 </param>
+		 <param name="arg3">The fourth argument to fire the Broadcast with.
+		 </param>
 		 */
 		public void Fire(T arg0, T2 arg1, T3 arg2, T4 arg3){
 			for (int i = 0; i < signals.Count; i++)

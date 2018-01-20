@@ -5,7 +5,7 @@ namespace Izhitsa.Events {
 	 <summary>
 	 Contains a callback for use in <see cref="Events.Broadcast"/>.
 	 </summary>
-	 <seealso cref="EventManager.Broadcast"/>
+	 <seealso cref="Events.Broadcast"/>
 	 */
 	public class Signal {
 		/**

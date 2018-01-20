@@ -71,7 +71,8 @@ namespace Izhitsa.Events.Generic {
 		 <summary>
 		 Calls the callback function.
 		 </summary>
-		 <param name="args">Arguments to fire the Signal with.</param>
+		 <param name="arg">The first argument to fire the Signal with.
+		 </param>
 		 */
 		internal void call(T arg) {
 			if (callback == null) return;
@@ -148,7 +149,10 @@ namespace Izhitsa.Events.Generic {
 		 <summary>
 		 Calls the callback function.
 		 </summary>
-		 <param name="args">Arguments to fire the Signal with.</param>
+		 <param name="arg0">The first argument to fire the Signal with.
+		 </param>
+		 <param name="arg1">The second argument to fire the Signal with.
+		 </param>
 		 */
 		internal void call(T arg0, T2 arg1) {
 			if (callback == null) return;
@@ -225,7 +229,12 @@ namespace Izhitsa.Events.Generic {
 		 <summary>
 		 Calls the callback function.
 		 </summary>
-		 <param name="args">Arguments to fire the Signal with.</param>
+		 <param name="arg0">The first argument to fire the Signal with.
+		 </param>
+		 <param name="arg1">The second argument to fire the Signal with.
+		 </param>
+		 <param name="arg2">The third argument to fire the Signal with.
+		 </param>
 		 */
 		internal void call(T arg0, T2 arg1, T3 arg2) {
 			if (callback == null) return;
@@ -302,7 +311,14 @@ namespace Izhitsa.Events.Generic {
 		 <summary>
 		 Calls the callback function.
 		 </summary>
-		 <param name="args">Arguments to fire the Signal with.</param>
+		 <param name="arg0">The first argument to fire the Signal with.
+		 </param>
+		 <param name="arg1">The second argument to fire the Signal with.
+		 </param>
+		 <param name="arg2">The third argument to fire the Signal with.
+		 </param>
+		 <param name="arg3">The fourth argument to fire the Signal with.
+		 </param>
 		 */
 		internal void call(T arg0, T2 arg1, T3 arg2, T4 arg3) {
 			if (callback == null) return;

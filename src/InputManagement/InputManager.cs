@@ -288,8 +288,9 @@ namespace Izhitsa.InputManagement {
 		 Returns the nth key bound to <paramref name="action"/>, returning 
 		 KeyCode.None if out of bounds or if a key isn't bound to the action.
 		 </summary>
-		 <param name="action">
-		 The name of the key to check.
+		 <param name="action">The name of the key to check.
+		 </param>
+		 <param name="index">The number of the key to retrieve. First bound key by default.
 		 </param>
 		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
 		 </exception>
@@ -698,6 +699,8 @@ namespace Izhitsa.InputManagement {
 		 </param>
 		 <param name="elem">The SequenceElement.
 		 </param>
+		 <param name="isModifier">Used to check if the event is considered a modifier key for the element.
+		 </param>
 		 */
 		private static InterruptFlags getInterruptFlags(InputEvent ev, SequenceElement elem, ref bool isModifier){
 			InterruptFlags flags = InterruptFlags.None;
@@ -767,6 +770,17 @@ namespace Izhitsa.InputManagement {
 			}
 			return flags;
 		}
+		/**
+		 <summary>
+		 Checks whether or not an <see cref="InputEvent"/> satisfies a <see cref="SequenceElement"/>.
+		 </summary>
+		 <param name="ev">The InputEvent.
+		 </param>
+		 <param name="elem">The SequenceElement.
+		 </param>
+		 <param name="isModifier">Used to check if the event is considered a modifier key for the element.
+		 </param>
+		 */
 		private static bool valid(InputEvent ev, SequenceElement elem, out bool isModifier){
 			bool oneDown = false;
 			bool noModifiers = true;

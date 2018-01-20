@@ -1,6 +1,11 @@
 using System;
 
 namespace Izhitsa.Tasks.Generic {
+	/**
+	 <summary>
+	 Generic form of <see cref="Tasks.Request"/>.
+	 </summary>
+	 */
 	public class Request<T> : Request {
 		/// <summary>The Func to run. (Read Only)</summary>
 		public new Func<T> Func { get; protected set; }
@@ -35,12 +40,10 @@ namespace Izhitsa.Tasks.Generic {
 
 		/**
 		 <summary>
-		 Runs a Func safely and returns its result.
+		 Runs a Request's Func safely and returns its result.
 		 </summary>
-		 <param name="func">The Func to run.
+		 <param name="req">The Request to run.
 		 </param>
-		 <param name="exc">An exception raised while running the Func,
-		 if any.</param>
 		 */
 		private static void safeRun(Request<T> req){
 			if (req.Func == null){

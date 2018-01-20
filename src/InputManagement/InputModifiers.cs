@@ -1,4 +1,5 @@
 namespace Izhitsa.InputManagement {
+	/// <summary>Common input modifiers, used in <see cref="Sequence"/>s.</summary>
 	[System.Flags]
 	public enum InputModifiers {
 		/// <summary>No modifiers.</summary>

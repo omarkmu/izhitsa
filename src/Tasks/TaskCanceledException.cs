@@ -4,7 +4,7 @@ namespace Izhitsa.Tasks {
 	/**
 	 <summary>
 	 Exception which can be thrown by IEnumerators to signal acknowledgement
-	 of a cancellation request to the <see cref="Izhitsa.Tasks.Task"/>.
+	 of a cancellation request to the <see cref="Tasks.Task"/>.
 	 </summary>
 	 */
 	public class TaskCanceledException : OperationCanceledException {
