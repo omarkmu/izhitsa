@@ -1,6 +1,3 @@
-using Izhitsa.Tasks;
-using Izhitsa.Tasks.Generic;
-using System;
 using System.Collections;
 using System.Threading;
 using UnityEngine;

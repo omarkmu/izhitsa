@@ -1,4 +1,3 @@
-using static Izhitsa.InputManagement.InputManager;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
