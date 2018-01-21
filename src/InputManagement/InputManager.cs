@@ -1,4 +1,5 @@
 ﻿using Izhitsa.Events;
+using Izhitsa.Events.Generic;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
@@ -25,12 +26,15 @@ namespace Izhitsa.InputManagement {
 		/// <summary>A container which associates strings and Axes.</summary>
 		private static Dictionary<string, Axis> axes { get; }
 			= new Dictionary<string, Axis>();
+		/// <summary>A container which associates strings and mouse buttons.</summary>
+		private static Dictionary<string, List<int>> boundButtons { get; }
+			= new Dictionary<string, List<int>>();
 		/// <summary>A container which associates strings and KeyCodes.</summary>
 		private static Dictionary<string, List<KeyCode>> boundKeys { get; }
 			= new Dictionary<string, List<KeyCode>>();
 		/// <summary>A container which associates strings and Sequences.</summary>
-		private static Dictionary<string, Sequence> boundSeqs { get; }
-			= new Dictionary<string, Sequence>();
+		private static Dictionary<string, List<Sequence>> boundSeqs { get; }
+			= new Dictionary<string, List<Sequence>>();
 		/// <summary>Contains held down keys, and the time which they were pressed.</summary>
 		private static Dictionary<KeyCode, float> heldKeys { get; }
 			= new Dictionary<KeyCode, float>();
@@ -40,6 +44,62 @@ namespace Izhitsa.InputManagement {
 		private static Vector2? lastPosition;
 
 
+		/**
+		 <summary>
+		 Binds an action string to a mouse button.
+		 </summary>
+		 <param name="action">The action to bind to a mouse button.
+		 </param>
+		 <param name="keyCode">The button to bind.
+		 </param>
+		 <param name="clear">If true, any previously bound buttons to this action
+		 will be removed.
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
+		 </exception>
+		 */
+		public static void BindButton(string action, int button, bool clear = false){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (boundButtons.ContainsKey(action)){
+				List<int> buttonList = boundButtons[action];
+				if (clear){
+					for (int i = 0; i < buttonList.Count; i++){
+						mouseUnbound.Fire(action, buttonList[i]);
+						if (mouseUnboundEvents.ContainsKey(action))
+							mouseUnboundEvents[action].Fire(buttonList[i]);
+					}
+					buttonList.Clear();
+				}
+				buttonList.Add(button);
+				mouseBound.Fire(action, button);
+				if (mouseBoundEvents.ContainsKey(action))
+					mouseBoundEvents[action].Fire(button);
+			} else {
+				boundButtons.Add(action, new List<int>(){ button });
+				mouseBound.Fire(action, button);
+				if (mouseBoundEvents.ContainsKey(action))
+					mouseBoundEvents[action].Fire(button);
+			}
+		}
+		/**
+		 <summary>
+		 Binds an action string to mouse buttons.
+		 </summary>
+		 <param name="action">The action to bind to the keys.
+		 </param>
+		 <param name="keyCodes">The buttons to bind.
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> or <paramref name="buttons"/> is null.
+		 </exception>
+		 */
+		public static void BindButtons(string action, params int[] buttons){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (buttons == null)
+				throw new ArgumentNullException("buttons");
+			foreach (int button in buttons) BindButton(action, button, false);
+		}
 		/**
 		 <summary>
 		 Binds an action string to a KeyCode.
@@ -65,7 +125,7 @@ namespace Izhitsa.InputManagement {
 						if (keyUnboundEvents.ContainsKey(action))
 							keyUnboundEvents[action].Fire(keyList[i]);
 					}
-					keyList = boundKeys[action] = new List<KeyCode>();
+					keyList.Clear();
 				}
 				keyList.Add(keyCode);
 				keyBound.Fire(action, keyCode);
@@ -86,65 +146,172 @@ namespace Izhitsa.InputManagement {
 		 </param>
 		 <param name="keyCodes">The KeyCodes to bind.
 		 </param>
-		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> or <paramref name="keyCodes"/> is null.
 		 </exception>
 		 */
-		public static void BindKey(string action, params KeyCode[] keyCodes){
+		public static void BindKeys(string action, params KeyCode[] keyCodes){
 			if (action == null)
 				throw new ArgumentNullException("action");
+			if (keyCodes == null)
+				throw new ArgumentNullException("keyCodes");
 			foreach (KeyCode key in keyCodes) BindKey(action, key, false);
 		}
 		/**
 		 <summary>
-		 Binds a name to a Sequence.
+		 Binds an action string to a Sequence.
 		 </summary>
-		 <param name="seqName">The name to bind to the sequence.
+		 <param name="action">The action to bind to the sequence.
 		 </param>
 		 <param name="seq">The Sequence to bind.
 		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> or <paramref name="seq"/> is null.
+		 </exception>
 		 */
-		public static Sequence BindSequence(string seqName, Sequence seq){
-			if (boundSeqs.ContainsKey(seqName)){
-				seqUnbound.Fire(seqName, boundSeqs[seqName]);
-				if (seqUnboundEvents.ContainsKey(seqName))
-					seqUnboundEvents[seqName].Fire(boundSeqs[seqName]);
-				
-				boundSeqs[seqName] = seq;
-
-				seqBound.Fire(seqName, seq);
-				if (seqBoundEvents.ContainsKey(seqName))
-					seqBoundEvents[seqName].Fire(seq);
+		public static Sequence BindSequence(string action, Sequence seq, bool clear = false){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (seq == null)
+				throw new ArgumentNullException("seq");
+			if (boundSeqs.ContainsKey(action)){
+				List<Sequence> seqList = boundSeqs[action];
+				if (clear){
+					for (int i = 0; i < seqList.Count; i++){
+						seqUnbound.Fire(action, seqList[i]);
+						if (seqUnboundEvents.ContainsKey(action))
+							seqUnboundEvents[action].Fire(seqList[i]);
+					}
+					seqList.Clear();
+				}
+				seqList.Add(seq);
+				seqBound.Fire(action, seq);
+				if (seqBoundEvents.ContainsKey(action))
+					seqBoundEvents[action].Fire(seq);
 			} else {
-				boundSeqs.Add(seqName, seq);
-				seqBound.Fire(seqName, seq);
-				if (seqBoundEvents.ContainsKey(seqName))
-					seqBoundEvents[seqName].Fire(seq);
+				boundSeqs.Add(action, new List<Sequence>(){ seq });
+				seqBound.Fire(action, seq);
+				if (seqBoundEvents.ContainsKey(action))
+					seqBoundEvents[action].Fire(seq);
 			}
 			return seq;
 		}
 		/**
 		 <summary>
-		 Binds a name to a Sequence.
+		 Binds an action string to a Sequence.
 		 </summary>
-		 <param name="seqName">The name to bind to the sequence.
+		 <param name="action">The action to bind to the sequence.
 		 </param>
-		 <param name="args">The SequenceElements to convert into a sequence.
+		 <param name="elements">The SequenceElements to convert into a sequence.
 		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> or <paramref name="elements"/> is null.
+		 </exception>
 		 */
-		public static Sequence BindSequence(string seqName, params SequenceElement[] args){
-			return BindSequence(seqName, new Sequence(args));
+		public static Sequence BindSequence(string action, params SequenceElement[] elements){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (elements == null)
+				throw new ArgumentNullException("elements");
+			return BindSequence(action, new Sequence(elements));
 		}
 		/**
 		 <summary>
-		 Binds a name to a Sequence.
+		 Binds an action string to a Sequence.
 		 </summary>
-		 <param name="seqName">The name to bind to the sequence.
+		 <param name="action">The name to bind to the sequence.
 		 </param>
-		 <param name="args">The KeyCodes to convert into a sequence.
+		 <param name="keyCodes">The KeyCodes to convert into a sequence.
 		 </param>
-		*/
-		public static Sequence BindSequence(string seqName, params KeyCode[] args){
-			return BindSequence(seqName, new Sequence(args));
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> or <paramref name="keyCodes"/> is null.
+		 </exception>
+		 */
+		public static Sequence BindSequence(string action, params KeyCode[] keyCodes){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (keyCodes == null)
+				throw new ArgumentNullException("keyCodes");
+			return BindSequence(action, new Sequence(keyCodes));
+		}
+		/**
+		 <summary>
+		 Returns true if any of the mouse buttons bound to <paramref name="action"/>
+		 were pressed during the current frame.
+		 </summary>
+		 <param name="action">The action string to check.
+		 </param>
+		 <param name="ignorePause">Should <see cref="InputManager.Paused"/> be ignored?
+		 </param>
+		 <returns>A boolean representing whether or not the button was pressed.
+		 </returns>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
+		 </exception>
+		 <exception cref="ArgumentException">Thrown if <paramref name="action"/> is not bound to any buttons.
+		 </exception>
+		 */
+		public static bool ButtonDown(string action, bool ignorePause = false){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundButtons.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any buttons.", "action");
+			if (Paused && !ignorePause) return false;
+			foreach (int button in boundButtons[action]){
+				if (button < 0 || button > 6) continue;
+				if (Input.GetKeyDown((KeyCode)(323 + button))) return true;
+			}
+			return false;
+		}
+		/**
+		 <summary>
+		 Returns true if the mouse button was pressed during the current frame.
+		 </summary>
+		 <param name="button">The button to check.
+		 </param>
+		 <param name="ignorePause">Should <see cref="InputManager.Paused"/> be ignored?
+		 </param>
+		 */
+		public static bool ButtonDown(int button, bool ignorePause = false){
+			if (Paused && !ignorePause) return false;
+			if (button < 0 || button > 6) return false;
+			return Input.GetKeyDown((KeyCode)(323 + button));
+		}
+		/**
+		 <summary>
+		 Checks if any of the mouse buttons bound to <paramref name="action"/> were released during the frame.
+		 </summary>
+		 <param name="action">The action string to check.
+		 </param>
+		 <param name="ignorePause">Should <see cref="InputManager.Paused"/> be ignored?
+		 </param>
+		 <returns>A boolean representing whether or not the button was released.
+		 </returns>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
+		 </exception>
+		 <exception cref="ArgumentException">Thrown if <paramref name="action"/> is not bound to any buttons.
+		 </exception>
+		 */
+		public static bool ButtonUp(string action, bool ignorePause = false){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundButtons.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any buttons.", "action");
+			if (Paused && !ignorePause) return false;
+			foreach (int button in boundButtons[action]){
+				if (button < 0 || button > 6) continue;
+				if (Input.GetKeyUp((KeyCode)(323 + button))) return true;
+			}
+			return false;
+		}
+		/**
+		 <summary>
+		 Returns true if the mouse button was released during the current frame.
+		 </summary>
+		 <param name="button">The button to check.
+		 </param>
+		 <param name="ignorePause">Should <see cref="InputManager.Paused"/> be ignored?
+		 </param>
+		 */
+		public static bool ButtonUp(int button, bool ignorePause = false){
+			if (Paused && !ignorePause) return false;
+			if (button < 0 || button > 6) return false;
+			return Input.GetKeyUp((KeyCode)(323 + button));
 		}
 		/**
 		 <summary>
@@ -154,16 +321,18 @@ namespace Izhitsa.InputManagement {
 		 </param>
 		 <param name="axis">The Axis object to bind.
 		 </param>
-		 <exception cref="ArgumentNullException">Thrown if <paramref name="name"/> is null.
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="name"/> or <paramref name="axis"/> is null.
 		 </exception>
 		 <exception cref="ArgumentException">Thrown if an axis named <paramref name="name"/> already exists.
 		 </exception>
 		 */
 		public static Axis CreateAxis(string name, Axis axis){
 			if (name == null)
-				throw new ArgumentNullException(name);
+				throw new ArgumentNullException("name");
+			if (axis == null)
+				throw new ArgumentNullException("axis");
 			if (axes.ContainsKey(name))
-				throw new ArgumentException($"An axis named \"{name}\" already exists.");
+				throw new ArgumentException($"An axis named \"{name}\" already exists.", "name");
 			axes.Add(name, axis);
 			return axis;
 		}
@@ -185,9 +354,9 @@ namespace Izhitsa.InputManagement {
 		 */
 		public static Axis CreateAxis(string name, KeyCode negative, KeyCode positive){
 			if (name == null)
-				throw new ArgumentNullException(name);
+				throw new ArgumentNullException("name");
 			if (axes.ContainsKey(name))
-				throw new ArgumentException($"An axis named \"{name}\" already exists.");
+				throw new ArgumentException($"An axis named \"{name}\" already exists.", "name");
 			Axis axis = new Axis(negative, positive);
 			axes.Add(name, axis);
 			return axis;
@@ -203,19 +372,32 @@ namespace Izhitsa.InputManagement {
 		 </param>
 		 <param name="positives">The list of positive KeyCodes.
 		 </param>
-		 <exception cref="ArgumentNullException">Thrown if <paramref name="name"/> is null.
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="name"/>, <paramref name="negatives"/>
+		 or <paramref name="positives"/> is null.
 		 </exception>
 		 <exception cref="ArgumentException">Thrown if an axis named <paramref name="name"/> already exists.
 		 </exception>
 		 */
 		public static Axis CreateAxis(string name, List<KeyCode> negatives, List<KeyCode> positives){
 			if (name == null)
-				throw new ArgumentNullException(name);
+				throw new ArgumentNullException("name");
+			if (negatives == null)
+				throw new ArgumentNullException("negatives");
+			if (positives == null)
+				throw new ArgumentNullException("positives");
 			if (axes.ContainsKey(name))
-				throw new ArgumentException($"An axis named \"{name}\" already exists.");
+				throw new ArgumentException($"An axis named \"{name}\" already exists.", "name");
 			Axis axis = new Axis(negatives, positives);
 			axes.Add(name, axis);
 			return axis;
+		}
+		/**
+		 <summary>
+		 Returns a Dictionary&lt;string, List&lt;KeyCode&gt;&gt; containing all button bindings.
+		 </summary>
+		 */
+		public static Dictionary<string, List<int>> GetAllBoundButtons(){
+			return new Dictionary<string, List<int>>(boundButtons);
 		}
 		/**
 		 <summary>
@@ -235,15 +417,15 @@ namespace Izhitsa.InputManagement {
 		 </param>
 		 <exception cref="ArgumentNullException">Thrown if <paramref name="name"/> is null.
 		 </exception>
-		 <exception cref="ArgumentException">Thrown if an axis named <paramref name="name"/> is not associated
+		 <exception cref="ArgumentException">Thrown if <paramref name="name"/> is not associated
 		 with an Axis.
 		 </exception>
 		 */
 		public static float GetAxis(string name, bool ignorePause = false){
 			if (name == null)
-				throw new ArgumentNullException(name);
+				throw new ArgumentNullException("name");
 			if (!axes.ContainsKey(name))
-				throw new ArgumentException($"Axis \"{name}\" has not been defined.");
+				throw new ArgumentException($"Axis \"{name}\" has not been defined.", "name");
 			if (Paused && !ignorePause) return 0;
 			return axes[name].GetValue(true);
 		}
@@ -258,7 +440,7 @@ namespace Izhitsa.InputManagement {
 		 */
 		public static Axis GetAxisObject(string name){
 			if (name == null)
-				throw new ArgumentNullException(name);
+				throw new ArgumentNullException("name");
 			return (axes.ContainsKey(name)) ? axes[name] : null;
 		}
 		/**
@@ -271,26 +453,61 @@ namespace Izhitsa.InputManagement {
 		 </param>
 		 <exception cref="ArgumentNullException">Thrown if <paramref name="name"/> is null.
 		 </exception>
-		 <exception cref="ArgumentException">Thrown if an axis named <paramref name="name"/> is not associated
+		 <exception cref="ArgumentException">Thrown if <paramref name="name"/> is not associated
 		 with an Axis.
 		 </exception>
 		 */
 		public static float GetAxisRaw(string name, bool ignorePause = false){
 			if (name == null)
-				throw new ArgumentNullException(name);
+				throw new ArgumentNullException("name");
 			if (!axes.ContainsKey(name))
-				throw new ArgumentException($"Axis \"{name}\" has not been defined.");
+				throw new ArgumentException($"Axis \"{name}\" has not been defined.", "name");
 			if (Paused && !ignorePause) return 0;
 			return axes[name].GetRawValue(true);
+		}
+		/**
+		 <summary>
+		 Returns the nth mouse button bound to <paramref name="action"/>, returning 
+		 -1 if out of bounds or if a button isn't bound to the action.
+		 </summary>
+		 <param name="action">The action string to check.
+		 </param>
+		 <param name="index">The index of the mouse button to retrieve. First bound button by default.
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
+		 </exception>
+		 */
+		public static int GetBoundButton(string action, int index = 0){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			List<int> buttons = GetBoundButtons(action);
+			if (index < 0 || index >= buttons.Count) return -1;
+			return buttons[index];
+		}
+		/**
+		 <summary>
+		 Returns the mouse buttons bound to a string.
+		 </summary>
+		 <param name="action">The action string to check.
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
+		 </exception>
+		 */
+		public static List<int> GetBoundButtons(string action){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundButtons.ContainsKey(action))
+				return new List<int>();
+			return new List<int>(boundButtons[action]);
 		}
 		/**
 		 <summary>
 		 Returns the nth key bound to <paramref name="action"/>, returning 
 		 KeyCode.None if out of bounds or if a key isn't bound to the action.
 		 </summary>
-		 <param name="action">The name of the key to check.
+		 <param name="action">The action string to check.
 		 </param>
-		 <param name="index">The number of the key to retrieve. First bound key by default.
+		 <param name="index">The index of the key to retrieve. First bound key by default.
 		 </param>
 		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
 		 </exception>
@@ -299,7 +516,7 @@ namespace Izhitsa.InputManagement {
 			if (action == null)
 				throw new ArgumentNullException("action");
 			List<KeyCode> keys = GetBoundKeys(action);
-			if (keys.Count <= index || keys.Count == 0) return KeyCode.None;
+			if (index < 0 || index >= keys.Count) return KeyCode.None;
 			return keys[index];
 		}
 		/**
@@ -318,6 +535,45 @@ namespace Izhitsa.InputManagement {
 			if (!boundKeys.ContainsKey(action))
 				return new List<KeyCode>();
 			return new List<KeyCode>(boundKeys[action]);
+		}
+		/**
+		 <summary>
+		 Returns true while any of the mouse buttons bound to <paramref name="action"/> are held down.
+		 </summary>
+		 <param name="action">The action string to check.
+		 </param>
+		 <param name="ignorePause">Should <see cref="InputManager.Paused"/> be ignored?
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
+		 </exception>
+		 <exception cref="ArgumentException">Thrown if <paramref name="action"/> is not bound to any mouse buttons.
+		 </exception>
+		 */
+		public static bool GetButton(string action, bool ignorePause = false){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundButtons.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any buttons.", "action");
+			if (Paused && !ignorePause) return false;
+			foreach (int button in boundButtons[action]){
+				if (button < 0 || button > 6) continue;
+				if (Input.GetKey((KeyCode)(323 + button))) return true;
+			}
+			return false;
+		}
+		/**
+		 <summary>
+		 Returns true while the mouse button is held down.
+		 </summary>
+		 <param name="button">The mouse button to check.
+		 </param>
+		 <param name="ignorePause">Should <see cref="InputManager.Paused"/> be ignored?
+		 </param>
+		 */
+		public static bool GetButton(int button, bool ignorePause = false){
+			if (Paused && !ignorePause) return false;
+			if (button < 0 || button > 6) return false;
+			return Input.GetKey((KeyCode)(323 + button));
 		}
 		/**
 		 <summary>
@@ -351,7 +607,7 @@ namespace Izhitsa.InputManagement {
 		 <param name="ignorePause">Should <see cref="InputManager.Paused"/> be ignored?
 		 </param>
 		 */
-		public static bool GetKey(KeyCode key, bool ignorePause){
+		public static bool GetKey(KeyCode key, bool ignorePause = false){
 			if (Paused && !ignorePause) return false;
 			return Input.GetKey(key);
 		}
@@ -466,22 +722,50 @@ namespace Izhitsa.InputManagement {
 		}
 		/**
 		 <summary>
-		 Returns true if the sequence bound to <paramref name="action"/> was completed during
+		 Returns true if a sequence bound to <paramref name="action"/> was completed during
 		 the current frame.
 		 </summary>
 		 <param name="action">The action to check.
 		 </param>
 		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
 		 </exception>
-		 <exception cref="ArgumentException">Thrown if <paramref name="action"/> is not bound to a Sequence.
+		 <exception cref="ArgumentException">Thrown if <paramref name="action"/> is not bound to any Sequences.
 		 </exception>
 		 */
 		public static bool SequenceCompleted(string action){
 			if (action == null)
 				throw new ArgumentNullException("action");
-			if (!boundSeqs.ContainsKey(action))
-				throw new ArgumentException($"\"{action}\" has not been bound to a Sequence.", "action");
-			return (boundSeqs[action].completionFrame == Time.frameCount);
+			if (!boundSeqs.ContainsKey(action) || boundSeqs[action].Count == 0)
+				throw new ArgumentException($"\"{action}\" is not bound to any Sequences.", "action");
+			foreach (Sequence seq in boundSeqs[action]){
+				if (seq.completionFrame == Time.frameCount) return true;
+			}
+			return false;
+		}
+		/**
+		 <summary>
+		 Unbinds a mouse button.
+		 </summary>
+		 <param name="action">The action to unbind from.
+		 </param>
+		 <param name="buttonToUnbind">The button to unbind.
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> is null.
+		 </exception>
+		 <exception cref="ArgumentException">Thrown if <paramref name="action"/> is not bound to any buttons.
+		 </exception>
+		 */
+		public static void UnbindButton(string action, int buttonToUnbind){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (!boundButtons.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any buttons.", "action");
+			while (boundButtons[action].Contains(buttonToUnbind)){
+				boundButtons[action].Remove(buttonToUnbind);
+				mouseUnbound.Fire(action, buttonToUnbind);
+				if (mouseUnboundEvents.ContainsKey(action))
+					mouseUnboundEvents[action].Fire(buttonToUnbind);
+			}
 		}
 		/**
 		 <summary>
@@ -531,7 +815,34 @@ namespace Izhitsa.InputManagement {
 			}
 			boundKeys.Remove(action);
 		}
-		
+		/**
+		 <summary>
+		 Unbinds a Sequence, and resets it.
+		 </summary>
+		 <param name="action">The action to unbind from.
+		 </param>
+		 <param name="seqToUnbind">The Sequence to unbind.
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="action"/> or <paramref name="seqToUnbind"/> is null.
+		 </exception>
+		 <exception cref="ArgumentException">Thrown if <paramref name="action"/> is not bound to any Sequences.
+		 </exception>
+		 */
+		public static void UnbindSequence(string action, Sequence seqToUnbind){
+			if (action == null)
+				throw new ArgumentNullException("action");
+			if (seqToUnbind == null)
+				throw new ArgumentNullException("seqToUnbind");
+			if (!boundSeqs.ContainsKey(action))
+				throw new ArgumentException($"\"{action}\" has not been bound to any Sequences.", "action");
+			while (boundSeqs[action].Contains(seqToUnbind)){
+				boundSeqs[action].Remove(seqToUnbind);
+				seqUnbound.Fire(action, seqToUnbind);
+				if (seqUnboundEvents.ContainsKey(action))
+					seqUnboundEvents[action].Fire(seqToUnbind);
+			}
+		}
+
 
 		/**
 		 <summary>
@@ -631,7 +942,7 @@ namespace Izhitsa.InputManagement {
 
 			Dictionary<KeyCode, float> keyTimes = new Dictionary<KeyCode, float>(heldKeys);
 			List<KeyCode> keys = new List<KeyCode>();
-			foreach(KeyCode k in keyTimes.Keys) keys.Add(k);
+			foreach (KeyCode k in keyTimes.Keys) keys.Add(k);
 
 			InputEvent iEvent = new InputEvent(
 				button,
@@ -652,10 +963,36 @@ namespace Izhitsa.InputManagement {
 				mouseEvent.Fire(iEvent);
 				if (mouseEvents.ContainsKey(button))
 					mouseEvents[button].Fire(iEvent);
+				foreach (KeyValuePair<string, List<int>> pair in boundButtons){
+					bool universal = universalEvents.ContainsKey(pair.Key);
+					bool mouseAction = mouseActionEvents.ContainsKey(pair.Key);
+					if (universal || mouseAction){
+						foreach (int b in pair.Value){
+							if (b == button){
+								if (mouseAction) mouseActionEvents[pair.Key].Fire(iEvent);
+								if (universal) universalEvents[pair.Key].Fire(iEvent, null);
+								break;
+							}
+						}
+					}
+				}
 			} else {
 				keyEvent.Fire(iEvent);
 				if (keyEvents.ContainsKey(key))
 					keyEvents[key].Fire(iEvent);
+				foreach (KeyValuePair<string, List<KeyCode>> pair in boundKeys){
+					bool universal = universalEvents.ContainsKey(pair.Key);
+					bool keyAction = keyActionEvents.ContainsKey(pair.Key);
+					if (universal || keyAction){
+						foreach (KeyCode k in pair.Value){
+							if (k == key){
+								if (keyAction) keyActionEvents[pair.Key].Fire(iEvent);
+								if (universal) universalEvents[pair.Key].Fire(iEvent, null);
+								break;
+							}
+						}
+					}
+				}
 			}
 
 			if (valid || (!valid && ev.type != EventType.MouseMove)){
@@ -772,6 +1109,55 @@ namespace Izhitsa.InputManagement {
 		}
 		/**
 		 <summary>
+		 Registers an InputEvent with valid Sequences.
+		 </summary>
+		 <param name="ev">The InputEvent to register.</param>
+		 */
+		private static void registerEvent(InputEvent ev){
+			foreach (KeyValuePair<string, List<Sequence>> pair in boundSeqs){
+				string name = pair.Key;
+				foreach (Sequence seq in pair.Value){
+					if (seq == null) continue;
+					if (seq.MaxStep < 0) continue;
+
+					bool isModifier;
+					SequenceElement elem = seq.Current;
+					if (!valid(ev, elem, out isModifier)){
+						if (!isModifier) seq.Reset();
+						continue;
+					}
+					if (isModifier) continue;
+
+					if (ev.Key == elem.Key && ev.Type == elem.Type){
+						float duration = ev.HeldDuration;
+						float deltaX = ev.Delta.x;
+						float deltaY = ev.Delta.y;
+						float last = Time.time - seq.lastStepTime;
+
+						bool inMargin = (seq.CurrentStep == 0 || (last >= elem.MinMargin && last <= elem.MaxMargin));
+						bool inDuration = (duration >= elem.MinDuration && duration <= elem.MaxDuration);
+						bool inDelta =
+							(deltaX >= elem.MinDeltaX && deltaX <= elem.MaxDeltaX) &&
+							(deltaY >= elem.MinDeltaY && deltaY <= elem.MaxDeltaY);
+
+						if (inDuration && inMargin && inDelta){
+							seq.lastStepTime = Time.time;
+							if (seq.CurrentStep++ == seq.MaxStep){
+								seq.completionFrame = Time.frameCount;
+								Broadcast<Sequence> bc = (seqEvents.ContainsKey(name)) ? seqEvents[name] : null;
+								bc?.Fire(seq);
+								if (universalEvents.ContainsKey(name))
+									universalEvents[name].Fire(ev, seq);
+							}
+						} else if (duration > elem.MaxDuration || !inMargin || !inDelta){
+							seq.Reset();
+						}
+					}
+				}
+			}
+		}
+		/**
+		 <summary>
 		 Checks whether or not an <see cref="InputEvent"/> satisfies a <see cref="SequenceElement"/>.
 		 </summary>
 		 <param name="ev">The InputEvent.
@@ -868,53 +1254,6 @@ namespace Izhitsa.InputManagement {
 				isModifier = false;
 			}
 			return false;
-		}
-		/**
-		 <summary>
-		 Registers an InputEvent with valid Sequences.
-		 </summary>
-		 <param name="ev">The InputEvent to register.</param>
-		 */
-		private static void registerEvent(InputEvent ev){
-			foreach (KeyValuePair<string, Sequence> pair in boundSeqs){
-				string name = pair.Key;
-				Sequence seq = pair.Value;
-				if (seq == null) continue;
-				if (seq.MaxStep < 0) continue;
-
-				bool isModifier;
-				SequenceElement elem = seq.Current;
-				if (!valid(ev, elem, out isModifier)){
-					if (!isModifier)
-						seq.Reset();
-					continue;
-				}
-				if (isModifier) continue;
-
-				if (ev.Key == elem.Key && ev.Type == elem.Type){
-					float duration = ev.HeldDuration;
-					float deltaX = ev.Delta.x;
-					float deltaY = ev.Delta.y;
-					float last = Time.time - seq.lastStepTime;
-
-					bool inMargin = (seq.CurrentStep == 0 || (last >= elem.MinMargin && last <= elem.MaxMargin));
-					bool inDuration = (duration >= elem.MinDuration && duration <= elem.MaxDuration);
-					bool inDelta =
-						(deltaX >= elem.MinDeltaX && deltaX <= elem.MaxDeltaX) &&
-						(deltaY >= elem.MinDeltaY && deltaY <= elem.MaxDeltaY);
-
-					if (inDuration && inMargin && inDelta){
-						seq.lastStepTime = Time.time;
-						if (seq.CurrentStep++ == seq.MaxStep){
-							seq.completionFrame = Time.frameCount;
-							Broadcast bc = (seqEvents.ContainsKey(name)) ? seqEvents[name] : null;
-							bc?.Fire();
-						}
-					} else if (duration > elem.MaxDuration || !inMargin || !inDelta){
-						seq.Reset();
-					}
-				}
-			}
 		}
 	}
 }

@@ -44,24 +44,34 @@ namespace Izhitsa.InputManagement {
 		 <summary>
 		 Creates a new Sequence using <see cref="SequenceElement"/>s.
 		 </summary>
-		 <param name="args">The SequenceElements to create a Sequence out of.</param>
+		 <param name="args">The SequenceElements to create a Sequence out of.
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="args"/> is null.
+		 </exception>
 		 */
 		public Sequence(params SequenceElement[] args){
-			elements = args;
+			if (args == null)
+				throw new ArgumentNullException("args");
+			SequenceElement[] elems = new SequenceElement[args.Length];
+			for (int i = 0; i < args.Length; i++)
+				elems[i] = args[i];
+			elements = elems;
 		}
 		/**
 		 <summary>
 		 Creates a new Sequence out of <see cref="KeyCode"/>s.
 		 </summary>
-		 <param name="args">The KeyCodes to create a Sequence out of.</param>
+		 <param name="args">The KeyCodes to create a Sequence out of.
+		 </param>
+		 <exception cref="ArgumentNullException">Thrown if <paramref name="args"/> is null.
+		 </exception>
 		 */
 		public Sequence(params KeyCode[] args){
+			if (args == null)
+				throw new ArgumentNullException("args");
 			SequenceElement[] elems = new SequenceElement[args.Length];
-			for (int i = 0; i < args.Length; i++){
-				SequenceElement elem = new SequenceElement();
-				elem.Key = args[i];
-				elems[i] = elem;
-			}
+			for (int i = 0; i < args.Length; i++)
+				elems[i] = new SequenceElement(args[i]);
 			elements = elems;
 		}
 
